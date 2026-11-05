@@ -17,6 +17,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
       message: "Authentication required",
     });
   }
+
   return next({
     ctx: {
       ...ctx,

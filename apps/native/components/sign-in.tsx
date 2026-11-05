@@ -9,8 +9,8 @@ import {
   TextField,
   useToast,
 } from "heroui-native";
+import type { InputRef } from "heroui-native";
 import { useRef } from "react";
-import type { TextInput } from "react-native";
 import { Text, View } from "react-native";
 import { z } from "zod";
 
@@ -42,9 +42,11 @@ const errorPayloadSchema = z.union([
     .record(z.string(), z.union([issueSchema, z.array(issueSchema)]))
     .transform((obj) => {
       const [firstVal] = Object.values(obj);
+
       if (!firstVal) {
         return null;
       }
+
       return Array.isArray(firstVal) ? (firstVal[0] ?? null) : firstVal;
     }),
 ]);
@@ -63,12 +65,14 @@ const getErrorMessage = (error: FormError): string | null => {
   if (!error) {
     return null;
   }
+
   const result = errorPayloadSchema.safeParse(error);
+
   return result.success ? result.data : null;
 };
 
 const SignIn = () => {
-  const passwordInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<InputRef>(null);
   const { toast } = useToast();
 
   const form = useForm({

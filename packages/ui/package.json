@@ -26,9 +26,9 @@
     "input-otp": "^1.5.0",
     "lucide-react": "catalog:",
     "next-themes": "catalog:",
-    "react": "^19.2.8",
+    "react": "catalog:",
     "react-day-picker": "^10.0.1",
-    "react-dom": "^19.2.8",
+    "react-dom": "catalog:",
     "react-resizable-panels": "^4.12.4",
     "recharts": "^3.8.0",
     "shadcn": "^4.21.0",
@@ -38,9 +38,9 @@
   "devDependencies": {
     "@befday-2.0/config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
-    "@types/react": "^19.2.18",
+    "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "^6.0.3"
+    "typescript": "catalog:"
   }
 }

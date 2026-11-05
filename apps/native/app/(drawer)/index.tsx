@@ -21,6 +21,7 @@ const Home = () => {
   const dangerColor = useThemeColor("danger");
 
   let statusDescription = "API Disconnected";
+
   if (isLoading) {
     statusDescription = "Checking connection...";
   } else if (isConnected) {

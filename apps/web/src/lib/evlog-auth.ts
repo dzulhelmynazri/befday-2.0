@@ -2,8 +2,7 @@ import { createAuthMiddleware } from "evlog/better-auth";
 import type { BetterAuthInstance } from "evlog/better-auth";
 
 import { useLogger as getLogger } from "@/lib/evlog";
-
-import { auth } from "../services";
+import { auth } from "@/services";
 
 // SAFETY: auth instance conforms to BetterAuthInstance required by evlog
 const identifyUser = createAuthMiddleware(auth as BetterAuthInstance, {

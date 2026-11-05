@@ -24,11 +24,14 @@ const trpcClient = createTRPCClient<AppRouter>({
         if (Platform.OS === "web") {
           return {};
         }
+
         const headers = new Map<string, string>();
         const cookies = await authClient.getCookie();
+
         if (cookies) {
           headers.set("Cookie", cookies);
         }
+
         return Object.fromEntries(headers);
       },
       url: `${env.EXPO_PUBLIC_SERVER_URL}/api/trpc`,

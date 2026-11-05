@@ -5,9 +5,11 @@ import { getDb, auth } from "./services";
 
 export const createContext = async (req: NextRequest): Promise<ApiContext> => {
   const db = await getDb();
+
   const session = await auth.api.getSession({
     headers: req.headers,
   });
+
   return {
     auth: null,
     db,

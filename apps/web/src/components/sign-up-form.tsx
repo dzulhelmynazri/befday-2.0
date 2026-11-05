@@ -21,11 +21,11 @@ import { authClient } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
-const signInWithSocial = async (provider: "github" | "google" | "linkedin") => {
+const signInWithSocial = async () => {
   await authClient.signIn.social(
     {
       callbackURL: "/dashboard",
-      provider,
+      provider: "google",
     },
     {
       onError: (error) => {
@@ -97,7 +97,9 @@ const SignUpForm = ({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => signInWithSocial("google")}
+                onClick={async () => {
+                  await signInWithSocial();
+                }}
               >
                 <Google data-icon="inline-start" />
                 Continue with Google

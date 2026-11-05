@@ -10,8 +10,7 @@ const HomeTabBarIcon = ({
   color: ColorValue;
   size: number;
 }) => (
-  // SAFETY: Ionicons supports string or ColorValue at runtime
-  <Ionicons name="home" size={size} color={color as string} />
+  <Ionicons name="home" size={size} color={color ? String(color) : undefined} />
 );
 
 const TwoTabBarIcon = ({
@@ -21,8 +20,11 @@ const TwoTabBarIcon = ({
   color: ColorValue;
   size: number;
 }) => (
-  // SAFETY: Ionicons supports string or ColorValue at runtime
-  <Ionicons name="compass" size={size} color={color as string} />
+  <Ionicons
+    name="compass"
+    size={size}
+    color={color ? String(color) : undefined}
+  />
 );
 
 const TabLayout = () => {

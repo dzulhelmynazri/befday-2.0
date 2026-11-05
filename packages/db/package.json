@@ -20,14 +20,14 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
-    "@prisma/adapter-neon": "^7.10.0",
+    "@prisma/adapter-neon": "catalog:",
     "@prisma/client": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@befday-2.0/config": "workspace:*",
-    "prisma": "^7.10.0",
-    "typescript": "^6.0.3",
+    "prisma": "catalog:",
+    "typescript": "catalog:",
     "varlock": "catalog:"
   }
 }

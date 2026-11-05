@@ -5,10 +5,12 @@ export default defineConfig({
   ...ultracite,
   ignorePatterns: [
     ...(ultracite.ignorePatterns ?? []),
-    "packages/ui/**",
     ".agents/**",
     ".claude/**",
     ".cursor/**",
-    ".qoder/**",
   ],
+  sortTailwindcss: {
+    functions: ["clsx", "cva", "tw", "twMerge", "cn", "twJoin", "tv"],
+    stylesheet: "./apps/web/app/global.css",
+  },
 });

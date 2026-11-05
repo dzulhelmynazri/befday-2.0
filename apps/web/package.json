@@ -23,15 +23,15 @@
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
-    "@varlock/nextjs-integration": "1.2.2",
+    "@varlock/nextjs-integration": "^2.0.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "better-auth": "catalog:",
     "evlog": "^2.28.1",
     "lucide-react": "catalog:",
     "next": "^16.3.4",
     "next-themes": "catalog:",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "sonner": "catalog:",
     "varlock": "catalog:",
     "zod": "catalog:"
@@ -39,11 +39,11 @@
   "devDependencies": {
     "@befday-2.0/config": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
-    "@tanstack/react-query-devtools": "^5.102.8",
+    "@tanstack/react-query-devtools": "catalog:",
     "@types/node": "catalog:",
-    "@types/react": "^19.2.18",
+    "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "^6.0.3"
+    "typescript": "catalog:"
   }
 }

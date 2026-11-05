@@ -18,8 +18,8 @@ const HomeDrawerIcon = ({
   focused: boolean;
 }) => {
   const themeColorForeground = useThemeColor("foreground");
-  // SAFETY: Ionicons supports string or ColorValue at runtime
-  const iconColor = (focused ? color : themeColorForeground) as string;
+  const iconColor = focused && color ? String(color) : themeColorForeground;
+
   return <Ionicons name="home-outline" size={size} color={iconColor} />;
 };
 
@@ -31,6 +31,7 @@ const HomeDrawerLabel = ({
   focused: boolean;
 }) => {
   const themeColorForeground = useThemeColor("foreground");
+
   return (
     <Text style={{ color: focused ? color : themeColorForeground }}>Home</Text>
   );
@@ -46,8 +47,8 @@ const TabsDrawerIcon = ({
   focused: boolean;
 }) => {
   const themeColorForeground = useThemeColor("foreground");
-  // SAFETY: MaterialIcons supports string or ColorValue at runtime
-  const iconColor = (focused ? color : themeColorForeground) as string;
+  const iconColor = focused && color ? String(color) : themeColorForeground;
+
   return <MaterialIcons name="border-bottom" size={size} color={iconColor} />;
 };
 
@@ -59,6 +60,7 @@ const TabsDrawerLabel = ({
   focused: boolean;
 }) => {
   const themeColorForeground = useThemeColor("foreground");
+
   return (
     <Text style={{ color: focused ? color : themeColorForeground }}>Tabs</Text>
   );
@@ -66,6 +68,7 @@ const TabsDrawerLabel = ({
 
 const TabsHeaderRight = () => {
   const themeColorForeground = useThemeColor("foreground");
+
   return (
     <Link href="/modal" asChild>
       <Pressable className="mr-4">
