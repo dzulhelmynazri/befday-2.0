@@ -5,7 +5,9 @@ const withVarlock = varlockNextConfigPlugin();
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  devIndicators: false,
   experimental: {
+    agentFeedback: true,
     optimizePackageImports: ["lucide-react"],
     turbopackRustReactCompiler: true,
   },
