@@ -1,0 +1,7 @@
+{
+  "extends": "@befday-2.0/config/tsconfig.base.json",
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    "strictNullChecks": true
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "name": "befday-2.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "zod": "^4.5.4",
+      "@types/node": "^26.4.1",
+      "varlock": "1.18.0",
+      "lucide-react": "^1.41.0",
+      "next-themes": "^0.4.6",
+      "sonner": "^2.0.8",
+      "@prisma/client": "^7.10.0",
+      "@trpc/server": "^11.18.0",
+      "@trpc/client": "^11.18.0",
+      "@trpc/tanstack-react-query": "^11.18.0",
+      "@tanstack/react-query": "^5.102.8",
+      "better-auth": "1.7.3",
+      "@tanstack/react-form": "^1.33.5",
+      "@tailwindcss/postcss": "^4.3.3",
+      "@types/react-dom": "^19.2.7",
+      "tailwindcss": "^4.3.3",
+      "@better-auth/expo": "1.7.3"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "dev:native": "turbo run dev -F native --",
+    "dev:web": "turbo run dev -F web --",
+    "db:push": "turbo run db:push -F @befday-2.0/db --",
+    "db:studio": "turbo run db:studio -F @befday-2.0/db --",
+    "db:generate": "turbo run db:generate -F @befday-2.0/db --",
+    "db:migrate": "turbo run db:migrate -F @befday-2.0/db --",
+    "env:generate": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/native/ && varlock codegen --path ./packages/db/",
+    "postinstall": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/native/ && varlock codegen --path ./packages/db/",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@befday-2.0/config": "workspace:*",
+    "@types/node": "catalog:",
+    "lefthook": "latest",
+    "oxfmt": "latest",
+    "oxlint": "latest",
+    "turbo": "^2.10.12",
+    "typescript": "^6.0.3",
+    "ultracite": "7.12.0",
+    "varlock": "catalog:"
+  },
+  "overrides": {
+    "@next/env": "npm:@varlock/nextjs-integration@1.2.2"
+  },
+  "packageManager": "bun@1.4.2"
+}
