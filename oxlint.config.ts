@@ -12,6 +12,7 @@ export default defineConfig({
   ignorePatterns: [
     ...(core.ignorePatterns ?? []),
     "packages/ui/**",
+    "packages/db/prisma/generated/**",
     ".agents/**",
     ".claude/**",
     ".cursor/**",
@@ -43,4 +44,8 @@ export default defineConfig({
       },
     },
   ],
+  rules: {
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-explicit-any": "error",
+  },
 });

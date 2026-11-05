@@ -136,6 +136,12 @@
       "skillPath": "skills/turborepo/SKILL.md",
       "computedHash": "c83a6ff75c62092f71da91408164ed3426f11749b032fd23ecc855e27c2fb538"
     },
+    "typescript-best-practices": {
+      "source": "ofershap/typescript-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/typescript-best-practices/SKILL.md",
+      "computedHash": "4fed665a7697c420edd8e2afa18cf4ba8c86a6fe93924fc7f45cf769c693b6a7"
+    },
     "ultracite": {
       "source": "haydenbleasel/ultracite",
       "sourceType": "github",
