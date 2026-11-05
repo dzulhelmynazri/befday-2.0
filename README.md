@@ -46,8 +46,7 @@ Then, run the development server:
 bun run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the fullstack application.
-Use the Expo Go app to run the mobile application.
+Open [http://localhost:3001](http://localhost:3001) in your browser to see the fullstack application. Use the Expo Go app to run the mobile application.
 
 ## UI Customization
 

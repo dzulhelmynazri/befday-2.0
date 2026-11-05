@@ -1,20 +1,19 @@
 import { createEmailClient } from "@opencoredev/email-sdk";
 import { cloudflare } from "@opencoredev/email-sdk/cloudflare";
 
-export type EmailConfig = {
+export interface EmailConfig {
   CLOUDFLARE_API_TOKEN: string;
   CLOUDFLARE_ACCOUNT_ID: string;
-};
+}
 
-export function createEmail(env: EmailConfig) {
-  return createEmailClient({
+export const createEmail = (env: EmailConfig) =>
+  createEmailClient({
     adapters: [
       cloudflare({
-        apiToken: env.CLOUDFLARE_API_TOKEN,
         accountId: env.CLOUDFLARE_ACCOUNT_ID,
+        apiToken: env.CLOUDFLARE_API_TOKEN,
       }),
     ],
   });
-}
 
 export type { EmailClient } from "@opencoredev/email-sdk";

@@ -6,5 +6,13 @@ import react from "ultracite/oxlint/react";
 
 export default defineConfig({
   extends: [core, react, next, antiSlop],
-  ignorePatterns: core.ignorePatterns,
+  ignorePatterns: [
+    ...(core.ignorePatterns ?? []),
+    "packages/ui/**",
+    ".agents/**",
+    ".claude/**",
+    ".cursor/**",
+    "apps/native/babel.config.js",
+    "apps/native/metro.config.js",
+  ],
 });

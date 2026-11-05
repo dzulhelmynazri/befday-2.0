@@ -75,6 +75,12 @@
       "skillPath": "plugins/expo/skills/expo-router/SKILL.md",
       "computedHash": "8cd1a4358b14380b259b79e22c4170016a077ec316dc36a09f810efd8120ece3"
     },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396"
+    },
     "heroui-native": {
       "source": "heroui-inc/heroui",
       "sourceType": "github",

@@ -9,15 +9,9 @@ import {
 import {
   Field,
   FieldDescription,
-  FieldError,
   FieldGroup,
-  FieldLabel,
-  FieldSeparator,
 } from "@befday-2.0/ui/components/field";
-import { Input } from "@befday-2.0/ui/components/input";
-import { Github } from "@befday-2.0/ui/socials/github";
 import { Google } from "@befday-2.0/ui/socials/google";
-import { Linkedin } from "@befday-2.0/ui/socials/linkedin";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -37,11 +31,11 @@ const signInWithSocial = async (provider: "github" | "google" | "linkedin") => {
       onError: (error) => {
         toast.error(error.error.message);
       },
-    },
+    }
   );
 };
 
-export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
+const SignUpForm = ({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) => {
   const router = useRouter();
   const { isPending } = authClient.useSession();
 
@@ -66,7 +60,7 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
             router.push("/dashboard");
             toast.success("Sign up successful");
           },
-        },
+        }
       );
     },
     validators: {
@@ -86,7 +80,9 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
     <Card className="mx-auto w-full max-w-md">
       <CardHeader>
         <CardTitle>Create Account</CardTitle>
-        <CardDescription>Enter your details below to create your account</CardDescription>
+        <CardDescription>
+          Enter your details below to create your account
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -98,7 +94,11 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
         >
           <FieldGroup>
             <Field>
-              <Button type="button" variant="outline" onClick={() => signInWithSocial("google")}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => signInWithSocial("google")}
+              >
                 <Google data-icon="inline-start" />
                 Continue with Google
               </Button>
@@ -114,4 +114,6 @@ export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () 
       </CardContent>
     </Card>
   );
-}
+};
+
+export default SignUpForm;

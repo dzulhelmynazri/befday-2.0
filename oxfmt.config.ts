@@ -3,4 +3,12 @@ import ultracite from "ultracite/oxfmt";
 
 export default defineConfig({
   ...ultracite,
+  ignorePatterns: [
+    ...(ultracite.ignorePatterns ?? []),
+    "packages/ui/**",
+    ".agents/**",
+    ".claude/**",
+    ".cursor/**",
+    ".qoder/**",
+  ],
 });
