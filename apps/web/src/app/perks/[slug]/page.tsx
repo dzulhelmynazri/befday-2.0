@@ -191,13 +191,13 @@ const PerkDetailContent = async ({
           </p>
         </div>
 
-        {/* Action Links (Location, Website) */}
+        {/* Action Links (Location, Website, App Store, Play Store) */}
         <div className="flex flex-wrap items-center gap-2 pt-1">
           {brand.googleMapUrl && (
             <a
               className={buttonVariants({
                 size: "default",
-                variant: "outline",
+                variant: "link",
               })}
               href={brand.googleMapUrl}
               rel="noopener noreferrer"
@@ -207,17 +207,45 @@ const PerkDetailContent = async ({
               <ArrowUpRight data-icon="inline-end" />
             </a>
           )}
-          {brand.websiteUrl && (
+          {brand.websiteUrl && brand.websiteUrl !== brand.googleMapUrl && (
             <a
               className={buttonVariants({
                 size: "default",
-                variant: "outline",
+                variant: "link",
               })}
               href={brand.websiteUrl}
               rel="noopener noreferrer"
               target="_blank"
             >
               website
+              <ArrowUpRight data-icon="inline-end" />
+            </a>
+          )}
+          {brand.appStoreUrl && (
+            <a
+              className={buttonVariants({
+                size: "default",
+                variant: "link",
+              })}
+              href={brand.appStoreUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              app store
+              <ArrowUpRight data-icon="inline-end" />
+            </a>
+          )}
+          {brand.playStoreUrl && (
+            <a
+              className={buttonVariants({
+                size: "default",
+                variant: "link",
+              })}
+              href={brand.playStoreUrl}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              play store
               <ArrowUpRight data-icon="inline-end" />
             </a>
           )}
