@@ -22,7 +22,6 @@ export const createAuth = (env: AuthConfig, database: Database) =>
     session: {
       cookieCache: {
         enabled: true,
-        // Cache duration in seconds
         maxAge: 5 * 60,
       },
     },
