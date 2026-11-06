@@ -17,7 +17,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => (
   >
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools />
+      <ReactQueryDevtools buttonPosition="bottom-left" />
     </QueryClientProvider>
     <Toaster richColors />
   </ThemeProvider>

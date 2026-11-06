@@ -6,13 +6,14 @@ import {
 import { Badge } from "@befday-2.0/ui/components/badge";
 import { buttonVariants } from "@befday-2.0/ui/components/button";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
 
 import { baseUrl } from "@/utils/base-url";
+import { formatShortDate } from "@/utils/date";
 import { getServerApi } from "@/utils/trpc-server";
 
 const getBrand = cache(async (slug: string) => {
@@ -129,13 +130,13 @@ const PerkDetailContent = async ({
                 {
                   "@type": "ListItem",
                   item: baseUrl,
-                  name: "Home",
+                  name: "home",
                   position: 1,
                 },
                 {
                   "@type": "ListItem",
                   item: perkUrl,
-                  name: brand.name,
+                  name: brand.name.toLowerCase(),
                   position: 2,
                 },
               ],
@@ -143,13 +144,16 @@ const PerkDetailContent = async ({
             {
               "@type": "Offer",
               description: brand.description,
-              name: `${brand.name} Birthday Perk`,
+              name: `${brand.name} birthday perk`,
+              price: primaryPerk.badge === "FREE" ? "0" : undefined,
+              priceCurrency: "MYR",
               seller: {
                 "@type": "Organization",
                 name: brand.name,
                 url: brand.websiteUrl,
               },
               url: perkUrl,
+              validFrom: primaryPerk.verifiedAt.toISOString(),
             },
           ],
         })}
@@ -286,6 +290,17 @@ const PerkDetailContent = async ({
           </section>
         </div>
       </article>
+
+      {/* Floating Verified Badge at Bottom Right */}
+      <aside
+        aria-label="Verification status"
+        className="fixed right-4 bottom-4 z-40 sm:right-6 sm:bottom-6"
+      >
+        <div className="bg-background/80 text-muted-foreground border-border inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs shadow-xs backdrop-blur-md select-none tabular-nums">
+          <BadgeCheck className="text-primary size-3.5 shrink-0" />
+          verified {formatShortDate(primaryPerk.verifiedAt).toLowerCase()}
+        </div>
+      </aside>
     </main>
   );
 };

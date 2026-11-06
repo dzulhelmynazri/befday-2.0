@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "../index.css";
+import Footer from "@/components/footer";
 // import Header from "@/components/header";
 import Providers from "@/components/providers";
 import { baseUrl } from "@/utils/base-url";
@@ -78,9 +79,10 @@ const RootLayout = ({ children }: LayoutProps<"/">) => (
         })}
       </script>
       <Providers>
-        <div className="grid h-svh grid-rows-[auto_1fr]">
+        <div className="flex min-h-svh flex-col">
           {/* <Header /> */}
-          {children}
+          <div className="flex-1">{children}</div>
+          <Footer />
         </div>
       </Providers>
     </body>

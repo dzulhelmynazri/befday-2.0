@@ -43,12 +43,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/blog/${post.slug}`,
   }));
 
-  const routes: MetadataRoute.Sitemap = ["", "/blog"].map((route) => ({
-    changeFrequency: "daily",
-    lastModified: new Date(),
-    priority: route === "" ? 1 : 0.9,
-    url: `${baseUrl}${route}`,
-  }));
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      changeFrequency: "daily",
+      lastModified: new Date(),
+      priority: 1,
+      url: `${baseUrl}`,
+    },
+    {
+      changeFrequency: "daily",
+      lastModified: new Date(),
+      priority: 0.9,
+      url: `${baseUrl}/blog`,
+    },
+    {
+      changeFrequency: "monthly",
+      lastModified: new Date(),
+      priority: 0.5,
+      url: `${baseUrl}/privacy-policy`,
+    },
+    {
+      changeFrequency: "monthly",
+      lastModified: new Date(),
+      priority: 0.5,
+      url: `${baseUrl}/terms-of-service`,
+    },
+  ];
 
-  return [...routes, ...perkPages, ...blogs];
+  return [...staticRoutes, ...perkPages, ...blogs];
 }
