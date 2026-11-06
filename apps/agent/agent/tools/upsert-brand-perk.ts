@@ -1,5 +1,4 @@
 import { upsertBrandPerkSchema } from "@befday-2.0/contracts";
-import type { Prisma } from "@befday-2.0/db";
 import { defineTool } from "eve/tools";
 import slugify from "slugify";
 
@@ -15,43 +14,22 @@ export default defineTool({
       trim: true,
     });
 
-    const updateData: Prisma.BrandUpdateInput = {
+    const brandData = {
+      appStoreUrl: input.appStoreUrl,
       description: input.description,
+      googleMapUrl: input.googleMapUrl,
+      logoUrl: input.logoUrl,
       name: input.name,
+      playStoreUrl: input.playStoreUrl,
+      websiteUrl: input.websiteUrl,
     };
-
-    if (input.logoUrl) {
-      updateData.logoUrl = input.logoUrl;
-    }
-
-    if (input.websiteUrl) {
-      updateData.websiteUrl = input.websiteUrl;
-    }
-
-    if (input.googleMapUrl) {
-      updateData.googleMapUrl = input.googleMapUrl;
-    }
-
-    if (input.appStoreUrl) {
-      updateData.appStoreUrl = input.appStoreUrl;
-    }
-
-    if (input.playStoreUrl) {
-      updateData.playStoreUrl = input.playStoreUrl;
-    }
 
     const brand = await db.brand.upsert({
       create: {
-        appStoreUrl: input.appStoreUrl,
-        description: input.description,
-        googleMapUrl: input.googleMapUrl,
-        logoUrl: input.logoUrl,
-        name: input.name,
-        playStoreUrl: input.playStoreUrl,
+        ...brandData,
         slug: brandSlug,
-        websiteUrl: input.websiteUrl,
       },
-      update: updateData,
+      update: brandData,
       where: { slug: brandSlug },
     });
 

@@ -160,15 +160,76 @@ Create modular tRPC routers:
 
 ---
 
-## 5. Deferred Modules Roadmap
+## 5. Hybrid Image Generation & Social Publishing (NeuLink)
+
+### A. The Hybrid Image Strategy
+
+```mermaid
+flowchart TD
+    PerkData["Discovered Brand Perk<br/>(Brand Name, Logo, Perks, Badge)"] --> Pipeline{"Image Generator Router"}
+
+    subgraph CardGenerator ["1. Programmatic Branded Card (Social Media & OpenGraph)"]
+        HTML["HTML/Satori/Canvas Template<br/>(1080x1080 & 1200x630)"]
+        Logo["Official Brand Logo"]
+        Badge["Pill Badge: FREE / VOUCHER"]
+        Perks["Clean Perks & Validity Text"]
+        HTML --- Logo
+        HTML --- Badge
+        HTML --- Perks
+        RenderCard["Render Pixel-Perfect PNG"]
+    end
+
+    subgraph AIGenerator ["2. Generative AI Lifestyle Image (Blog & Editorial)"]
+        PromptGen["LLM Crafts Lifestyle Prompt<br/>(e.g., 'Festive celebration with root beer float')"]
+        ImageAI["Image Model via Treg / API<br/>(Flux / Imagen 3 / DALL-E)"]
+        PromptGen --> ImageAI
+        RenderAI["Render Photorealistic Photo"]
+    end
+
+    Pipeline --> CardGenerator
+    Pipeline --> AIGenerator
+
+    RenderCard --> R2["Upload to Cloudflare R2<br/>(@befday-2.0/storage)"]
+    RenderAI --> R2
+
+    R2 --> NeuLink["NeuLink API<br/>(Schedule across X, IG, LinkedIn, FB)"]
+```
+
+### B. Implementation Details
+
+1. **Programmatic Branded Card Generator (`agent/tools/generate-brand-card.ts`)**:
+   - Takes `{ brandSlug, name, logoUrl, badge, headline, perksList, validity }`.
+   - Renders a clean card matching your target design in two standard aspect ratios:
+     - **Square (1:1 / 1080x1080)**: Ideal for Instagram Feed & LinkedIn.
+     - **Landscape (1.91:1 / 1200x630)**: Ideal for Twitter / X cards, OpenGraph, and Facebook.
+   - Saves the generated buffer directly to Cloudflare R2 via `@befday-2.0/storage`.
+   - Returns public CDN URL: `https://pub-2a9d4a23c4d0493f90df1732d01e5f6c.r2.dev/cards/[brandSlug].png`.
+
+2. **Generative AI Lifestyle Image (`agent/tools/generate-lifestyle-image.ts`)**:
+   - Generates contextual commercial photography (food, beverage, or retail celebration).
+   - Strict rule: **No text in prompt** (prevents AI spelling distortions).
+   - Uploads to Cloudflare R2: `https://pub-2a9d4a23c4d0493f90df1732d01e5f6c.r2.dev/lifestyle/[brandSlug].png`.
+
+3. **Social Publishing Tool (`agent/tools/schedule-social-post.ts`)**:
+   - Accepts `{ text, channels, mediaUrls, scheduledAt? }`.
+   - Dispatches payload to NeuLink REST API (`https://api.neulink.com/v1/posts`).
+   - Authenticates via `NEULINK_API_KEY`.
+
+4. **Eve Skill (`agent/skills/social-publishing/SKILL.md`)**:
+   - On-demand SOP for platform-specific copywriting:
+     - **Twitter/X**: Punchy hook (< 280 chars), link to perk, `#BirthdayFreebies`.
+     - **Instagram**: Emoji bullet points, redemption steps, "Link in bio" CTA.
+     - **LinkedIn**: Consumer perk analysis and brand loyalty marketing angle.
+
+---
+
+## 6. Deferred Modules Roadmap
 
 1. **Google Sheets Sync**:
    - Add `agent/tools/export-to-sheets.ts` using Composio Google Sheets tool to maintain a live QA sheet.
-2. **Social Media Publishing**:
-   - Connect NeuLink via `agent/connections/neulink.ts` to schedule birthday perk promo posts across social channels.
-3. **SEO Discovery & Blog Subagent**:
-   - Eve subagent in `agent/subagents/seo-writer/` for generating localized blog posts and programmatic landing pages.
-4. **Email Marketing**:
+2. **SEO Discovery & Blog Subagent**:
+   - Eve subagent in `agent/subagents/seo-writer/` for generating localized blog posts and programmatic landing pages with the AI lifestyle images.
+3. **Email Marketing**:
    - Cloudflare Email / Resend integration for weekly birthday month digests.
 
 ---
