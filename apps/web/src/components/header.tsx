@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 
-import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
 const Header = () => {
   const links = [
-    { label: "Home", to: "/" },
-    { label: "Dashboard", to: "/dashboard" },
+    { label: "befday", to: "/" },
     { label: "Blog", to: "/blog" },
   ] as const;
 
@@ -22,10 +20,8 @@ const Header = () => {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <ModeToggle />
-          <UserMenu />
-        </div>
+
+        <UserMenu />
       </div>
       <hr />
     </div>

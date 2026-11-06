@@ -10,7 +10,7 @@ const handler = async (req: NextRequest) => {
   await identifyEvlogUser(req);
 
   return await fetchRequestHandler({
-    createContext: () => createContext(req),
+    createContext: () => createContext(req.headers),
     endpoint: "/api/trpc",
     req,
     router: appRouter,

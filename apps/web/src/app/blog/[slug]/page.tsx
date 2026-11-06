@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { connection } from "next/server";
-import { Suspense } from "react";
+import { cache, Suspense } from "react";
 
 import {
   BlogTableOfContents,
@@ -12,36 +11,60 @@ import {
   extractTocLinks,
   parseBlogContent,
 } from "@/components/comark-renderer";
-import { getDb } from "@/services";
+import { baseUrl } from "@/utils/base-url";
 import { formatDate } from "@/utils/date";
+import { getServerApi } from "@/utils/trpc-server";
+
+// Shared by generateMetadata and the page so the post is fetched once per request.
+const getPost = cache(async (slug: string) => {
+  const api = await getServerApi();
+
+  return api.blog.bySlug({ slug });
+});
 
 export const generateMetadata = async ({
   params,
 }: PageProps<"/blog/[slug]">): Promise<Metadata> => {
-  await connection();
   const { slug } = await params;
-  const db = getDb();
-
-  const post = await db.blogPost.findUnique({
-    where: { slug },
-  });
+  const post = await getPost(slug);
 
   if (!post) {
     return {
-      title: "Article Not Found | befday",
+      title: "Article Not Found",
     };
   }
 
+  const postUrl = `${baseUrl}/blog/${post.slug}`;
+
+  const ogImage =
+    post.coverImageUrl ||
+    `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
+
   return {
+    alternates: {
+      canonical: postUrl,
+    },
     description: post.description,
     openGraph: {
       description: post.description,
-      images: [{ url: post.coverImageUrl }],
+      images: [
+        {
+          alt: post.title,
+          url: ogImage,
+        },
+      ],
       publishedTime: post.publishedAt.toISOString(),
       title: post.title,
       type: "article",
+      url: postUrl,
     },
-    title: `${post.title} | befday`,
+    title: post.title,
+    twitter: {
+      card: "summary_large_image",
+      description: post.description,
+      images: [ogImage],
+      title: post.title,
+    },
   };
 };
 
@@ -80,13 +103,8 @@ const BlogPostContent = async ({
 }: {
   params: PageProps<"/blog/[slug]">["params"];
 }) => {
-  await connection();
   const { slug } = await params;
-  const db = getDb();
-
-  const post = await db.blogPost.findUnique({
-    where: { slug },
-  });
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
@@ -100,8 +118,67 @@ const BlogPostContent = async ({
   const document = await parseBlogContent(sanitizedContent);
   const tocLinks = extractTocLinks(document);
 
+  const postUrl = `${baseUrl}/blog/${post.slug}`;
+
+  const ogImage =
+    post.coverImageUrl ||
+    `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
+
   return (
     <main className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              author: {
+                "@type": "Organization",
+                name: "befday",
+                url: baseUrl,
+              },
+              dateModified: post.updatedAt.toISOString(),
+              datePublished: post.publishedAt.toISOString(),
+              description: post.description,
+              headline: post.title,
+              image: ogImage,
+              mainEntityOfPage: {
+                "@id": postUrl,
+                "@type": "WebPage",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "befday",
+                url: baseUrl,
+              },
+              url: postUrl,
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  item: baseUrl,
+                  name: "Home",
+                  position: 1,
+                },
+                {
+                  "@type": "ListItem",
+                  item: `${baseUrl}/blog`,
+                  name: "Blog",
+                  position: 2,
+                },
+                {
+                  "@type": "ListItem",
+                  item: postUrl,
+                  name: post.title,
+                  position: 3,
+                },
+              ],
+            },
+          ],
+        })}
+      </script>
       <nav aria-label="Breadcrumb" className="mb-8">
         <Link
           className="text-muted-foreground hover:text-foreground inline-flex items-center text-xs transition-colors"

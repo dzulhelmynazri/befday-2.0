@@ -1,20 +1,13 @@
-import type { Context as ApiContext } from "@befday-2.0/api/context";
-import type { NextRequest } from "next/server";
+import type { Context } from "@befday-2.0/api/context";
 
 import { getDb, auth } from "./services";
 
-export const createContext = async (req: NextRequest): Promise<ApiContext> => {
-  const db = await getDb();
-
-  const session = await auth.api.getSession({
-    headers: req.headers,
-  });
+export const createContext = async (headers: Headers): Promise<Context> => {
+  const session = await auth.api.getSession({ headers });
 
   return {
     auth,
-    db,
+    db: getDb(),
     session,
   };
 };
-
-export type Context = Awaited<ReturnType<typeof createContext>>;

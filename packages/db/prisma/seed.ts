@@ -194,7 +194,172 @@ Remember to bring your MyKad or Passport for physical counter verification when 
   },
 ];
 
+const favicon = (domain: string) =>
+  `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+
+const mapSearch = (query: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+const BRANDS_WITH_PERKS = [
+  {
+    description:
+      "Global coffeehouse chain with a rewards app offering member birthday treats.",
+    googleMapUrl: mapSearch("Starbucks Malaysia"),
+    logoUrl: favicon("starbucks.com.my"),
+    name: "Starbucks Malaysia",
+    perk: {
+      badge: "FREE" as const,
+      headline: "Free Birthday Cake",
+      howToRedeem: [
+        "Register with the Starbucks Rewards app before your birthday month.",
+        "Purchase any handcrafted beverage and redeem the reward in-app.",
+      ],
+      perksList: [
+        "Complimentary slice of cake with any handcrafted beverage purchase.",
+      ],
+      sourceUrls: ["https://www.starbucks.com.my/rewards"],
+      validity: "Entire birthday month",
+    },
+    slug: "starbucks-malaysia",
+    websiteUrl: "https://www.starbucks.com.my",
+  },
+  {
+    description:
+      "Smoothie and juice bar chain with the VIBE Club loyalty programme.",
+    googleMapUrl: mapSearch("Boost Juice Malaysia"),
+    logoUrl: favicon("boostjuice.com.my"),
+    name: "Boost Juice Malaysia",
+    perk: {
+      badge: "FREE" as const,
+      headline: "Free Birthday Juice or Smoothie",
+      howToRedeem: [
+        "Join VIBE Club via the Boost Juice app.",
+        "Present your digital card or scan via the app at the counter.",
+      ],
+      perksList: ["Free birthday drink for VIBE Club members."],
+      sourceUrls: ["https://www.boostjuice.com.my"],
+      validity: "Birthday +/- 2 days",
+    },
+    slug: "boost-juice-malaysia",
+    websiteUrl: "https://www.boostjuice.com.my",
+  },
+  {
+    description:
+      "Japanese convenience store chain with the FamiPort loyalty app.",
+    googleMapUrl: mapSearch("FamilyMart Malaysia"),
+    logoUrl: favicon("familymart.com.my"),
+    name: "FamilyMart Malaysia",
+    perk: {
+      badge: "FREE" as const,
+      headline: "Free Sofuto Ice Cream",
+      howToRedeem: [
+        "Register on the FamiPort app.",
+        "Redeem the birthday voucher at any FamilyMart outlet.",
+      ],
+      perksList: ["A free Sofuto soft-serve ice cream in any flavour."],
+      sourceUrls: ["https://www.familymart.com.my"],
+      validity: "Entire birthday month",
+    },
+    slug: "familymart-malaysia",
+    websiteUrl: "https://www.familymart.com.my",
+  },
+  {
+    description: "Cinema chain with the MovieClub membership programme.",
+    googleMapUrl: mapSearch("TGV Cinemas"),
+    logoUrl: favicon("tgv.com.my"),
+    name: "TGV Cinemas",
+    perk: {
+      badge: "FREE" as const,
+      headline: "2 Free Movie Tickets & Popcorn",
+      howToRedeem: [
+        "Sign up for MovieClub on the TGV app or website.",
+        "Redeem the birthday reward from your account during your birthday month.",
+      ],
+      perksList: ["Two free movie tickets.", "A regular popcorn combo."],
+      sourceUrls: ["https://www.tgv.com.my"],
+      validity: "Entire birthday month",
+    },
+    slug: "tgv-cinemas",
+    websiteUrl: "https://www.tgv.com.my",
+  },
+  {
+    description: "Golden Screen Cinemas, with the GSC Rewards programme.",
+    googleMapUrl: mapSearch("GSC Cinemas"),
+    logoUrl: favicon("gsc.com.my"),
+    name: "GSC Cinemas",
+    perk: {
+      badge: "FREE" as const,
+      headline: "2 Free Cinema Tickets",
+      howToRedeem: [
+        "Register for GSC Rewards on the GSC app.",
+        "Redeem the birthday e-vouchers from the app.",
+      ],
+      perksList: [
+        "Two complimentary tickets for selected movies.",
+        "Exclusive combo coupons.",
+      ],
+      sourceUrls: ["https://www.gsc.com.my"],
+      validity: "Entire birthday month",
+    },
+    slug: "gsc-cinemas",
+    websiteUrl: "https://www.gsc.com.my",
+  },
+  {
+    description:
+      "Theme park in Selangor with loyalty and annual passport memberships.",
+    googleMapUrl: mapSearch("Sunway Lagoon"),
+    logoUrl: favicon("sunwaylagoon.com"),
+    name: "Sunway Lagoon",
+    perk: {
+      badge: "VOUCHER" as const,
+      headline: "Theme Park Birthday Passes",
+      howToRedeem: [
+        "Become a loyalty or passport member.",
+        "Present proof of birthday and membership at the ticketing counter.",
+      ],
+      perksList: [
+        "Discounted ticket passes.",
+        "Merchandise savings and VIP benefits.",
+      ],
+      sourceUrls: ["https://sunwaylagoon.com"],
+      validity: "Birthday period",
+    },
+    slug: "sunway-lagoon",
+    websiteUrl: "https://sunwaylagoon.com",
+  },
+];
+
+const seedPerks = async () => {
+  console.log("Seeding brands and perks...");
+
+  const results = await Promise.all(
+    BRANDS_WITH_PERKS.map(async ({ perk, ...brand }) => {
+      const upserted = await db.brand.upsert({
+        create: brand,
+        update: brand,
+        where: { slug: brand.slug },
+      });
+
+      // Replace the brand's perks so re-running the seed stays idempotent.
+      await db.$transaction([
+        db.birthdayPerk.deleteMany({ where: { brandId: upserted.id } }),
+        db.birthdayPerk.create({
+          data: { ...perk, brandId: upserted.id, status: "PUBLISHED" },
+        }),
+      ]);
+
+      return upserted;
+    })
+  );
+
+  for (const upserted of results) {
+    console.log(`Seeded brand: ${upserted.name}`);
+  }
+};
+
 const seed = async () => {
+  await seedPerks();
+
   console.log("Seeding blog posts...");
 
   const results = await Promise.all(
@@ -219,13 +384,13 @@ const seed = async () => {
     console.log(`Seeded post: ${upserted.title} (/blog/${upserted.slug})`);
   }
 
-  console.log("Successfully seeded 4 blog posts!");
+  console.log(`Successfully seeded ${results.length} blog posts!`);
 };
 
 try {
   await seed();
 } catch (error) {
-  console.error("Failed to seed blog posts:", error);
+  console.error("Failed to seed database:", error);
   process.exit(1);
 } finally {
   await db.$disconnect();

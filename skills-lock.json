@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "ai-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ai-seo/SKILL.md",
+      "computedHash": "c55f45e5100e0ed83feaa89add9a765c010bd8adbfdf4c33865c014fccdd3618"
+    },
     "analyze-logs": {
       "source": "evlog.dev",
       "sourceUrl": "https://www.evlog.dev",
@@ -117,12 +123,24 @@
       "skillPath": "skills/next-partial-prefetching-adoption/SKILL.md",
       "computedHash": "6fb1757aee3491689ec704b397f4b7ff9e276f500a66403867e77a16b2038594"
     },
+    "programmatic-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/programmatic-seo/SKILL.md",
+      "computedHash": "ed160b6c3692ff1d78c4cf2683d79d8960f5b99f479fce507b91ba712061a530"
+    },
     "review-logging-patterns": {
       "source": "evlog.dev",
       "sourceUrl": "https://www.evlog.dev",
       "sourceType": "well-known",
       "computedHash": "0f153b7176f2bbe3e88be8ccb5095a9847b28b45b7cb5b444b01837f004de8fa",
       "wellKnownDigest": "sha256:eda1dfd693ca8bbe76fa08a24c79c9dee7fe1c51aab7995c3001d7dc3cf1718a"
+    },
+    "seo-audit": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/seo-audit/SKILL.md",
+      "computedHash": "9a94c66cb3098b03037f072b6f561cca75410c6d8611e50646baf9e8a5dabe8f"
     },
     "shadcn": {
       "source": "shadcn/ui",

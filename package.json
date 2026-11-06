@@ -58,6 +58,7 @@
     "lefthook": "latest",
     "oxfmt": "latest",
     "oxlint": "latest",
+    "shadcn": "^4.23.0",
     "turbo": "^2.11.10",
     "typescript": "catalog:",
     "ultracite": "8.1.1",

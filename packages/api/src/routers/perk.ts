@@ -9,6 +9,21 @@ import type { Prisma } from "@befday-2.0/db";
 import { protectedProcedure, publicProcedure, router } from "../index";
 
 export const perkRouter = router({
+  all: publicProcedure.query(({ ctx }) =>
+    ctx.db.birthdayPerk.findMany({
+      include: {
+        brand: {
+          select: {
+            logoUrl: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      where: { status: "PUBLISHED" },
+    })
+  ),
+
   bySlug: publicProcedure
     .input(perkBySlugQuerySchema)
     .query(async ({ ctx, input }) => {

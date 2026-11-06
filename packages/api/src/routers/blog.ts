@@ -8,9 +8,16 @@ import type { Prisma } from "@befday-2.0/db";
 import { protectedProcedure, publicProcedure, router } from "../index";
 
 export const blogRouter = router({
+  all: publicProcedure.query(({ ctx }) =>
+    ctx.db.blogPost.findMany({
+      orderBy: { publishedAt: "desc" },
+      where: { status: "PUBLISHED" },
+    })
+  ),
+
   bySlug: publicProcedure.input(blogBySlugQuerySchema).query(({ ctx, input }) =>
     ctx.db.blogPost.findUnique({
-      where: { slug: input.slug },
+      where: { slug: input.slug, status: "PUBLISHED" },
     })
   ),
 

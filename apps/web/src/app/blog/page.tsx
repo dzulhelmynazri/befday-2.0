@@ -1,16 +1,18 @@
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { connection } from "next/server";
 import { Suspense } from "react";
 
-import { getDb } from "@/services";
 import { formatShortDate } from "@/utils/date";
+import { getServerApi } from "@/utils/trpc-server";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/blog",
+  },
   description:
     "Curated guides, verified free treats, secret vouchers, and step-by-step birthday redemption tips.",
-  title: "Blog | befday",
+  title: "Blog",
 };
 
 export const BlogIndexSkeleton = () => (
@@ -42,13 +44,8 @@ export const BlogIndexSkeleton = () => (
 );
 
 const BlogIndexContent = async () => {
-  await connection();
-  const db = getDb();
-
-  const posts = await db.blogPost.findMany({
-    orderBy: { publishedAt: "desc" },
-    where: { status: "PUBLISHED" },
-  });
+  const api = await getServerApi();
+  const posts = await api.blog.all();
 
   return (
     <main className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
