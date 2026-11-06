@@ -12,6 +12,11 @@ export {
 } from "./blog";
 
 export {
+  submitPartnerPerkSchema,
+  type SubmitPartnerPerkInput,
+} from "./partner";
+
+export {
   featuredPerksQuerySchema,
   perkBadgeSchema,
   perkBySlugQuerySchema,

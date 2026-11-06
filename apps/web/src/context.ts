@@ -1,5 +1,6 @@
 import type { Context } from "@befday-2.0/api/context";
 
+import { env } from "./env.server";
 import { getDb, auth } from "./services";
 
 export const createContext = async (headers: Headers): Promise<Context> => {
@@ -8,6 +9,7 @@ export const createContext = async (headers: Headers): Promise<Context> => {
   return {
     auth,
     db: getDb(),
+    env,
     session,
   };
 };

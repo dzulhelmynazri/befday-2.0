@@ -1,4 +1,8 @@
+export { Apple } from "./apple";
+export { Gmail } from "./gmail";
 export { Google } from "./google";
+export { GoogleMaps } from "./google-maps";
+export { GooglePlay } from "./google-play";
 export { Instagram } from "./instagram";
 export { Linkedin } from "./linkedin";
 export { Threads } from "./threads";

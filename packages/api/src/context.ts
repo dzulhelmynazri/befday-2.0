@@ -3,8 +3,15 @@ import type { Database } from "@befday-2.0/db";
 
 export type Auth = ReturnType<typeof createAuth>;
 
+export interface ApiEnv {
+  NEXT_PUBLIC_SITE_URL: string;
+  TELEGRAM_BOT_TOKEN: string;
+  TELEGRAM_CHAT_ID: string;
+}
+
 export interface Context {
   auth: Auth;
   db: Database;
+  env: ApiEnv;
   session: Awaited<ReturnType<Auth["api"]["getSession"]>>;
 }

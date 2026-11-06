@@ -18,6 +18,7 @@
     "@befday-2.0/db": "workspace:*",
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
+    "slugify": "^1.6.9",
     "zod": "catalog:"
   },
   "devDependencies": {

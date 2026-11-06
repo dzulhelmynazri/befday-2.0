@@ -1,3 +1,4 @@
+import { Badge } from "@befday-2.0/ui/components/badge";
 import { Instagram, Threads, TikTok } from "@befday-2.0/ui/socials";
 import Link from "next/link";
 
@@ -6,23 +7,23 @@ const currentYear = new Date().getFullYear();
 const Footer = () => (
   <footer>
     <div className="container mx-auto max-w-4xl px-4 py-12 sm:py-16">
-      <div className="grid gap-10 md:grid-cols-2">
+      <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
         {/* Brand */}
-        <div className="flex flex-col items-start">
+        <div className="flex max-w-xs flex-col items-start">
           <Link
             className="text-foreground text-lg font-bold tracking-tight lowercase"
             href="/"
           >
             befday
           </Link>
-          <p className="text-muted-foreground mt-3 max-w-sm text-sm leading-relaxed lowercase">
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed lowercase">
             discover curated birthday perks, free treats, secret vouchers, and
             step-by-step redemption guides in malaysia.
           </p>
         </div>
 
         {/* Links */}
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div>
             <h3 className="text-foreground text-sm font-medium lowercase">
               social media
@@ -120,6 +121,25 @@ const Footer = () => (
                 >
                   terms of service
                 </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-foreground text-sm font-medium lowercase">
+              be our partner
+            </h3>
+            <ul className="text-muted-foreground mt-4 space-y-2.5 text-sm">
+              <li>
+                <Link
+                  className="hover:text-foreground transition-colors lowercase"
+                  href="/partner"
+                >
+                  submit perk
+                </Link>
+              </li>
+              <li>
+                <Badge variant="secondary">100% free</Badge>
               </li>
             </ul>
           </div>
