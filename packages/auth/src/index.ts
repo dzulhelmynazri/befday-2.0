@@ -37,4 +37,12 @@ export const createAuth = (env: AuthConfig, database: Database) =>
       "exp://",
       "http://localhost:8081",
     ],
+    user: {
+      additionalFields: {
+        dateOfBirth: {
+          required: true,
+          type: "string",
+        },
+      },
+    },
   });

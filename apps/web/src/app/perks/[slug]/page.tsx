@@ -207,20 +207,6 @@ const PerkDetailContent = async ({
               <ArrowUpRight data-icon="inline-end" />
             </a>
           )}
-          {brand.websiteUrl && brand.websiteUrl !== brand.googleMapUrl && (
-            <a
-              className={buttonVariants({
-                size: "default",
-                variant: "link",
-              })}
-              href={brand.websiteUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              website
-              <ArrowUpRight data-icon="inline-end" />
-            </a>
-          )}
           {brand.appStoreUrl && (
             <a
               className={buttonVariants({
@@ -240,34 +226,6 @@ const PerkDetailContent = async ({
               className={buttonVariants({
                 size: "default",
                 variant: "link",
-              })}
-              href={brand.playStoreUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              play store
-              <ArrowUpRight data-icon="inline-end" />
-            </a>
-          )}
-          {brand.appStoreUrl && (
-            <a
-              className={buttonVariants({
-                size: "default",
-                variant: "outline",
-              })}
-              href={brand.appStoreUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              app store
-              <ArrowUpRight data-icon="inline-end" />
-            </a>
-          )}
-          {brand.playStoreUrl && (
-            <a
-              className={buttonVariants({
-                size: "default",
-                variant: "outline",
               })}
               href={brand.playStoreUrl}
               rel="noopener noreferrer"
