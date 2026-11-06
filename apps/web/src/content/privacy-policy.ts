@@ -40,4 +40,3 @@ we employ industry-standard security measures including tls encryption for all d
 
 if you have questions or concerns regarding this privacy policy, feel free to reach out to us at [hello@befday.com](mailto:hello@befday.com).
 `;
-

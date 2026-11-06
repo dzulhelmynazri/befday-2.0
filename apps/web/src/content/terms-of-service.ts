@@ -44,4 +44,3 @@ we may update these terms of service periodically to reflect changes in our serv
 
 questions regarding these terms may be directed to [hello@befday.com](mailto:hello@befday.com).
 `;
-
