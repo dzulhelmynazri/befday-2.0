@@ -9,10 +9,7 @@ export const upsertBlogPostSchema = z.object({
     .string()
     .min(1)
     .describe("Markdown / Comark content for the article"),
-  coverImageUrl: z
-    .url()
-    .optional()
-    .describe("Cover image URL for SEO & preview cards"),
+  coverImageUrl: z.url().describe("Cover image URL for SEO & preview cards"),
   description: z
     .string()
     .min(1)

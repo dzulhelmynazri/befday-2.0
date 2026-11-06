@@ -10,7 +10,7 @@ model BlogPost {
   title         String
   description   String
   content       String     @db.Text
-  coverImageUrl String?
+  coverImageUrl String
   tags          String[]   @default([])
   status        BlogStatus @default(DRAFT)
   publishedAt   DateTime   @default(now())

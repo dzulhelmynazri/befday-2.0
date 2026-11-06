@@ -42,12 +42,17 @@ Organize perks by intuitive categories:
 - **Entertainment & Cinema**: Free movie tickets, theme park passes.
 - **Beauty & Wellness**: Complimentary facial treatments, spa discounts.
 
-For each brand:
+For each brand, use the `::perk` Comark container directive. When featuring multiple perks, wrap them in a `::grid` container for a responsive two-column layout:
 
-- Specify the **Badge**: `FREE` (no spend needed) vs `VOUCHER` (purchase required).
-- Detail **What you get**: Exact perk item(s).
-- Clarify **Validity**: Birthday month, birthday week, or actual birth date.
-- Step-by-step **How to redeem**: App registration deadlines, ID verification, etc.
+```markdown
+::grid ::perk{brandName="Brand A" badge="FREE" logoUrl="https://..."} Detailed perk description and terms. ::
+
+::perk{brandName="Brand B" badge="VOUCHER" logoUrl="https://..."} Detailed perk description and terms. :: ::
+```
+
+- **brandName**: Exact brand name (required)
+- **logoUrl**: Brand logo URL fetched via `get_brand_perks` (required)
+- **badge**: `FREE` or `VOUCHER`
 
 ### 4. Frequently Asked Questions (FAQ)
 

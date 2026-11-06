@@ -24,28 +24,32 @@ Most brands require you to register for their loyalty program or mobile app at l
 
 Food is always the best way to celebrate. From complimentary desserts to full free meals, these are the standout options:
 
-::perk{brandName="Starbucks Malaysia" badge="FREE" validity="Birthday Month"}
+::grid
+::perk{brandName="Starbucks Malaysia" badge="FREE" logoUrl="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=100&auto=format&fit=crop&q=80"}
 Receive a **complimentary slice of cake** with any handcrafted beverage purchase when you register with the Starbucks Rewards app. Valid for the entire month of your birthday.
 ::
 
-::perk{brandName="Boost Juice Malaysia" badge="FREE" validity="Birthday Day & +/- 2 Days"}
+::perk{brandName="Boost Juice Malaysia" badge="FREE" logoUrl="https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=100&auto=format&fit=crop&q=80"}
 VIBE Club members get a **free birthday drink**. Simply present your VIBE digital card or scan via the Boost app during your birthday or within 2 days before/after.
 ::
 
-::perk{brandName="FamilyMart Malaysia" badge="FREE" validity="Birthday Month"}
+::perk{brandName="FamilyMart Malaysia" badge="FREE" logoUrl="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=100&auto=format&fit=crop&q=80"}
 Enjoy a **free Sofuto ice cream** (any flavor, including Matcha and seasonal selections) when you scan your FamiPort app voucher at the counter.
+::
 ::
 
 ## Entertainment & Activities
 
 Why stop at food? Here is how to keep the fun going without burning a hole in your wallet:
 
-::perk{brandName="GSC Cinemas" badge="FREE" validity="Birthday Month"}
+::grid
+::perk{brandName="GSC Cinemas" badge="FREE" logoUrl="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=100&auto=format&fit=crop&q=80"}
 GSC Rewards members receive **two complimentary movie tickets** plus an exclusive combo coupon during their birthday month.
 ::
 
-::perk{brandName="Red Box Karaoke" badge="FREE" validity="Birthday Month"}
+::perk{brandName="Red Box Karaoke" badge="FREE" logoUrl="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=100&auto=format&fit=crop&q=80"}
 Sing your heart out! Birthday celebrants enjoy **1 free singing session** when accompanied by at least one paying member or guest.
+::
 ::
 
 ## 3 Quick Steps to Claim Everything Seamlessly
@@ -79,16 +83,18 @@ Nearly all beverage programs require an active account with at least one prior t
 
 Here are the highest-rated beverage perks in Malaysia:
 
-::perk{brandName="ZUS Coffee" badge="FREE" validity="Birthday Month"}
+::grid
+::perk{brandName="ZUS Coffee" badge="FREE" logoUrl="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=100&auto=format&fit=crop&q=80"}
 ZUS Coffee rewards its club members with a special **birthday voucher** credited directly to the ZUS App on the first day of your birth month.
 ::
 
-::perk{brandName="The Coffee Bean & Tea Leaf" badge="FREE" validity="Birthday Month"}
+::perk{brandName="The Coffee Bean & Tea Leaf" badge="FREE" logoUrl="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=100&auto=format&fit=crop&q=80"}
 Get a **free slice of cake** or **20% off your total bill** when purchasing any handcrafted beverage during your birthday month via The Caring Cup app.
 ::
 
-::perk{brandName="Tealive" badge="VOUCHER" validity="Birthday Month"}
+::perk{brandName="Tealive" badge="VOUCHER" logoUrl="https://images.unsplash.com/photo-1558857563-b371033873b8?w=100&auto=format&fit=crop&q=80"}
 Tealive Club members receive birthday points and discounted drink vouchers directly in the Tealive app wallet.
+::
 ::
 
 ## Summary Table
@@ -156,17 +162,19 @@ Celebrate together! Group dining perks often require at least one accompanying p
 
 Catch the latest blockbuster for free:
 
-::perk{brandName="TGV Cinemas" badge="FREE" validity="Birthday Month"}
+::grid
+::perk{brandName="TGV Cinemas" badge="FREE" logoUrl="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=100&auto=format&fit=crop&q=80"}
 MovieClub members get **two free movie tickets** and a regular popcorn combo during their birthday month.
 ::
 
-::perk{brandName="GSC Cinemas" badge="FREE" validity="Birthday Month"}
+::perk{brandName="GSC Cinemas" badge="FREE" logoUrl="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=100&auto=format&fit=crop&q=80"}
 GSC Rewards members enjoy **two complimentary tickets** for selected movies and special birthday concession treats.
+::
 ::
 
 ## Leisure & Activities
 
-::perk{brandName="Sunway Lagoon" badge="VOUCHER" validity="Birthday Month"}
+::perk{brandName="Sunway Lagoon" badge="VOUCHER" logoUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=100&auto=format&fit=crop&q=80"}
 Annual Passport and loyalty members enjoy discounted ticket passes and VIP entry benefits during their birthday period.
 ::
 

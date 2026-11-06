@@ -14,12 +14,12 @@ model Brand {
   id           String   @id @default(cuid())
   name         String
   slug         String   @unique
-  description  String?
-  logoUrl      String?
-  websiteUrl   String?
+  description  String
+  logoUrl      String
+  websiteUrl   String
 
   // External Action Links
-  googleMapUrl String?
+  googleMapUrl String
   appStoreUrl  String?
   playStoreUrl String?
 
@@ -38,7 +38,7 @@ model BirthdayPerk {
   brand           Brand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
 
   badge           PerkBadge  @default(FREE)
-  headline        String?
+  headline        String
   perksList       String[]
   validity        String     @default("Not specified")
   howToRedeem     String[]
@@ -46,7 +46,7 @@ model BirthdayPerk {
 
   status          PerkStatus @default(DRAFT)
   sourceUrls      String[]
-  verifiedAt      DateTime?
+  verifiedAt      DateTime   @default(now())
 
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt

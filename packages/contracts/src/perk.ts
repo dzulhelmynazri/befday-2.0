@@ -18,11 +18,8 @@ export const upsertBrandPerkSchema = z.object({
   badge: perkBadgeSchema
     .default("FREE")
     .describe("Reward badge: FREE or VOUCHER"),
-  description: z.string().optional().describe("Short brand description"),
-  googleMapUrl: z
-    .url()
-    .optional()
-    .describe("Google Maps location or store locator URL"),
+  description: z.string().describe("Short brand description"),
+  googleMapUrl: z.url().describe("Google Maps location or store locator URL"),
   headline: z
     .string()
     .describe(
@@ -32,7 +29,7 @@ export const upsertBrandPerkSchema = z.object({
     .array(z.string())
     .min(1)
     .describe("Step-by-step redemption steps, e.g. ['Via the mobile app']"),
-  logoUrl: z.string().url().optional().describe("Brand logo image URL"),
+  logoUrl: z.url().describe("Brand logo image URL"),
   name: z.string().describe("Brand or merchant name (e.g., A&W)"),
   perksList: z
     .array(z.string())
@@ -52,7 +49,7 @@ export const upsertBrandPerkSchema = z.object({
     .string()
     .default("Not specified")
     .describe("Redemption validity window, e.g. 'Birthday month'"),
-  websiteUrl: z.url().optional().describe("Official website URL"),
+  websiteUrl: z.url().describe("Official website URL"),
 });
 
 export type UpsertBrandPerkInput = z.infer<typeof upsertBrandPerkSchema>;

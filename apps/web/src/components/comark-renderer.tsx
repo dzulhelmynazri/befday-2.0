@@ -3,13 +3,16 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@befday-2.0/ui/components/alert";
-import { Avatar, AvatarFallback } from "@befday-2.0/ui/components/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@befday-2.0/ui/components/avatar";
 import { Badge } from "@befday-2.0/ui/components/badge";
 import {
   Card,
   CardAction,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@befday-2.0/ui/components/card";
@@ -26,7 +29,6 @@ import { MarkdownDocument } from "@comark/react";
 import { createMarkdownParser } from "comark";
 import type { MarkdownDocument as ComarkDocument } from "comark";
 import toc from "comark/plugins/toc";
-import { Gift } from "lucide-react";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { z } from "zod";
@@ -89,46 +91,34 @@ export const ComarkCallout = ({ children, title, type }: CalloutProps) => {
 };
 
 interface PerkCardProps {
-  badge?: "FREE" | "VOUCHER";
-  brandName?: string;
+  badge: "FREE" | "VOUCHER";
+  brandName: string;
   children: ReactNode;
-  howToRedeem?: string;
+  logoUrl: string;
 }
 
 export const ComarkPerkCard = ({
   badge = "FREE",
   brandName,
   children,
-  howToRedeem,
-}: PerkCardProps) => {
-  const brandInitial = brandName ? brandName.charAt(0).toUpperCase() : null;
-
-  return (
-    <Card className="my-6">
-      <CardHeader>
-        <div className="flex items-center gap-2.5">
-          <Avatar size="sm">
-            <AvatarFallback>
-              {brandInitial ?? <Gift aria-hidden="true" />}
-            </AvatarFallback>
-          </Avatar>
-          {brandName && <CardTitle>{brandName}</CardTitle>}
-        </div>
-        <CardAction>
-          <Badge>{badge}</Badge>
-        </CardAction>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      {howToRedeem && (
-        <CardFooter>
-          <p className="text-muted-foreground text-xs">
-            <strong>How to redeem:</strong> {howToRedeem}
-          </p>
-        </CardFooter>
-      )}
-    </Card>
-  );
-};
+  logoUrl,
+}: PerkCardProps) => (
+  <Card className="in-[.grid]:my-0 my-6">
+    <CardHeader>
+      <div className="flex items-center gap-2.5">
+        <Avatar size="sm">
+          <AvatarImage alt={brandName} src={logoUrl} />
+          <AvatarFallback>{brandName.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <CardTitle>{brandName}</CardTitle>
+      </div>
+      <CardAction>
+        <Badge variant="outline">{badge}</Badge>
+      </CardAction>
+    </CardHeader>
+    <CardContent>{children}</CardContent>
+  </Card>
+);
 
 export const ComarkSteps = ({ children }: { children: ReactNode }) => (
   <Card className="my-6" size="sm">
@@ -137,7 +127,7 @@ export const ComarkSteps = ({ children }: { children: ReactNode }) => (
 );
 
 export const ComarkTimeline = ({ children }: { children: ReactNode }) => (
-  <div className="border-primary/30 my-6 border-l-2 pl-4 [&>ul]:my-0 [&>ul]:space-y-3">
+  <div className="border-border my-6 border-l pl-4 [&>ul]:my-0 [&>ul]:space-y-3">
     {children}
   </div>
 );
@@ -155,7 +145,7 @@ const customComponents = {
     if (isInternal && href) {
       return (
         <Link
-          className="text-primary font-medium underline underline-offset-4 hover:underline"
+          className="text-foreground decoration-border hover:decoration-foreground font-medium underline underline-offset-4 transition-colors"
           href={href}
         >
           {children}
@@ -165,7 +155,7 @@ const customComponents = {
 
     return (
       <a
-        className="text-primary font-medium underline underline-offset-4 hover:underline"
+        className="text-foreground decoration-border hover:decoration-foreground font-medium underline underline-offset-4 transition-colors"
         href={href}
         rel="noopener noreferrer"
         target="_blank"
@@ -181,7 +171,7 @@ const customComponents = {
     ...props
   }: ComponentPropsWithoutRef<"blockquote">) => (
     <blockquote
-      className="border-primary/50 text-muted-foreground my-4 border-l-2 pl-4 text-xs italic"
+      className="border-border text-muted-foreground my-4 border-l-2 pl-4 text-xs italic"
       {...props}
     >
       {children}
@@ -191,15 +181,18 @@ const customComponents = {
   check: ComarkChecklist,
   code: ({ children, ...props }: ComponentPropsWithoutRef<"code">) => (
     <code
-      className="bg-muted text-foreground rounded px-1 py-0.5 font-mono text-xs font-semibold"
+      className="bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-xs"
       {...props}
     >
       {children}
     </code>
   ),
+  grid: ({ children }: { children: ReactNode }) => (
+    <div className="my-6 grid grid-cols-1 gap-4 sm:grid-cols-2">{children}</div>
+  ),
   h1: ({ children, id, ...props }: ComponentPropsWithoutRef<"h1">) => (
     <h1
-      className="text-foreground mt-8 mb-4 scroll-mt-20 text-2xl font-bold tracking-tight sm:text-3xl"
+      className="text-foreground mt-8 mb-4 scroll-mt-20 text-2xl font-semibold tracking-tighter"
       id={id}
       {...props}
     >
@@ -208,7 +201,7 @@ const customComponents = {
   ),
   h2: ({ children, id, ...props }: ComponentPropsWithoutRef<"h2">) => (
     <h2
-      className="border-border text-foreground mt-8 mb-3 scroll-mt-20 border-b pb-2 text-xl font-semibold tracking-tight"
+      className="text-foreground mt-8 mb-3 scroll-mt-20 text-xl font-medium tracking-tight"
       id={id}
       {...props}
     >
@@ -217,7 +210,7 @@ const customComponents = {
   ),
   h3: ({ children, id, ...props }: ComponentPropsWithoutRef<"h3">) => (
     <h3
-      className="text-foreground mt-6 mb-2 scroll-mt-20 text-base font-semibold tracking-tight"
+      className="text-foreground mt-6 mb-2 scroll-mt-20 text-lg font-medium tracking-tight"
       id={id}
       {...props}
     >
@@ -234,7 +227,7 @@ const customComponents = {
   ),
   ol: ({ children, ...props }: ComponentPropsWithoutRef<"ol">) => (
     <ol
-      className="my-4 flex flex-col gap-3 pl-0 [counter-reset:step] [&>li]:flex [&>li]:items-start [&>li]:gap-2.5 [&>li]:before:bg-primary/10 [&>li]:before:text-primary [&>li]:before:flex [&>li]:before:size-5 [&>li]:before:shrink-0 [&>li]:before:items-center [&>li]:before:justify-center [&>li]:before:rounded-full [&>li]:before:text-xs [&>li]:before:font-bold [&>li]:before:[counter-increment:step] [&>li]:before:content-[counter(step)]"
+      className="my-4 list-decimal space-y-1.5 pl-5 text-xs/relaxed"
       {...props}
     >
       {children}
@@ -257,10 +250,7 @@ const customComponents = {
   timeline: ComarkTimeline,
   tr: TableRow,
   ul: ({ children, ...props }: ComponentPropsWithoutRef<"ul">) => (
-    <ul
-      className="my-4 flex flex-col gap-2 pl-0 [&>li]:flex [&>li]:items-start [&>li]:gap-2 [&>li]:before:bg-primary [&>li]:before:mt-1.5 [&>li]:before:size-1 [&>li]:before:shrink-0 [&>li]:before:rounded-full"
-      {...props}
-    >
+    <ul className="my-4 list-disc space-y-1.5 pl-5 text-xs/relaxed" {...props}>
       {children}
     </ul>
   ),
@@ -290,38 +280,36 @@ export const BlogTableOfContents = ({ links }: BlogTableOfContentsProps) => {
   }
 
   return (
-    <Card size="sm">
-      <CardHeader>
-        <CardTitle>On this page</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="flex flex-col gap-2 text-xs">
-          {links.map((link) => (
-            <li key={link.id}>
-              <a
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                href={`#${link.id}`}
-              >
-                {link.text}
-              </a>
-              {link.children && link.children.length > 0 && (
-                <ul className="mt-1.5 ml-2 flex flex-col gap-1 border-l pl-2">
-                  {link.children.map((subLink) => (
-                    <li key={subLink.id}>
-                      <a
-                        className="text-muted-foreground/80 hover:text-foreground transition-colors"
-                        href={`#${subLink.id}`}
-                      >
-                        {subLink.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
+    <nav aria-label="Table of contents" className="flex flex-col gap-2.5">
+      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+        On this page
+      </p>
+      <ul className="flex flex-col gap-1.5 text-xs">
+        {links.map((link) => (
+          <li key={link.id}>
+            <a
+              className="text-muted-foreground hover:text-foreground transition-colors hover:underline"
+              href={`#${link.id}`}
+            >
+              {link.text}
+            </a>
+            {link.children && link.children.length > 0 && (
+              <ul className="border-border mt-1 ml-2.5 flex flex-col gap-1 border-l pl-2">
+                {link.children.map((subLink) => (
+                  <li key={subLink.id}>
+                    <a
+                      className="text-muted-foreground/80 hover:text-foreground transition-colors hover:underline"
+                      href={`#${subLink.id}`}
+                    >
+                      {subLink.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };

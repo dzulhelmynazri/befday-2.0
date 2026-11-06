@@ -43,6 +43,7 @@ export default defineTool({
         googleMapUrl: p.brand.googleMapUrl,
         headline: p.headline,
         howToRedeem: p.howToRedeem,
+        logoUrl: p.brand.logoUrl,
         perksList: p.perksList,
         playStoreUrl: p.brand.playStoreUrl,
         termsConditions: p.termsConditions,
