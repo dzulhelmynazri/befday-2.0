@@ -172,8 +172,21 @@ const PerkDetailContent = async ({
       <article className="space-y-6">
         {/* Brand Icon / Logo */}
         <Avatar size="lg">
-          <AvatarImage alt={brand.name} src={brand.logoUrl} />
-          <AvatarFallback>{brand.name.charAt(0).toLowerCase()}</AvatarFallback>
+          <AvatarImage
+            alt={brand.name}
+            // oxlint-disable-next-line shadcn/no-restyle
+            className="object-contain p-0.5"
+            src={brand.logoUrl}
+          />
+          {/* oxlint-disable-next-line shadcn/no-restyle */}
+          <AvatarFallback className="overflow-hidden p-0">
+            {/* oxlint-disable-next-line next/no-img-element */}
+            <img
+              alt={brand.name}
+              className="size-full object-cover"
+              src={`https://api.dicebear.com/10.x/loops/svg?seed=${encodeURIComponent(brand.name)}`}
+            />
+          </AvatarFallback>
         </Avatar>
 
         {/* Brand Title & Badge */}

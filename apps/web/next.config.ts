@@ -14,7 +14,15 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        hostname: "api.dicebear.com",
+        protocol: "https",
+      },
+      {
         hostname: "images.unsplash.com",
+        protocol: "https",
+      },
+      {
+        hostname: "t3.gstatic.com",
         protocol: "https",
       },
     ],

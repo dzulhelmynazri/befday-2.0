@@ -68,9 +68,20 @@ const HomeContent = async () => {
             <ItemHeader>
               <ItemMedia>
                 <Avatar size="sm">
-                  <AvatarImage alt={perk.brand.name} src={perk.brand.logoUrl} />
-                  <AvatarFallback>
-                    {perk.brand.name.charAt(0).toLowerCase()}
+                  <AvatarImage
+                    alt={perk.brand.name}
+                    // oxlint-disable-next-line shadcn/no-restyle
+                    className="object-contain p-0.5"
+                    src={perk.brand.logoUrl}
+                  />
+                  {/* oxlint-disable-next-line shadcn/no-restyle */}
+                  <AvatarFallback className="overflow-hidden p-0">
+                    {/* oxlint-disable-next-line next/no-img-element */}
+                    <img
+                      alt={perk.brand.name}
+                      className="size-full object-cover"
+                      src={`https://api.dicebear.com/10.x/loops/svg?seed=${encodeURIComponent(perk.brand.name)}`}
+                    />
                   </AvatarFallback>
                 </Avatar>
               </ItemMedia>
