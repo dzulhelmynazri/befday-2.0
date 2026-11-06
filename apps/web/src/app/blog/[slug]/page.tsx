@@ -15,13 +15,9 @@ import {
 import { getDb } from "@/services";
 import { formatDate } from "@/utils/date";
 
-interface BlogPostPageProps {
-  params: Promise<{ slug: string }>;
-}
-
 export const generateMetadata = async ({
   params,
-}: BlogPostPageProps): Promise<Metadata> => {
+}: PageProps<"/blog/[slug]">): Promise<Metadata> => {
   await connection();
   const { slug } = await params;
   const db = getDb();
@@ -82,7 +78,7 @@ export const BlogPostSkeleton = () => (
 const BlogPostContent = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: PageProps<"/blog/[slug]">["params"];
 }) => {
   await connection();
   const { slug } = await params;
@@ -153,7 +149,7 @@ const BlogPostContent = async ({
   );
 };
 
-const BlogPostPage = ({ params }: BlogPostPageProps) => (
+const BlogPostPage = ({ params }: PageProps<"/blog/[slug]">) => (
   <Suspense fallback={<BlogPostSkeleton />}>
     <BlogPostContent params={params} />
   </Suspense>

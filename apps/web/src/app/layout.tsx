@@ -20,11 +20,7 @@ export const metadata: Metadata = {
   title: "befday-2.0",
 };
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => (
+const RootLayout = ({ children }: LayoutProps<"/">) => (
   <html lang="en" suppressHydrationWarning>
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <Providers>
