@@ -11,7 +11,7 @@ export const createContext = async (req: NextRequest): Promise<ApiContext> => {
   });
 
   return {
-    auth: null,
+    auth,
     db,
     session,
   };

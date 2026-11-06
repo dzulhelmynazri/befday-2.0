@@ -40,8 +40,7 @@ export const upsertBrandPerkSchema = z.object({
     .describe("List of exact perks, e.g. ['Free Root Beer']"),
   playStoreUrl: z.url().optional().describe("Google Play Store download URL"),
   sourceUrls: z
-    .array(z.string().url())
-    .optional()
+    .array(z.url())
     .default([])
     .describe("Sources where this perk information was verified"),
   status: perkStatusSchema.default("DRAFT").describe("Publication status"),
@@ -53,7 +52,7 @@ export const upsertBrandPerkSchema = z.object({
     .string()
     .default("Not specified")
     .describe("Redemption validity window, e.g. 'Birthday month'"),
-  websiteUrl: z.string().url().optional().describe("Official website URL"),
+  websiteUrl: z.url().optional().describe("Official website URL"),
 });
 
 export type UpsertBrandPerkInput = z.infer<typeof upsertBrandPerkSchema>;
@@ -63,7 +62,7 @@ export const perkListQuerySchema = z.object({
   cursor: z.string().optional(),
   limit: z.number().min(1).max(100).default(20),
   search: z.string().optional(),
-  status: perkStatusSchema.optional().default("PUBLISHED"),
+  status: perkStatusSchema.default("PUBLISHED"),
 });
 
 export type PerkListQueryInput = z.infer<typeof perkListQuerySchema>;

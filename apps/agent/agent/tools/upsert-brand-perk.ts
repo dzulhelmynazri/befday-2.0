@@ -2,7 +2,7 @@ import { upsertBrandPerkSchema } from "@befday-2.0/contracts";
 import { defineTool } from "eve/tools";
 import slugify from "slugify";
 
-import { db } from "../lib/db";
+import { db } from "@/lib/db";
 
 export default defineTool({
   description:

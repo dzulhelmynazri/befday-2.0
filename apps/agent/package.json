@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "imports": {
+    "@/*": "./agent/*"
+  },
   "scripts": {
     "dev": "eve dev",
     "check-types": "tsc --noEmit"

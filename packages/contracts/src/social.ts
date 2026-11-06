@@ -21,7 +21,6 @@ export const scheduleSocialPostSchema = z.object({
     ),
   mediaUrls: z
     .array(z.url())
-    .optional()
     .default([])
     .describe("Image or media URLs to attach to the post"),
   scheduledAt: z

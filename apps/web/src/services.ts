@@ -6,9 +6,14 @@ import { createFiles } from "@befday-2.0/storage";
 
 import { env } from "./env.server";
 
-const db = createPrismaClient(env);
+const db = createPrismaClient({
+  DATABASE_URL: env.DATABASE_URL,
+});
 
 export const getDb = (): Database => db;
+
 export const auth = createAuth(env, db);
+
 export const files = createFiles(env);
+
 export const email = createEmail(env);

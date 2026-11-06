@@ -1,7 +1,10 @@
 {
   "extends": "@befday-2.0/config/tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./agent/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.md"]
 }

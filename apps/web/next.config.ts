@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react"],
     turbopackRustReactCompiler: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "images.unsplash.com",
+        protocol: "https",
+      },
+    ],
+  },
   partialPrefetching: true,
   reactCompiler: true,
 };

@@ -54,6 +54,15 @@ When asked to discover or update a brand's birthday perks:
 
 ---
 
+## Subagents & Specialized Workflows
+
+### SEO & Blog Publishing (`seo-writer`)
+
+- When requested to research keywords, create blog articles, compose birthday roundups, or draft SEO guides, delegate to or utilize the `seo-writer` subagent.
+- The `seo-writer` retrieves real perks via `get_brand_perks` and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
+
+---
+
 ## Verification Rules
 
 1. Never fabricate rewards, links, or policies. If the validity is unknown, set it to `"Not specified"`.
