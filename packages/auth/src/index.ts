@@ -19,6 +19,13 @@ export const createAuth = (env: AuthConfig, database: Database) =>
     }),
     plugins: [expo(), nextCookies()],
     secret: env.BETTER_AUTH_SECRET,
+    session: {
+      cookieCache: {
+        enabled: true,
+        // Cache duration in seconds
+        maxAge: 5 * 60,
+      },
+    },
     socialProviders: {
       google: {
         clientId: env.GOOGLE_CLIENT_ID,

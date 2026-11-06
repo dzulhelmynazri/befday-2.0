@@ -8,6 +8,8 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@befday-2.0/auth": "workspace:*",
+    "@befday-2.0/db": "workspace:*",
     "ai": "^4.0.0",
     "eve": "latest",
     "zod": "catalog:"

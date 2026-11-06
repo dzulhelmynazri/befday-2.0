@@ -22,6 +22,8 @@
       "name": "agent",
       "version": "0.1.0",
       "dependencies": {
+        "@befday-2.0/auth": "workspace:*",
+        "@befday-2.0/db": "workspace:*",
         "ai": "^4.0.0",
         "eve": "latest",
         "zod": "catalog:",
