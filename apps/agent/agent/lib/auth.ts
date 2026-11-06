@@ -1,13 +1,10 @@
 // oxlint-disable typescript/no-non-null-assertion
 import { createAuth } from "@befday-2.0/auth";
-import { createPrismaClient } from "@befday-2.0/db";
 import type { AuthFn } from "eve/channels/auth";
 
-export const betterAuth = (): AuthFn => {
-  const database = createPrismaClient({
-    DATABASE_URL: process.env.DATABASE_URL!,
-  });
+import { db } from "./db";
 
+export const betterAuth = (): AuthFn => {
   const auth = createAuth(
     {
       BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET!,
@@ -15,7 +12,7 @@ export const betterAuth = (): AuthFn => {
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
       GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
     },
-    database
+    db
   );
 
   return async function handleAuth(request) {

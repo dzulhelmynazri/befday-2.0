@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@befday-2.0/auth": "workspace:*",
+    "@befday-2.0/contracts": "workspace:*",
     "@befday-2.0/db": "workspace:*",
     "ai": "^4.0.0",
     "eve": "latest",
+    "slugify": "^1.6.9",
     "zod": "catalog:"
   },
   "devDependencies": {

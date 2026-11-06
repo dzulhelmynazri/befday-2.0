@@ -1,0 +1,58 @@
+enum PerkBadge {
+  FREE
+  VOUCHER
+}
+
+enum PerkStatus {
+  DRAFT
+  PUBLISHED
+  EXPIRED
+  ARCHIVED
+}
+
+model Brand {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  logoUrl      String?
+  websiteUrl   String?
+
+  // External Action Links
+  googleMapUrl String?
+  appStoreUrl  String?
+  playStoreUrl String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  perks        BirthdayPerk[]
+
+  @@index([slug])
+  @@map("brand")
+}
+
+model BirthdayPerk {
+  id              String     @id @default(cuid())
+  brandId         String
+  brand           Brand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  badge           PerkBadge  @default(FREE)
+  headline        String?
+  perksList       String[]
+  validity        String     @default("Not specified")
+  howToRedeem     String[]
+  termsConditions String?
+
+  status          PerkStatus @default(DRAFT)
+  sourceUrls      String[]
+  verifiedAt      DateTime?
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([brandId])
+  @@index([status])
+  @@map("birthday_perk")
+}
+

@@ -23,9 +23,11 @@
       "version": "0.1.0",
       "dependencies": {
         "@befday-2.0/auth": "workspace:*",
+        "@befday-2.0/contracts": "workspace:*",
         "@befday-2.0/db": "workspace:*",
         "ai": "^4.0.0",
         "eve": "latest",
+        "slugify": "^1.6.9",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -134,6 +136,7 @@
       "name": "@befday-2.0/api",
       "dependencies": {
         "@befday-2.0/auth": "workspace:*",
+        "@befday-2.0/contracts": "workspace:*",
         "@befday-2.0/db": "workspace:*",
         "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
@@ -160,6 +163,16 @@
     "packages/config": {
       "name": "@befday-2.0/config",
       "version": "0.0.0",
+    },
+    "packages/contracts": {
+      "name": "@befday-2.0/contracts",
+      "dependencies": {
+        "zod": "catalog:",
+      },
+      "devDependencies": {
+        "@befday-2.0/config": "workspace:*",
+        "typescript": "catalog:",
+      },
     },
     "packages/db": {
       "name": "@befday-2.0/db",
@@ -472,6 +485,8 @@
     "@befday-2.0/auth": ["@befday-2.0/auth@workspace:packages/auth"],
 
     "@befday-2.0/config": ["@befday-2.0/config@workspace:packages/config"],
+
+    "@befday-2.0/contracts": ["@befday-2.0/contracts@workspace:packages/contracts"],
 
     "@befday-2.0/db": ["@befday-2.0/db@workspace:packages/db"],
 
@@ -1595,7 +1610,7 @@
 
     "etag": ["etag@1.8.1", "", {}, "sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg=="],
 
-    "eve": ["eve@1.0.0-rc.5", "", { "dependencies": { "nitro": "3.0.261103-rc", "rolldown": "1.2.16", "undici": "8.12.3" }, "peerDependencies": { "@linqapp/sdk": "^0.47.1", "@nuxt/kit": "^4.0.0", "@nuxt/schema": "^4.0.0", "@opentelemetry/api": "^1.0.0", "@vercel/connect": "^2.7.0", "ai": "^7.0.137", "braintrust": "^3.0.0", "chat": "^4.42.0", "dd-trace": "^6.13.0", "just-bash": "^3.6.0", "next": "^16.0.0", "react": "^19.0.0", "svelte": "^5.0.0", "vite": "^8.3.1", "vue": "^3.5.0" }, "optionalPeers": ["@linqapp/sdk", "@nuxt/kit", "@nuxt/schema", "@opentelemetry/api", "@vercel/connect", "braintrust", "chat", "dd-trace", "just-bash", "next", "react", "svelte", "vite", "vue"], "bin": { "eve": "./bin/eve.js" } }, "sha512-ZxYbX4BhgfasRjbsCmUTcu2AX0U+GIalnqrnW98fz/wRa0DRdRAyIWnwTCFlgoohYmbD1AKs7xB30fGe+dJgug=="],
+    "eve": ["eve@1.0.0-rc.6", "", { "dependencies": { "nitro": "3.0.261103-rc", "rolldown": "1.2.16", "undici": "8.12.3" }, "peerDependencies": { "@linqapp/sdk": "^0.47.1", "@nuxt/kit": "^4.0.0", "@nuxt/schema": "^4.0.0", "@opentelemetry/api": "^1.0.0", "@vercel/connect": "^2.7.0", "ai": "^7.0.137", "braintrust": "^3.0.0", "chat": "^4.42.0", "dd-trace": "^6.13.0", "just-bash": "^3.6.0", "next": "^16.0.0", "react": "^19.0.0", "svelte": "^5.0.0", "vite": "^8.3.1", "vue": "^3.5.0" }, "optionalPeers": ["@linqapp/sdk", "@nuxt/kit", "@nuxt/schema", "@opentelemetry/api", "@vercel/connect", "braintrust", "chat", "dd-trace", "just-bash", "next", "react", "svelte", "vite", "vue"], "bin": { "eve": "./bin/eve.js" } }, "sha512-4bThh+8nLvsROIpXW9n6prUnHRKha0T9fMvo30rase6XG6xGJ3IAYe5zI2PFSOxc5UooN4B5Vtj6WdOPNvkjpQ=="],
 
     "eventemitter3": ["eventemitter3@5.0.4", "", {}, "sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw=="],
 
