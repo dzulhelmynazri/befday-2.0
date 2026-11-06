@@ -16,6 +16,7 @@ export const perkRouter = router({
           select: {
             logoUrl: true,
             name: true,
+            slug: true,
           },
         },
       },

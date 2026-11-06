@@ -25,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@befday-2.0/ui/components/table";
+import { cn } from "@befday-2.0/ui/lib/utils";
 import { MarkdownDocument } from "@comark/react";
 import { createMarkdownParser } from "comark";
 import type { MarkdownDocument as ComarkDocument } from "comark";
@@ -84,7 +85,7 @@ export const ComarkCallout = ({ children, title, type }: CalloutProps) => {
 
   return (
     <Alert className="my-6" variant={isDestructive ? "destructive" : "default"}>
-      {title && <AlertTitle>{title}</AlertTitle>}
+      {title && <AlertTitle>{title.toLowerCase()}</AlertTitle>}
       <AlertDescription>{children}</AlertDescription>
     </Alert>
   );
@@ -108,12 +109,12 @@ export const ComarkPerkCard = ({
       <div className="flex items-center gap-2.5">
         <Avatar size="sm">
           <AvatarImage alt={brandName} src={logoUrl} />
-          <AvatarFallback>{brandName.charAt(0).toUpperCase()}</AvatarFallback>
+          <AvatarFallback>{brandName.charAt(0).toLowerCase()}</AvatarFallback>
         </Avatar>
-        <CardTitle>{brandName}</CardTitle>
+        <CardTitle>{brandName.toLowerCase()}</CardTitle>
       </div>
       <CardAction>
-        <Badge variant="outline">{badge}</Badge>
+        <Badge variant="outline">{badge.toLowerCase()}</Badge>
       </CardAction>
     </CardHeader>
     <CardContent>{children}</CardContent>
@@ -265,7 +266,12 @@ export const ComarkRenderer = ({
   className,
   document,
 }: ComarkRendererProps) => (
-  <article className={className}>
+  <article
+    className={cn(
+      "lowercase [&_code]:normal-case [&_pre]:normal-case",
+      className
+    )}
+  >
     <MarkdownDocument components={customComponents} value={document} />
   </article>
 );
@@ -281,8 +287,8 @@ export const BlogTableOfContents = ({ links }: BlogTableOfContentsProps) => {
 
   return (
     <nav aria-label="Table of contents" className="flex flex-col gap-2.5">
-      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
-        On this page
+      <p className="text-muted-foreground text-xs font-semibold tracking-wider">
+        on this page
       </p>
       <ul className="flex flex-col gap-1.5 text-xs">
         {links.map((link) => (
@@ -291,7 +297,7 @@ export const BlogTableOfContents = ({ links }: BlogTableOfContentsProps) => {
               className="text-muted-foreground hover:text-foreground transition-colors hover:underline"
               href={`#${link.id}`}
             >
-              {link.text}
+              {link.text.toLowerCase()}
             </a>
             {link.children && link.children.length > 0 && (
               <ul className="border-border mt-1 ml-2.5 flex flex-col gap-1 border-l pl-2">
@@ -301,7 +307,7 @@ export const BlogTableOfContents = ({ links }: BlogTableOfContentsProps) => {
                       className="text-muted-foreground/80 hover:text-foreground transition-colors hover:underline"
                       href={`#${subLink.id}`}
                     >
-                      {subLink.text}
+                      {subLink.text.toLowerCase()}
                     </a>
                   </li>
                 ))}

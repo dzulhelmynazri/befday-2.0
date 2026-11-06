@@ -1,4 +1,6 @@
+import { buttonVariants } from "@befday-2.0/ui/components/button";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,40 +32,39 @@ export const generateMetadata = async ({
 
   if (!post) {
     return {
-      title: "Article Not Found",
+      title: "article not found",
     };
   }
 
   const postUrl = `${baseUrl}/blog/${post.slug}`;
-
-  const ogImage =
-    post.coverImageUrl ||
-    `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
+  const title = post.title.toLowerCase();
+  const description = post.description.toLowerCase();
+  const ogImage = post.coverImageUrl;
 
   return {
     alternates: {
       canonical: postUrl,
     },
-    description: post.description,
+    description,
     openGraph: {
-      description: post.description,
+      description,
       images: [
         {
-          alt: post.title,
+          alt: title,
           url: ogImage,
         },
       ],
       publishedTime: post.publishedAt.toISOString(),
-      title: post.title,
+      title,
       type: "article",
       url: postUrl,
     },
-    title: post.title,
+    title,
     twitter: {
       card: "summary_large_image",
-      description: post.description,
+      description,
       images: [ogImage],
-      title: post.title,
+      title,
     },
   };
 };
@@ -71,7 +72,7 @@ export const generateMetadata = async ({
 export const BlogPostSkeleton = () => (
   <main className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
     <div className="mb-8">
-      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-6 w-24" />
     </div>
 
     <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_220px]">
@@ -119,10 +120,7 @@ const BlogPostContent = async ({
   const tocLinks = extractTocLinks(document);
 
   const postUrl = `${baseUrl}/blog/${post.slug}`;
-
-  const ogImage =
-    post.coverImageUrl ||
-    `${baseUrl}/og?title=${encodeURIComponent(post.title)}`;
+  const ogImage = post.coverImageUrl;
 
   return (
     <main className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
@@ -139,8 +137,8 @@ const BlogPostContent = async ({
               },
               dateModified: post.updatedAt.toISOString(),
               datePublished: post.publishedAt.toISOString(),
-              description: post.description,
-              headline: post.title,
+              description: post.description.toLowerCase(),
+              headline: post.title.toLowerCase(),
               image: ogImage,
               mainEntityOfPage: {
                 "@id": postUrl,
@@ -159,19 +157,19 @@ const BlogPostContent = async ({
                 {
                   "@type": "ListItem",
                   item: baseUrl,
-                  name: "Home",
+                  name: "home",
                   position: 1,
                 },
                 {
                   "@type": "ListItem",
                   item: `${baseUrl}/blog`,
-                  name: "Blog",
+                  name: "blog",
                   position: 2,
                 },
                 {
                   "@type": "ListItem",
                   item: postUrl,
-                  name: post.title,
+                  name: post.title.toLowerCase(),
                   position: 3,
                 },
               ],
@@ -181,10 +179,11 @@ const BlogPostContent = async ({
       </script>
       <nav aria-label="Breadcrumb" className="mb-8">
         <Link
-          className="text-muted-foreground hover:text-foreground inline-flex items-center text-xs transition-colors"
+          className={buttonVariants({ size: "sm", variant: "link" })}
           href="/blog"
         >
-          ← back to blog
+          <ArrowLeft data-icon="inline-start" />
+          back to blog
         </Link>
       </nav>
 
@@ -192,11 +191,13 @@ const BlogPostContent = async ({
         {/* Main Reading Column */}
         <article className="min-w-0">
           <h1 className="text-foreground text-2xl font-semibold tracking-tighter sm:text-3xl">
-            {post.title}
+            {post.title.toLowerCase()}
           </h1>
 
           <div className="text-muted-foreground mt-2 mb-6 flex items-center justify-between text-xs">
-            <p className="tabular-nums">{formatDate(post.publishedAt)}</p>
+            <p className="tabular-nums">
+              {formatDate(post.publishedAt).toLowerCase()}
+            </p>
           </div>
 
           <div className="border-border bg-muted relative my-8 aspect-[16/9] w-full overflow-hidden rounded-xl border">

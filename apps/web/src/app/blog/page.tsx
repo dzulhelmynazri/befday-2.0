@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     canonical: "/blog",
   },
   description:
-    "Curated guides, verified free treats, secret vouchers, and step-by-step birthday redemption tips.",
-  title: "Blog",
+    "curated guides, verified free treats, secret vouchers, and step-by-step birthday redemption tips.",
+  title: "blog",
 };
 
 export const BlogIndexSkeleton = () => (
@@ -54,7 +54,7 @@ const BlogIndexContent = async () => {
       {posts.length === 0 ? (
         <div className="border-border rounded-xl border border-dashed p-12 text-center">
           <p className="text-muted-foreground text-sm">
-            No articles published yet.
+            no articles published yet.
           </p>
         </div>
       ) : (
@@ -66,10 +66,10 @@ const BlogIndexContent = async () => {
               key={post.id}
             >
               <p className="text-foreground group-hover:text-primary text-sm font-medium tracking-tight transition-colors">
-                {post.title}
+                {post.title.toLowerCase()}
               </p>
               <p className="text-muted-foreground w-28 shrink-0 text-xs tabular-nums md:text-right">
-                {formatShortDate(post.publishedAt)}
+                {formatShortDate(post.publishedAt).toLowerCase()}
               </p>
             </Link>
           ))}

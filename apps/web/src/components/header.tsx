@@ -7,7 +7,7 @@ import UserMenu from "./user-menu";
 const Header = () => {
   const links = [
     { label: "befday", to: "/" },
-    { label: "Blog", to: "/blog" },
+    { label: "blog", to: "/blog" },
   ] as const;
 
   return (

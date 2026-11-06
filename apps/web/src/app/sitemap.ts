@@ -6,15 +6,35 @@ import { baseUrl } from "@/utils/base-url";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = getDb();
 
-  const posts = await db.blogPost.findMany({
-    orderBy: { publishedAt: "desc" },
-    select: {
-      publishedAt: true,
-      slug: true,
-      updatedAt: true,
-    },
-    where: { status: "PUBLISHED" },
-  });
+  const [posts, perks] = await Promise.all([
+    db.blogPost.findMany({
+      orderBy: { publishedAt: "desc" },
+      select: {
+        publishedAt: true,
+        slug: true,
+        updatedAt: true,
+      },
+      where: { status: "PUBLISHED" },
+    }),
+    db.birthdayPerk.findMany({
+      include: {
+        brand: {
+          select: {
+            slug: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      where: { status: "PUBLISHED" },
+    }),
+  ]);
+
+  const perkPages: MetadataRoute.Sitemap = perks.map((perk) => ({
+    changeFrequency: "weekly",
+    lastModified: perk.updatedAt,
+    priority: 0.8,
+    url: `${baseUrl}/perks/${perk.brand.slug}`,
+  }));
 
   const blogs: MetadataRoute.Sitemap = posts.map((post) => ({
     changeFrequency: "weekly",
@@ -30,5 +50,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}${route}`,
   }));
 
-  return [...routes, ...blogs];
+  return [...routes, ...perkPages, ...blogs];
 }
