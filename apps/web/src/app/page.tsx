@@ -77,7 +77,11 @@ const HomeContent = async () => {
               <Badge variant="outline">{perk.badge.toLowerCase()}</Badge>
             </ItemHeader>
             <ItemContent>
-              <ItemTitle>{perk.brand.name.toLowerCase()}</ItemTitle>
+              <ItemTitle>
+                <span className="line-clamp-1">
+                  {perk.brand.name.toLowerCase()}
+                </span>
+              </ItemTitle>
             </ItemContent>
           </Item>
         ))}
