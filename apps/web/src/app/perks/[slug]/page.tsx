@@ -6,7 +6,7 @@ import {
 import { Badge } from "@befday-2.0/ui/components/badge";
 import { buttonVariants } from "@befday-2.0/ui/components/button";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -161,7 +161,6 @@ const PerkDetailContent = async ({
           className={buttonVariants({ size: "sm", variant: "link" })}
           href="/"
         >
-          <ArrowLeft data-icon="inline-start" />
           back to perks
         </Link>
       </nav>

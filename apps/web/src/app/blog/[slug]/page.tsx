@@ -1,6 +1,5 @@
 import { buttonVariants } from "@befday-2.0/ui/components/button";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
-import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -182,7 +181,6 @@ const BlogPostContent = async ({
           className={buttonVariants({ size: "sm", variant: "link" })}
           href="/blog"
         >
-          <ArrowLeft data-icon="inline-start" />
           back to blog
         </Link>
       </nav>
