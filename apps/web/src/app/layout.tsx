@@ -27,6 +27,14 @@ export const metadata: Metadata = {
   openGraph: {
     description:
       "Curated birthday perks, free treats, secret vouchers, and step-by-step redemption tips.",
+    images: [
+      {
+        alt: "befday — Never Miss a Birthday Perk",
+        height: 630,
+        url: "/og?title=befday",
+        width: 1200,
+      },
+    ],
     locale: "en_US",
     siteName: "befday",
     title: "befday — Never Miss a Birthday Perk",
@@ -47,6 +55,13 @@ export const metadata: Metadata = {
   title: {
     default: "befday — Never Miss a Birthday Perk",
     template: "%s | befday",
+  },
+  twitter: {
+    card: "summary_large_image",
+    description:
+      "Curated birthday perks, free treats, secret vouchers, and step-by-step redemption tips.",
+    images: ["/og?title=befday"],
+    title: "befday — Never Miss a Birthday Perk",
   },
 };
 
