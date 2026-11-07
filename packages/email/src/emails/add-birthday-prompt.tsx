@@ -115,20 +115,22 @@ const footerLink = {
 };
 
 export const AddBirthdayPromptEmail = ({
-  name = "there",
+  name,
   profileUrl = "https://www.befday.com/profile",
-}: AddBirthdayPromptEmailProps) => (
-  <Html lang="en">
-    <Head />
-    <Preview>one quick step — add your birthday on befday</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={heading}>don&apos;t miss your birthday treats.</Heading>
+}: AddBirthdayPromptEmailProps) => {
+  const greeting = name
+    ? `hi ${name}, we noticed you haven't added your birthday to your befday profile yet.`
+    : "we noticed you haven't added your birthday to your befday profile yet.";
 
-        <Text style={paragraph}>
-          hi {name}, we noticed you haven&apos;t added your birthday to your
-          befday profile yet.
-        </Text>
+  return (
+    <Html lang="en">
+      <Head />
+      <Preview>one quick step — add your birthday on befday</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Heading style={heading}>don&apos;t miss your birthday treats.</Heading>
+
+          <Text style={paragraph}>{greeting}</Text>
 
         <Text style={paragraph}>
           many popular brands (like starbucks, boost juice, and sephora) require
@@ -186,7 +188,8 @@ export const AddBirthdayPromptEmail = ({
       </Container>
     </Body>
   </Html>
-);
+  );
+};
 
 AddBirthdayPromptEmail.PreviewProps = {
   name: "alex",

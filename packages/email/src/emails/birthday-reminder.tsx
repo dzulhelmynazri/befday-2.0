@@ -117,7 +117,7 @@ const footerLink = {
 };
 
 export const BirthdayReminderEmail = ({
-  name = "there",
+  name,
   daysRemaining = 7,
   perksUrl = "https://www.befday.com",
   featuredPerks,
@@ -128,8 +128,12 @@ export const BirthdayReminderEmail = ({
     ? "happy birthday from befday! 🎂 your birthday perks are ready"
     : `your birthday is in ${daysRemaining} days — get your perks ready`;
 
-  const headingText = isBirthdayToday
+  const birthdayGreeting = name
     ? `happy birthday, ${name}!`
+    : "happy birthday!";
+
+  const headingText = isBirthdayToday
+    ? birthdayGreeting
     : `your birthday is in ${daysRemaining} days.`;
 
   const buttonText = isBirthdayToday
@@ -152,9 +156,9 @@ export const BirthdayReminderEmail = ({
             </Text>
           ) : (
             <Text style={paragraph}>
-              hi {name}, your birthday is just around the corner. many brands
-              require signing up as a member or downloading their app before
-              your birthday to qualify for their perks.
+              {name
+                ? `hi ${name}, your birthday is just around the corner. many brands require signing up as a member or downloading their app before your birthday to qualify for their perks.`
+                : "your birthday is just around the corner. many brands require signing up as a member or downloading their app before your birthday to qualify for their perks."}
             </Text>
           )}
 

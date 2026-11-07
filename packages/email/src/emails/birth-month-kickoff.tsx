@@ -117,17 +117,22 @@ const footerLink = {
 };
 
 export const BirthMonthKickoffEmail = ({
-  name = "there",
+  name,
   monthName = "this month",
   perksUrl = "https://www.befday.com",
   featuredPerks,
-}: BirthMonthKickoffEmailProps) => (
-  <Html lang="en">
-    <Head />
-    <Preview>happy birth month! 🎂 your {monthName} perks guide</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={heading}>it&apos;s your birth month, {name}.</Heading>
+}: BirthMonthKickoffEmailProps) => {
+  const headingText = name
+    ? `it's your birth month, ${name}.`
+    : "it's your birth month.";
+
+  return (
+    <Html lang="en">
+      <Head />
+      <Preview>happy birth month! 🎂 your {monthName} perks guide</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Heading style={heading}>{headingText}</Heading>
 
         <Text style={paragraph}>
           welcome to your birthday month! throughout {monthName}, dozens of
@@ -193,7 +198,8 @@ export const BirthMonthKickoffEmail = ({
       </Container>
     </Body>
   </Html>
-);
+  );
+};
 
 BirthMonthKickoffEmail.PreviewProps = {
   featuredPerks: [

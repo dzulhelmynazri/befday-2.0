@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "befday-cron",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-01",
+  "triggers": {
+    "crons": [
+      // Runs daily at 16:00 UTC (00:00 midnight GMT+8 Malaysia/Singapore)
+      "0 16 * * *",
+    ],
+  },
+}
