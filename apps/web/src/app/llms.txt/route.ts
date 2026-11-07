@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/services";
 import { baseUrl } from "@/utils/base-url";
 
-export const revalidate = 3600;
-
 export const GET = async () => {
   const db = getDb();
 

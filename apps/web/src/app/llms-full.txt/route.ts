@@ -4,8 +4,6 @@ import { getDb } from "@/services";
 import { baseUrl } from "@/utils/base-url";
 import { formatShortDate } from "@/utils/date";
 
-export const revalidate = 3600;
-
 export const GET = async () => {
   const db = getDb();
 
