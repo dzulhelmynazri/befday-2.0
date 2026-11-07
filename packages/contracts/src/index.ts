@@ -39,3 +39,5 @@ export {
   type ScheduleSocialPostInput,
   type SocialChannel,
 } from "./social";
+
+export { completeProfileSchema, type CompleteProfileInput } from "./user";

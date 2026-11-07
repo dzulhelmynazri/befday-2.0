@@ -9,15 +9,19 @@ import {
   CardTitle,
 } from "@befday-2.0/ui/components/card";
 import { Google } from "@befday-2.0/ui/socials/google";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 import Loader from "@/components/loader";
 import { authClient } from "@/lib/auth-client";
+import { trpc } from "@/utils/trpc";
 
 const signInWithSocial = async () => {
   await authClient.signIn.social(
     {
-      callbackURL: "/dashboard",
+      callbackURL: "/onboarding",
       provider: "google",
     },
     {
@@ -29,10 +33,32 @@ const signInWithSocial = async () => {
 };
 
 const AuthForm = () => {
-  const { isPending } = authClient.useSession();
+  const router = useRouter();
 
-  if (isPending) {
+  const { data: session, isPending: isSessionPending } =
+    authClient.useSession();
+
+  const { data: profileData, isPending: isProfilePending } = useQuery({
+    ...trpc.user.me.queryOptions(),
+    enabled: Boolean(session?.user),
+  });
+
+  useEffect(() => {
+    if (session?.user && !isProfilePending) {
+      if (profileData?.isOnboarded) {
+        router.replace("/");
+      } else {
+        router.replace("/onboarding");
+      }
+    }
+  }, [session, profileData, isProfilePending, router]);
+
+  if (isSessionPending || (session?.user && isProfilePending)) {
     return <Loader />;
+  }
+
+  if (session?.user) {
+    return null;
   }
 
   return (

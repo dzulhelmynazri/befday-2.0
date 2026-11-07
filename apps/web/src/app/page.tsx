@@ -23,6 +23,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { HeroCta } from "@/components/home-cta";
 import { getPublicApi } from "@/utils/trpc-server";
 
 export const metadata: Metadata = {
@@ -160,14 +161,18 @@ const HomePage = () => (
       })}
     </script>
 
-    {/* Hero Header - rendered immediately without skeleton */}
-    <div className="mb-12">
-      <h1 className="text-foreground text-3xl font-extrabold tracking-tight sm:text-5xl">
-        happy befday!
-      </h1>
-      <p className="text-muted-foreground mt-3 text-base sm:text-lg">
-        here are some shops that offer birthday perks
-      </p>
+    {/* Hero Header */}
+    <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 className="text-foreground text-3xl font-extrabold tracking-tight sm:text-5xl lowercase">
+          happy befday!
+        </h1>
+        <p className="text-muted-foreground mt-3 text-base sm:text-lg lowercase">
+          here are some shops that offer birthday perks
+        </p>
+      </div>
+
+      <HeroCta />
     </div>
 
     <Suspense fallback={<ShopsGridSkeleton />}>

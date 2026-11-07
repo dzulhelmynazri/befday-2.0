@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const LoginPage = () => (
-  <main className="flex flex-1 items-center justify-center p-4 py-12 sm:p-8">
+  <main className="flex min-h-[calc(100svh-18rem)] flex-1 items-center justify-center p-4 py-12 sm:p-8">
     <AuthForm />
   </main>
 );

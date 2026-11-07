@@ -39,9 +39,17 @@ export const createAuth = (env: AuthConfig, database: Database) =>
     ],
     user: {
       additionalFields: {
+        birthDay: {
+          required: false,
+          type: "number",
+        },
+        birthMonth: {
+          required: false,
+          type: "number",
+        },
         dateOfBirth: {
-          required: true,
-          type: "string",
+          required: false,
+          type: "date",
         },
       },
     },

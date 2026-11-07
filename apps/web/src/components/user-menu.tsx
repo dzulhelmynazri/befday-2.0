@@ -19,7 +19,7 @@ const UserMenu = () => {
   const { data: session, isPending } = authClient.useSession();
 
   if (isPending) {
-    return <Skeleton className="h-9 w-24" />;
+    return <Skeleton className="h-7 w-20" />;
   }
 
   if (!session) {
@@ -30,14 +30,16 @@ const UserMenu = () => {
     );
   }
 
+  const firstName = session.user.name.trim().split(/\s+/u)[0]?.toLowerCase();
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" />}>
-        {session.user.name}
+      <DropdownMenuTrigger render={<Button variant="ghost" />}>
+        welcome, {firstName}!
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>my account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>{session.user.email}</DropdownMenuItem>
           <DropdownMenuItem
@@ -52,7 +54,7 @@ const UserMenu = () => {
               });
             }}
           >
-            Sign Out
+            sign out
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
