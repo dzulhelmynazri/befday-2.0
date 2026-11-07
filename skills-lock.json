@@ -129,6 +129,12 @@
       "skillPath": "skills/programmatic-seo/SKILL.md",
       "computedHash": "ed160b6c3692ff1d78c4cf2683d79d8960f5b99f479fce507b91ba712061a530"
     },
+    "react-email": {
+      "source": "resend/react-email",
+      "sourceType": "github",
+      "skillPath": "skills/react-email/SKILL.md",
+      "computedHash": "9afa827fe0c3a6046114463594b44d3af8c89edacf53b3fcb28be3f69d2e7ad4"
+    },
     "review-logging-patterns": {
       "source": "evlog.dev",
       "sourceUrl": "https://www.evlog.dev",
