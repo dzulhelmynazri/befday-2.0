@@ -44,6 +44,10 @@ model BirthdayPerk {
   howToRedeem     String[]
   termsConditions String?
 
+  contactName     String?
+  contactEmail    String?
+  contactPhone    String?
+
   status          PerkStatus @default(DRAFT)
   sourceUrls      String[]
   verifiedAt      DateTime   @default(now())

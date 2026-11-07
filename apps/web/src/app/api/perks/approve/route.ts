@@ -1,7 +1,8 @@
+import { renderPartnerPerkApprovedEmail } from "@befday-2.0/email";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
-import { getDb } from "@/services";
+import { email, getDb } from "@/services";
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
@@ -24,6 +25,24 @@ export const GET = async (request: Request) => {
     });
 
     revalidateTag("perks", "max");
+
+    if (perk.contactEmail && perk.contactName) {
+      const { html: emailHtml, text: emailText } =
+        await renderPartnerPerkApprovedEmail({
+          brandName: perk.brand.name.toLowerCase(),
+          contactName: perk.contactName.toLowerCase(),
+          listingUrl: `https://www.befday.com/perks/${perk.brand.slug}`,
+          perkHeadline: perk.headline.toLowerCase(),
+        });
+
+      await email.send({
+        from: "befday <hello@befday.com>",
+        html: emailHtml,
+        subject: `your birthday perk for ${perk.brand.name.toLowerCase()} is now live on befday!`,
+        text: emailText,
+        to: perk.contactEmail,
+      });
+    }
 
     const html = `<!DOCTYPE html>
 <html lang="en">

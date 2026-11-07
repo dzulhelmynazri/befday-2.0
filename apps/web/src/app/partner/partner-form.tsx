@@ -614,7 +614,7 @@ export const PartnerForm = () => {
                       return (
                         <Field data-invalid={isInvalid}>
                           <FieldLabel htmlFor={field.name}>
-                            phone / whatsapp (optional)
+                            phone / whatsapp
                           </FieldLabel>
                           <Input
                             aria-invalid={isInvalid}

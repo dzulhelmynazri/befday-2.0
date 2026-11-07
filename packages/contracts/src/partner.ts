@@ -14,7 +14,10 @@ export const submitPartnerPerkSchema = z.object({
     .string()
     .min(2, "contact name must be at least 2 characters.")
     .max(80, "contact name cannot exceed 80 characters."),
-  contactPhone: z.string().optional(),
+  contactPhone: z
+    .string()
+    .min(7, "phone number must be at least 7 characters.")
+    .max(30, "phone number cannot exceed 30 characters."),
   googleMapUrl: z.url().or(z.literal("")).optional(),
   headline: z
     .string()
