@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@befday-2.0/ui/components/accordion";
+import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -104,8 +110,51 @@ const HomeContent = async () => {
   );
 };
 
+const homeFaqs = [
+  {
+    answer:
+      "befday is a curated discovery directory sharing verified birthday perks, free meals, drinks, cinema tickets, and exclusive vouchers across malaysia.",
+    question: "what is befday?",
+  },
+  {
+    answer:
+      "yes, our team regularly reviews and verifies every birthday deal with official brand announcements, membership apps, and in-store redemption terms.",
+    question: "are all birthday perks and freebies verified?",
+  },
+  {
+    answer:
+      "most popular brands (such as starbucks, boost juice, and familymart) require you to be a registered loyalty member before your birthday month starts. we recommend signing up at least 1 month prior to your birth month.",
+    question: "when should i sign up to claim birthday rewards?",
+  },
+  {
+    answer:
+      "yes, befday is 100% free to explore with no sign-up or fee required.",
+    question: "is befday free to use?",
+  },
+  {
+    answer:
+      "brands and cafe owners can submit their birthday perks for free via our partner page. our team reviews and publishes approved listings within 24 to 48 hours.",
+    question: "how can brands or stores submit their perks?",
+  },
+];
+
 const HomePage = () => (
   <main className="container mx-auto max-w-4xl px-4 py-16 sm:py-20">
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: homeFaqs.map((faq) => ({
+          "@type": "Question",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+          name: faq.question,
+        })),
+      })}
+    </script>
+
     {/* Hero Header - rendered immediately without skeleton */}
     <div className="mb-12">
       <h1 className="text-foreground text-3xl font-extrabold tracking-tight sm:text-5xl">
@@ -119,6 +168,38 @@ const HomePage = () => (
     <Suspense fallback={<ShopsGridSkeleton />}>
       <HomeContent />
     </Suspense>
+
+    {/* Frequently Asked Questions */}
+    <section aria-labelledby="home-faq-heading" className="mt-20 space-y-4">
+      <div className="space-y-1">
+        <h2
+          className="text-foreground text-xl font-bold tracking-tight sm:text-2xl"
+          id="home-faq-heading"
+        >
+          frequently asked questions
+        </h2>
+        <p className="text-muted-foreground text-sm">
+          everything you need to know about claiming birthday perks in malaysia
+        </p>
+      </div>
+
+      <Accordion>
+        {homeFaqs.map((faq, index) => (
+          <AccordionItem key={index} value={`home-faq-${index}`}>
+            <AccordionTrigger>
+              <span className="text-foreground text-sm font-medium">
+                {faq.question}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <span className="text-muted-foreground text-sm leading-relaxed">
+                {faq.answer}
+              </span>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </section>
 
     {/* Floating Feedback / Suggestion Button */}
     <aside

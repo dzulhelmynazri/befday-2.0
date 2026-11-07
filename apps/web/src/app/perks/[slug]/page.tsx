@@ -1,10 +1,23 @@
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@befday-2.0/ui/components/accordion";
+import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@befday-2.0/ui/components/avatar";
 import { Badge } from "@befday-2.0/ui/components/badge";
 import { buttonVariants } from "@befday-2.0/ui/components/button";
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from "@befday-2.0/ui/components/item";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
@@ -38,7 +51,7 @@ export const generateMetadata = async ({
   const title = `${brand.name} Birthday Perk & Freebies (${currentYear})`;
   const { description } = brand;
   const perkUrl = `${baseUrl}/perks/${brand.slug}`;
-  const ogImage = brand.logoUrl;
+  const ogImage = `/og?title=${encodeURIComponent(`${brand.name} Birthday Perk`)}`;
 
   return {
     alternates: {
@@ -49,8 +62,10 @@ export const generateMetadata = async ({
       description,
       images: [
         {
-          alt: brand.name,
+          alt: `${brand.name} Birthday Perk`,
+          height: 630,
           url: ogImage,
+          width: 1200,
         },
       ],
       title,
@@ -59,7 +74,7 @@ export const generateMetadata = async ({
     },
     title,
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       description,
       images: [ogImage],
       title,
@@ -117,7 +132,43 @@ const PerkDetailContent = async ({
     notFound();
   }
 
+  const api = await getServerApi();
+  const allPerks = await api.perk.all();
+
+  const relatedPerks = allPerks
+    .filter((p) => p.brand.slug !== brand.slug)
+    .slice(0, 4);
+
   const perkUrl = `${baseUrl}/perks/${brand.slug}`;
+
+  const faqs = [
+    {
+      answer:
+        primaryPerk.headline ||
+        (primaryPerk.perksList.length > 0
+          ? primaryPerk.perksList.join(", ")
+          : brand.description),
+      question: `What is the ${brand.name} birthday perk?`,
+    },
+    {
+      answer:
+        primaryPerk.howToRedeem.length > 0
+          ? primaryPerk.howToRedeem.join(" ")
+          : `Visit ${brand.name} during your birthday period and present your membership or verification details.`,
+      question: `How do I claim the ${brand.name} birthday reward?`,
+    },
+    {
+      answer: primaryPerk.validity,
+      question: `How long is the ${brand.name} birthday perk valid?`,
+    },
+    {
+      answer:
+        primaryPerk.badge === "FREE"
+          ? "This is a 100% free birthday treat with no purchase required."
+          : "This is a birthday voucher or discount perk; a minimum spend or qualifying purchase may be required depending on store terms.",
+      question: `Is the ${brand.name} birthday perk completely free?`,
+    },
+  ];
 
   return (
     <main className="container mx-auto max-w-xl px-4 py-16 sm:py-20">
@@ -173,39 +224,14 @@ const PerkDetailContent = async ({
               : []),
             {
               "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      primaryPerk.headline ||
-                      (primaryPerk.perksList.length > 0
-                        ? primaryPerk.perksList.join(", ")
-                        : brand.description),
-                  },
-                  name: `What is the ${brand.name} birthday perk?`,
+              mainEntity: faqs.map((faq) => ({
+                "@type": "Question",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: faq.answer,
                 },
-                {
-                  "@type": "Question",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      primaryPerk.howToRedeem.length > 0
-                        ? primaryPerk.howToRedeem.join(" ")
-                        : `Visit ${brand.name} during your birthday period and present your membership or verification details.`,
-                  },
-                  name: `How do I claim the ${brand.name} birthday reward?`,
-                },
-                {
-                  "@type": "Question",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text: primaryPerk.validity,
-                  },
-                  name: `How long is the ${brand.name} birthday perk valid?`,
-                },
-              ],
+                name: faq.question,
+              })),
             },
           ],
         })}
@@ -367,6 +393,94 @@ const PerkDetailContent = async ({
               </p>
             )}
           </section>
+
+          {/* Section: Frequently Asked Questions */}
+          <section aria-labelledby="faq-heading" className="space-y-3 pt-20">
+            <h2
+              className="text-foreground text-base font-semibold"
+              id="faq-heading"
+            >
+              frequently asked questions
+            </h2>
+            <Accordion>
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`faq-${index}`}>
+                  <AccordionTrigger>
+                    <span className="text-foreground text-sm font-medium">
+                      {faq.question.toLowerCase()}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <span className="text-muted-foreground text-sm leading-relaxed">
+                      {faq.answer.toLowerCase()}
+                    </span>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
+
+          {/* Section: More Birthday Perks */}
+          {relatedPerks.length > 0 && (
+            <section
+              aria-labelledby="more-perks-heading"
+              className="border-border/60 space-y-4 pt-10"
+            >
+              <div className="space-y-1">
+                <h2
+                  className="text-foreground text-base font-semibold"
+                  id="more-perks-heading"
+                >
+                  more birthday perks to explore
+                </h2>
+                <p className="text-muted-foreground text-xs">
+                  discover other verified treats and freebies in malaysia
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {relatedPerks.map((item) => (
+                  <Item
+                    className="group"
+                    key={item.id}
+                    render={<Link href={`/perks/${item.brand.slug}`} />}
+                    variant="outline"
+                  >
+                    <ItemHeader>
+                      <ItemMedia>
+                        <Avatar className="size-6">
+                          {item.brand.logoUrl && (
+                            <AvatarImage
+                              alt={item.brand.name}
+                              src={item.brand.logoUrl}
+                            />
+                          )}
+                          <AvatarFallback>
+                            {/* oxlint-disable-next-line next/no-img-element */}
+                            <img
+                              alt={item.brand.name}
+                              className="size-full object-cover"
+                              src={`https://api.dicebear.com/10.x/loops/svg?seed=${encodeURIComponent(item.brand.name)}`}
+                            />
+                          </AvatarFallback>
+                        </Avatar>
+                      </ItemMedia>
+                      <Badge variant="outline">
+                        {item.badge.toLowerCase()}
+                      </Badge>
+                    </ItemHeader>
+                    <ItemContent>
+                      <ItemTitle>
+                        <span className="line-clamp-1">
+                          {item.brand.name.toLowerCase()}
+                        </span>
+                      </ItemTitle>
+                    </ItemContent>
+                  </Item>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </article>
 

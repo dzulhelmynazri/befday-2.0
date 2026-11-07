@@ -6,13 +6,37 @@ import { Suspense } from "react";
 import { formatShortDate } from "@/utils/date";
 import { getServerApi } from "@/utils/trpc-server";
 
+const currentYear = new Date().getFullYear();
+
 export const metadata: Metadata = {
   alternates: {
     canonical: "/blog",
   },
   description:
-    "curated guides, verified free treats, secret vouchers, and step-by-step birthday redemption tips.",
-  title: "blog",
+    "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
+  openGraph: {
+    description:
+      "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
+    images: [
+      {
+        alt: "befday birthday guides & tips",
+        height: 630,
+        url: "/og?title=Birthday%20Guides%20%26%20Tips",
+        width: 1200,
+      },
+    ],
+    title: `Birthday Freebies & Strategy Guides (${currentYear})`,
+    type: "website",
+    url: "/blog",
+  },
+  title: `Birthday Guides & Strategy Tips (${currentYear})`,
+  twitter: {
+    card: "summary_large_image",
+    description:
+      "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
+    images: ["/og?title=Birthday%20Guides%20%26%20Tips"],
+    title: `Birthday Guides & Strategy Tips (${currentYear})`,
+  },
 };
 
 export const BlogIndexSkeleton = () => (
