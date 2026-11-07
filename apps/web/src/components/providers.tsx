@@ -3,6 +3,7 @@
 import { Toaster } from "@befday-2.0/ui/components/sonner";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { queryClient } from "@/utils/trpc";
 
@@ -16,7 +17,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => (
     disableTransitionOnChange
   >
     <QueryClientProvider client={queryClient}>
-      {children}
+      <NuqsAdapter>{children}</NuqsAdapter>
       <ReactQueryDevtools buttonPosition="bottom-left" />
     </QueryClientProvider>
     <Toaster richColors />

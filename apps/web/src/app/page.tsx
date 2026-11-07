@@ -5,25 +5,18 @@ import {
   AccordionTrigger,
 } from "@befday-2.0/ui/components/accordion";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@befday-2.0/ui/components/avatar";
-import { Badge } from "@befday-2.0/ui/components/badge";
-import {
   Item,
   ItemContent,
   ItemHeader,
   ItemMedia,
-  ItemTitle,
 } from "@befday-2.0/ui/components/item";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
-import Link from "next/link";
 import { Suspense } from "react";
 
 import { HeroCta } from "@/components/home-cta";
+import { PerksDirectory } from "@/components/perks-directory";
 import { getPublicApi } from "@/utils/trpc-server";
 
 export const metadata: Metadata = {
@@ -38,23 +31,30 @@ export const metadata: Metadata = {
 };
 
 export const ShopsGridSkeleton = () => (
-  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-    {[
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30,
-    ].map((i) => (
-      <Item key={i} variant="outline">
-        <ItemHeader>
-          <ItemMedia>
-            <Skeleton className="size-6" />
-          </ItemMedia>
-          <Skeleton className="h-4 w-10" />
-        </ItemHeader>
-        <ItemContent>
-          <Skeleton className="h-3.5 w-24" />
-        </ItemContent>
-      </Item>
-    ))}
+  <div className="space-y-6">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Skeleton className="h-8 w-56" />
+      <Skeleton className="h-8 w-full sm:w-72" />
+    </div>
+
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {[
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+      ].map((i) => (
+        <Item key={i} variant="outline">
+          <ItemHeader>
+            <ItemMedia>
+              <Skeleton className="size-6" />
+            </ItemMedia>
+            <Skeleton className="h-4 w-10" />
+          </ItemHeader>
+          <ItemContent>
+            <Skeleton className="h-3.5 w-24" />
+          </ItemContent>
+        </Item>
+      ))}
+    </div>
   </div>
 );
 
@@ -66,54 +66,7 @@ const HomeContent = async () => {
   const api = getPublicApi();
   const perks = await api.perk.all();
 
-  return (
-    <section aria-labelledby="shops-heading">
-      <h2 className="sr-only" id="shops-heading">
-        featured birthday perks
-      </h2>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {perks.map((perk) => (
-          <Item
-            className="cursor-pointer"
-            key={perk.id}
-            render={<Link href={`/perks/${perk.brand.slug}`} />}
-            variant="outline"
-          >
-            <ItemHeader>
-              <ItemMedia>
-                <Avatar size="sm">
-                  <AvatarImage
-                    alt={perk.brand.name}
-                    // oxlint-disable-next-line shadcn/no-restyle
-                    className="object-contain p-0.5"
-                    src={perk.brand.logoUrl}
-                  />
-                  {/* oxlint-disable-next-line shadcn/no-restyle */}
-                  <AvatarFallback className="overflow-hidden p-0">
-                    {/* oxlint-disable-next-line next/no-img-element */}
-                    <img
-                      alt={perk.brand.name}
-                      className="size-full object-cover"
-                      src={`https://api.dicebear.com/10.x/loops/svg?seed=${encodeURIComponent(perk.brand.name)}`}
-                    />
-                  </AvatarFallback>
-                </Avatar>
-              </ItemMedia>
-              <Badge variant="outline">{perk.badge.toLowerCase()}</Badge>
-            </ItemHeader>
-            <ItemContent>
-              <ItemTitle>
-                <span className="line-clamp-1">
-                  {perk.brand.name.toLowerCase()}
-                </span>
-              </ItemTitle>
-            </ItemContent>
-          </Item>
-        ))}
-      </div>
-    </section>
-  );
+  return <PerksDirectory perks={perks} />;
 };
 
 const homeFaqs = [
