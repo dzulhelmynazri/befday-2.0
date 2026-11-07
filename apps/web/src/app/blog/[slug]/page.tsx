@@ -1,10 +1,11 @@
 import { buttonVariants } from "@befday-2.0/ui/components/button";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 
 import {
   BlogTableOfContents,
@@ -12,16 +13,35 @@ import {
   extractTocLinks,
   parseBlogContent,
 } from "@/components/comark-renderer";
+import { getDb } from "@/services";
 import { baseUrl } from "@/utils/base-url";
 import { formatDate } from "@/utils/date";
-import { getServerApi } from "@/utils/trpc-server";
+import { getPublicApi } from "@/utils/trpc-server";
 
-// Shared by generateMetadata and the page so the post is fetched once per request.
-const getPost = cache(async (slug: string) => {
-  const api = await getServerApi();
+export const generateStaticParams = async () => {
+  const db = getDb();
 
-  return api.blog.bySlug({ slug });
-});
+  const posts = await db.blogPost.findMany({
+    select: {
+      slug: true,
+    },
+    where: { status: "PUBLISHED" },
+  });
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+};
+
+const getPost = async (slug: string) => {
+  "use cache";
+  cacheLife("days");
+  cacheTag("blog", `blog-${slug}`);
+
+  const api = getPublicApi();
+
+  return await api.blog.bySlug({ slug });
+};
 
 export const generateMetadata = async ({
   params,

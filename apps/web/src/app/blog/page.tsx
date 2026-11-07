@@ -1,42 +1,46 @@
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { formatShortDate } from "@/utils/date";
-import { getServerApi } from "@/utils/trpc-server";
+import { getCurrentYear } from "@/utils/get-current-year";
+import { getPublicApi } from "@/utils/trpc-server";
 
-const currentYear = new Date().getFullYear();
+export const generateMetadata = async (): Promise<Metadata> => {
+  const currentYear = await getCurrentYear();
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: "/blog",
-  },
-  description:
-    "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
-  openGraph: {
+  return {
+    alternates: {
+      canonical: "/blog",
+    },
     description:
       "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
-    images: [
-      {
-        alt: "befday birthday guides & tips",
-        height: 630,
-        url: "/og?title=Birthday%20Guides%20%26%20Tips",
-        width: 1200,
-      },
-    ],
-    title: `Birthday Freebies & Strategy Guides (${currentYear})`,
-    type: "website",
-    url: "/blog",
-  },
-  title: `Birthday Guides & Strategy Tips (${currentYear})`,
-  twitter: {
-    card: "summary_large_image",
-    description:
-      "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
-    images: ["/og?title=Birthday%20Guides%20%26%20Tips"],
+    openGraph: {
+      description:
+        "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
+      images: [
+        {
+          alt: "befday birthday guides & tips",
+          height: 630,
+          url: "/og?title=Birthday%20Guides%20%26%20Tips",
+          width: 1200,
+        },
+      ],
+      title: `Birthday Freebies & Strategy Guides (${currentYear})`,
+      type: "website",
+      url: "/blog",
+    },
     title: `Birthday Guides & Strategy Tips (${currentYear})`,
-  },
+    twitter: {
+      card: "summary_large_image",
+      description:
+        "Curated birthday guides, verified free treats, secret vouchers, and step-by-step redemption tips in Malaysia.",
+      images: ["/og?title=Birthday%20Guides%20%26%20Tips"],
+      title: `Birthday Guides & Strategy Tips (${currentYear})`,
+    },
+  };
 };
 
 export const BlogIndexSkeleton = () => (
@@ -68,7 +72,11 @@ export const BlogIndexSkeleton = () => (
 );
 
 const BlogIndexContent = async () => {
-  const api = await getServerApi();
+  "use cache";
+  cacheLife("days");
+  cacheTag("blog");
+
+  const api = getPublicApi();
   const posts = await api.blog.all();
 
   return (

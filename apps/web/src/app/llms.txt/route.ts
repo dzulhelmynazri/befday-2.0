@@ -44,20 +44,24 @@ export const GET = async () => {
   markdown += `- [Full Knowledge Base](${baseUrl}/llms-full.txt): Comprehensive database of perks, rules, and redemption steps\n\n`;
 
   markdown += "## Verified Birthday Perks\n";
+
   for (const brand of activeBrands) {
     const [perk] = brand.perks;
+
     if (!perk) {
       continue;
     }
 
     const details =
       perk.headline || perk.perksList.join(", ") || brand.description;
+
     const validity = perk.validity ? ` (${perk.validity})` : "";
     markdown += `- [${brand.name.toLowerCase()}](${baseUrl}/perks/${brand.slug}): ${details.toLowerCase()}${validity.toLowerCase()}\n`;
   }
 
   if (posts.length > 0) {
     markdown += "\n## Guides & Articles\n";
+
     for (const post of posts) {
       markdown += `- [${post.title.toLowerCase()}](${baseUrl}/blog/${post.slug}): ${post.description.toLowerCase()}\n`;
     }

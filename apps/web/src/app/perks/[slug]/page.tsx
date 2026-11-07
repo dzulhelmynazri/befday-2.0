@@ -21,19 +21,56 @@ import {
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 
+import { getDb } from "@/services";
 import { baseUrl } from "@/utils/base-url";
 import { formatShortDate } from "@/utils/date";
-import { getServerApi } from "@/utils/trpc-server";
+import { getCurrentYear } from "@/utils/get-current-year";
+import { getPublicApi } from "@/utils/trpc-server";
 
-const getBrand = cache(async (slug: string) => {
-  const api = await getServerApi();
+export const generateStaticParams = async () => {
+  const db = getDb();
 
-  return api.perk.bySlug({ slug });
-});
+  const perks = await db.birthdayPerk.findMany({
+    select: {
+      brand: {
+        select: {
+          slug: true,
+        },
+      },
+    },
+    where: { status: "PUBLISHED" },
+  });
+
+  return perks.map((perk) => ({
+    slug: perk.brand.slug,
+  }));
+};
+
+const getBrand = async (slug: string) => {
+  "use cache";
+  cacheLife("days");
+  cacheTag("perks", `perk-${slug}`);
+
+  const api = getPublicApi();
+
+  return await api.perk.bySlug({ slug });
+};
+
+const getRelatedPerks = async (currentSlug: string) => {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("perks");
+
+  const api = getPublicApi();
+  const allPerks = await api.perk.all();
+
+  return allPerks.filter((p) => p.brand.slug !== currentSlug).slice(0, 4);
+};
 
 export const generateMetadata = async ({
   params,
@@ -41,13 +78,13 @@ export const generateMetadata = async ({
   const { slug } = await params;
   const brand = await getBrand(slug);
 
-  if (!brand || brand.perks.length === 0) {
+  if (!brand) {
     return {
       title: "Perk Not Found",
     };
   }
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = await getCurrentYear();
   const title = `${brand.name} Birthday Perk & Freebies (${currentYear})`;
   const { description } = brand;
   const perkUrl = `${baseUrl}/perks/${brand.slug}`;
@@ -132,12 +169,7 @@ const PerkDetailContent = async ({
     notFound();
   }
 
-  const api = await getServerApi();
-  const allPerks = await api.perk.all();
-
-  const relatedPerks = allPerks
-    .filter((p) => p.brand.slug !== brand.slug)
-    .slice(0, 4);
+  const relatedPerks = await getRelatedPerks(brand.slug);
 
   const perkUrl = `${baseUrl}/perks/${brand.slug}`;
 

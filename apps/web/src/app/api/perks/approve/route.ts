@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 import { getDb } from "@/services";
@@ -21,6 +22,8 @@ export const GET = async (request: Request) => {
       include: { brand: true },
       where: { id },
     });
+
+    revalidateTag("perks", "max");
 
     const html = `<!DOCTYPE html>
 <html lang="en">

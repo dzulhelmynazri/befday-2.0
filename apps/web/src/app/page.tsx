@@ -19,10 +19,11 @@ import {
 } from "@befday-2.0/ui/components/item";
 import { Skeleton } from "@befday-2.0/ui/components/skeleton";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { getServerApi } from "@/utils/trpc-server";
+import { getPublicApi } from "@/utils/trpc-server";
 
 export const metadata: Metadata = {
   alternates: {
@@ -57,7 +58,11 @@ export const ShopsGridSkeleton = () => (
 );
 
 const HomeContent = async () => {
-  const api = await getServerApi();
+  "use cache";
+  cacheLife("hours");
+  cacheTag("perks");
+
+  const api = getPublicApi();
   const perks = await api.perk.all();
 
   return (
