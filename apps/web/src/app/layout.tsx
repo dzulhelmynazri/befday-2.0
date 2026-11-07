@@ -106,7 +106,7 @@ const RootLayout = ({ children }: LayoutProps<"/">) => (
       <Providers>
         <div className="flex min-h-svh flex-col">
           {/* <Header /> */}
-          <div className="flex-1">{children}</div>
+          <div className="flex flex-1 flex-col">{children}</div>
           <Footer />
         </div>
       </Providers>
