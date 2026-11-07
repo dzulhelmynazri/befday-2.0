@@ -28,6 +28,14 @@ export default defineConfig({
       },
     },
     {
+      files: ["packages/email/**"],
+      rules: {
+        "oxc/no-barrel-file": "off",
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/no-inline-styles": "off",
+      },
+    },
+    {
       files: ["src/**"],
       rules: {
         "no-restricted-imports": [
