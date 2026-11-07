@@ -4,11 +4,6 @@ import { completeProfileSchema } from "@befday-2.0/contracts";
 import type { CompleteProfileInput } from "@befday-2.0/contracts";
 import { Button } from "@befday-2.0/ui/components/button";
 import {
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@befday-2.0/ui/components/card";
-import {
   Field,
   FieldDescription,
   FieldError,
@@ -19,7 +14,6 @@ import { Input } from "@befday-2.0/ui/components/input";
 import { Spinner } from "@befday-2.0/ui/components/spinner";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Cake } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -65,7 +59,7 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
         toast.success("Profile saved! Your birthday perks are unlocked 🎉");
         router.replace("/");
       } catch {
-        toast.error("Failed to save profile");
+        toast.error("Unable to save profile. Please try again.");
       }
     },
     validators: {
@@ -75,16 +69,11 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-6">
-      <CardHeader className="text-center">
-        <div className="bg-primary/10 text-primary mx-auto mb-2 flex size-12 items-center justify-center rounded-full">
-          <Cake className="size-6" />
-        </div>
-        <CardTitle>Welcome to befday!</CardTitle>
-        <CardDescription>
-          Tell us your name and birthday so we can curate the best free drinks,
-          treats, and birthday perks for your celebration.
-        </CardDescription>
-      </CardHeader>
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-foreground text-balance text-2xl font-semibold tracking-tight">
+          complete your profile
+        </h1>
+      </div>
 
       <form
         className="flex flex-col gap-6"
@@ -101,7 +90,7 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Your Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>full name</FieldLabel>
                   <Input
                     aria-invalid={isInvalid}
                     autoComplete="name"
@@ -112,9 +101,7 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
                     placeholder="e.g. Alex Tan"
                     value={field.state.value}
                   />
-                  <FieldDescription>
-                    The name cafes and stores will see when claiming perks.
-                  </FieldDescription>
+
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
@@ -128,7 +115,7 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Date of Birth</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>date of birth</FieldLabel>
                   <Input
                     aria-invalid={isInvalid}
                     id={field.name}
@@ -141,9 +128,9 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
                     value={field.state.value}
                   />
                   <FieldDescription>
-                    We&apos;ll send you a reminder before your birthday month
-                    starts so you never miss your free treats, meals, and
-                    vouchers. (Must be 13 or older).
+                    we&apos;ll remind you before your birthday month starts so
+                    you never miss free treats, meals, and vouchers. (must be
+                    13+).
                   </FieldDescription>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -158,8 +145,8 @@ export const OnboardingForm = ({ initialName = "" }: OnboardingFormProps) => {
           size="lg"
           type="submit"
         >
-          {completeProfile.isPending && <Spinner className="size-4" />}
-          Unlock My Birthday Perks
+          {completeProfile.isPending && <Spinner data-icon="inline-start" />}
+          unlock my birthday perks
         </Button>
       </form>
     </div>

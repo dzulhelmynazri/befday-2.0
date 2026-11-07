@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <!-- Candle flames -->
+  <path d="M256 64 C250 80 240 100 240 115 C240 126 247 135 256 135 C265 135 272 126 272 115 C272 100 262 80 256 64 Z" fill="currentColor" />
+  <path d="M192 84 C186 98 178 114 178 125 C178 133 184 140 192 140 C200 140 206 133 206 125 C206 114 198 98 192 84 Z" fill="currentColor" />
+  <path d="M320 84 C314 98 306 114 306 125 C306 133 312 140 320 140 C328 140 334 133 334 125 C334 114 326 98 320 84 Z" fill="currentColor" />
+
+  <!-- Candle sticks -->
+  <rect x="250" y="145" width="12" height="35" rx="6" fill="currentColor" />
+  <rect x="186" y="150" width="12" height="30" rx="6" fill="currentColor" />
+  <rect x="314" y="150" width="12" height="30" rx="6" fill="currentColor" />
+
+  <!-- Cake Top Layer -->
+  <rect x="144" y="180" width="224" height="90" rx="20" fill="currentColor" />
+
+  <!-- Cake Middle Decorative Icing drips -->
+  <path d="M144 240 Q160 270 176 240 Q192 270 208 240 Q224 270 240 240 Q256 270 272 240 Q288 270 304 240 Q320 270 336 240 Q352 270 368 240 L368 280 L144 280 Z" fill="currentColor" />
+
+  <!-- Cake Bottom Layer -->
+  <rect x="112" y="280" width="288" height="130" rx="24" fill="currentColor" />
+
+  <!-- Cake Plate -->
+  <rect x="80" y="420" width="352" height="24" rx="12" fill="currentColor" />
+</svg>
