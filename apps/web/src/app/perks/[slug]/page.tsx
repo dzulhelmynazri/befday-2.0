@@ -324,7 +324,8 @@ const PerkDetailContent = async ({
         className="fixed right-4 bottom-4 z-40 sm:right-6 sm:bottom-6"
       >
         <div className="bg-background/80 text-muted-foreground border-border inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs shadow-xs backdrop-blur-md select-none tabular-nums">
-          <BadgeCheck className="text-primary size-3.5 shrink-0" />
+          {/* oxlint-disable-next-line shadcn/no-raw-colors */}
+          <BadgeCheck className="text-purple-600 size-3.5 shrink-0" />
           verified {formatShortDate(primaryPerk.verifiedAt).toLowerCase()}
         </div>
       </aside>
