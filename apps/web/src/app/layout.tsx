@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   alternates: {
     canonical: "./",
+    types: {
+      "text/markdown": [{ title: "LLM Context", url: "/llms.txt" }],
+    },
   },
   description:
     "Curated birthday perks, free treats, secret vouchers, and step-by-step redemption tips.",

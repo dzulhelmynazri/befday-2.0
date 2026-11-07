@@ -34,7 +34,8 @@ export const generateMetadata = async ({
     };
   }
 
-  const title = `${brand.name} Birthday Perk & Freebies — !`;
+  const currentYear = new Date().getFullYear();
+  const title = `${brand.name} Birthday Perk & Freebies (${currentYear})`;
   const { description } = brand;
   const perkUrl = `${baseUrl}/perks/${brand.slug}`;
   const ogImage = brand.logoUrl;
@@ -154,6 +155,57 @@ const PerkDetailContent = async ({
               },
               url: perkUrl,
               validFrom: primaryPerk.verifiedAt.toISOString(),
+            },
+            ...(primaryPerk.howToRedeem.length > 0
+              ? [
+                  {
+                    "@type": "HowTo",
+                    description: `Step-by-step redemption guide to claim the ${brand.name} birthday treat.`,
+                    name: `How to redeem ${brand.name} birthday perk`,
+                    step: primaryPerk.howToRedeem.map((instruction, index) => ({
+                      "@type": "HowToStep",
+                      name: `Step ${index + 1}`,
+                      position: index + 1,
+                      text: instruction,
+                    })),
+                  },
+                ]
+              : []),
+            {
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      primaryPerk.headline ||
+                      (primaryPerk.perksList.length > 0
+                        ? primaryPerk.perksList.join(", ")
+                        : brand.description),
+                  },
+                  name: `What is the ${brand.name} birthday perk?`,
+                },
+                {
+                  "@type": "Question",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      primaryPerk.howToRedeem.length > 0
+                        ? primaryPerk.howToRedeem.join(" ")
+                        : `Visit ${brand.name} during your birthday period and present your membership or verification details.`,
+                  },
+                  name: `How do I claim the ${brand.name} birthday reward?`,
+                },
+                {
+                  "@type": "Question",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: primaryPerk.validity,
+                  },
+                  name: `How long is the ${brand.name} birthday perk valid?`,
+                },
+              ],
             },
           ],
         })}
