@@ -12,7 +12,8 @@ export const betterAuth = (): AuthFn => {
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
       GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
     },
-    db
+    db,
+    {}
   );
 
   return async function handleAuth(request) {

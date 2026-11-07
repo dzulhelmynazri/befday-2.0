@@ -94,66 +94,72 @@ const footerLink = {
 };
 
 export const WelcomeEmail = ({
-  name = "there",
+  name,
   perksUrl = "https://www.befday.com",
-}: WelcomeEmailProps) => (
-  <Html lang="en">
-    <Head />
-    <Preview>welcome to befday — your birthday perks are waiting</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={heading}>welcome to befday.</Heading>
+}: WelcomeEmailProps) => {
+  const greeting = name?.trim()
+    ? `hi ${name.trim()}, thanks for joining befday.`
+    : "thanks for joining befday.";
 
-        <Text style={paragraph}>hi {name}, thanks for joining befday.</Text>
+  return (
+    <Html lang="en">
+      <Head />
+      <Preview>welcome to befday — your birthday perks are waiting</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Heading style={heading}>welcome to befday.</Heading>
 
-        <Text style={paragraph}>
-          we curate free treats, special discounts, and exclusive rewards from
-          top brands so you can celebrate your special day without missing out
-          on any gifts.
-        </Text>
+          <Text style={paragraph}>{greeting}</Text>
 
-        <Section style={buttonContainer}>
-          <table
-            align="left"
-            border={0}
-            cellPadding={0}
-            cellSpacing={0}
-            role="presentation"
-          >
-            <tbody>
-              <tr>
-                <td align="center" style={buttonTableCell}>
-                  <Link href={perksUrl} style={buttonLink}>
-                    explore birthday perks
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Section>
+          <Text style={paragraph}>
+            we curate free treats, special discounts, and exclusive rewards from
+            top brands so you can celebrate your special day without missing out
+            on any gifts.
+          </Text>
 
-        <Text style={paragraph}>
-          browse through dozens of categories including dining, coffee,
-          desserts, shopping, and entertainment. each perk includes clear
-          redemption instructions and validity periods.
-        </Text>
+          <Section style={buttonContainer}>
+            <table
+              align="left"
+              border={0}
+              cellPadding={0}
+              cellSpacing={0}
+              role="presentation"
+            >
+              <tbody>
+                <tr>
+                  <td align="center" style={buttonTableCell}>
+                    <Link href={perksUrl} style={buttonLink}>
+                      explore birthday perks
+                    </Link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Section>
 
-        <Text style={signoff}>— the befday team</Text>
+          <Text style={paragraph}>
+            browse through dozens of categories including dining, coffee,
+            desserts, shopping, and entertainment. each perk includes clear
+            redemption instructions and validity periods.
+          </Text>
 
-        <Hr style={hr} />
+          <Text style={signoff}>— the befday team</Text>
 
-        <Text style={footer}>
-          sent by befday. you received this email because you signed up on{" "}
-          <Link href="https://www.befday.com" style={footerLink}>
-            befday.com
-          </Link>
-          . if you didn&apos;t create an account, you can safely ignore this
-          email.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-);
+          <Hr style={hr} />
+
+          <Text style={footer}>
+            sent by befday. you received this email because you signed up on{" "}
+            <Link href="https://www.befday.com" style={footerLink}>
+              befday.com
+            </Link>
+            . if you didn&apos;t create an account, you can safely ignore this
+            email.
+          </Text>
+        </Container>
+      </Body>
+    </Html>
+  );
+};
 
 WelcomeEmail.PreviewProps = {
   name: "alex",

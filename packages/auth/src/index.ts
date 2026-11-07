@@ -1,6 +1,7 @@
 import type { Database } from "@befday-2.0/db";
 import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
+import type { BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 
@@ -11,12 +12,21 @@ export interface AuthConfig {
   GOOGLE_CLIENT_SECRET: string;
 }
 
-export const createAuth = (env: AuthConfig, database: Database) =>
+export interface CreateAuthOptions {
+  databaseHooks?: BetterAuthOptions["databaseHooks"];
+}
+
+export const createAuth = (
+  env: AuthConfig,
+  database: Database,
+  options: CreateAuthOptions
+) =>
   betterAuth({
     baseURL: env.BETTER_AUTH_URL,
     database: prismaAdapter(database, {
       provider: "postgresql",
     }),
+    databaseHooks: options.databaseHooks,
     plugins: [expo(), nextCookies()],
     secret: env.BETTER_AUTH_SECRET,
     session: {
