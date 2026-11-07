@@ -119,6 +119,21 @@ const HomePage = () => (
     <Suspense fallback={<ShopsGridSkeleton />}>
       <HomeContent />
     </Suspense>
+
+    {/* Floating Feedback / Suggestion Button */}
+    <aside
+      aria-label="Feedback and suggestions"
+      className="fixed right-4 bottom-4 z-40 sm:right-6 sm:bottom-6"
+    >
+      <a
+        className="bg-background/80  border-border  rounded-full border px-3.5 py-2 text-xs font-medium  select-none"
+        href="https://wa.link/hqdnzh"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        suggestion?
+      </a>
+    </aside>
   </main>
 );
 
