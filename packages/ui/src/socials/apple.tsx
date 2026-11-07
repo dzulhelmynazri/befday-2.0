@@ -12,4 +12,3 @@ const Apple = ({ className, ...props }: React.ComponentProps<"svg">) => (
 );
 
 export { Apple };
-

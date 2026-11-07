@@ -30,4 +30,3 @@ const GooglePlay = ({ className, ...props }: React.ComponentProps<"svg">) => (
 );
 
 export { GooglePlay };
-

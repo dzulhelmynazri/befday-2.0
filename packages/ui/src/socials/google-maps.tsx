@@ -30,4 +30,3 @@ const GoogleMaps = ({ className, ...props }: React.ComponentProps<"svg">) => (
 );
 
 export { GoogleMaps };
-
