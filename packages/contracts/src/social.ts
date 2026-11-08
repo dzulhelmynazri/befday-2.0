@@ -13,6 +13,12 @@ export const socialChannelSchema = z.enum([
 export type SocialChannel = z.infer<typeof socialChannelSchema>;
 
 export const scheduleSocialPostSchema = z.object({
+  autoAddMusic: z
+    .boolean()
+    .default(true)
+    .describe(
+      "Whether TikTok Photo Mode should automatically attach trending background music (auto_add_music: true)"
+    ),
   channels: z
     .array(socialChannelSchema)
     .optional()

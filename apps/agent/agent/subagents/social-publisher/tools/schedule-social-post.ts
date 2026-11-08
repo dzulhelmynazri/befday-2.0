@@ -7,6 +7,7 @@ export default defineTool({
   async execute(input) {
     const response = await fetch("https://api.neulink.com/v1/posts", {
       body: JSON.stringify({
+        auto_add_music: input.autoAddMusic,
         channels: input.channels,
         media: input.mediaUrls,
         scheduled_at: input.scheduledAt,
