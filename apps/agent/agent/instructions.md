@@ -30,11 +30,12 @@ When asked to discover or update a brand's birthday perks:
 
 ### 1. Search & Scrape
 
-- Use Treg MCP (`treg` connection) and Composio MCP (`composio` connection) to perform discovery:
-  - Google Search: `"<Brand> birthday perks rewards voucher promo"`
-  - Google Search: `"<Brand> loyalty membership birthday freebie"`
-  - Search App Store & Google Play Store for the official loyalty/ordering apps.
-  - Search Google Maps for official store locator links.
+- Use Treg MCP (`treg` connection) and native lookup tools to perform discovery and verification:
+  - Query `get_brand_perks` when checking or verifying existing perks in the database.
+  - Google Search via Treg: `"<Brand> birthday perks rewards voucher promo"`
+  - Google Search via Treg: `"<Brand> loyalty membership birthday freebie"`
+  - Call `lookup_app_stores` to resolve official Apple App Store and Google Play Store links and app artwork.
+  - Call `lookup_google_maps` to resolve official Google Maps store locator links.
 - Scrape the official brand rewards/FAQ page or trusted deal verification articles.
 
 ### 2. AI Extraction & Enhancement
@@ -60,6 +61,11 @@ When asked to discover or update a brand's birthday perks:
 
 - When requested to research keywords, create blog articles, compose birthday roundups, or draft SEO guides, delegate to or utilize the `seo-writer` subagent.
 - The `seo-writer` leverages Treg MCP (`treg` connection) for SERP intent & People Also Ask (PAA) research, retrieves real perks via `get_brand_perks`, formats posts according to AI-SEO guidelines (standalone answer capsules, comparison tables, PAA FAQs), and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
+
+### Social Media Publishing (`social-publisher`)
+
+- When requested to draft, schedule, or broadcast social media announcements or weekend featured perks across Instagram, Threads, TikTok, Facebook, LinkedIn, Pinterest, or Google Business, delegate to the `social-publisher` subagent.
+- The `social-publisher` retrieves verified perks via `get_brand_perks`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
 
 ---
 

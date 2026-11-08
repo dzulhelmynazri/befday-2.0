@@ -19,6 +19,7 @@ Use this skill when generating or validating structured data (JSON-LD) for blog 
 ## 2. Core Schema Types
 
 ### A. `FAQPage` Schema (Used in All Articles)
+
 Every article containing an FAQ section must generate an `FAQPage` schema block:
 
 ```json
@@ -47,6 +48,7 @@ Every article containing an FAQ section must generate an `FAQPage` schema block:
 ```
 
 ### B. `HowTo` Schema (Used for `brand-deep-dive` Guides)
+
 For step-by-step claim tutorials (e.g., how to redeem free movie tickets or claim free food):
 
 ```json
@@ -86,6 +88,7 @@ For step-by-step claim tutorials (e.g., how to redeem free movie tickets or clai
 ```
 
 ### C. `ItemList` Schema (Used for `mega-listicle` Roundups)
+
 For top 10/20 roundups and regional directories, indexing each featured brand:
 
 ```json
@@ -114,24 +117,23 @@ For top 10/20 roundups and regional directories, indexing each featured brand:
 
 ## 3. Placement & Formatting Guidelines
 
-1. **Self-Contained `<script>` Tag**:
-   Append the generated JSON-LD directly at the bottom of the article markdown inside an unformatted HTML `<script type="application/ld+json">` block:
+1. **Self-Contained `<script>` Tag**: Append the generated JSON-LD directly at the bottom of the article markdown inside an unformatted HTML `<script type="application/ld+json">` block:
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "FAQPage",
-      ...
-    },
-    {
-      "@type": "HowTo",
-      ...
-    }
-  ]
-}
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        ...
+      },
+      {
+        "@type": "HowTo",
+        ...
+      }
+    ]
+  }
 </script>
 ```
 
@@ -139,4 +141,3 @@ For top 10/20 roundups and regional directories, indexing each featured brand:
    - **No HTML entities in text fields**: Do not escape quotation marks with `&quot;` inside JSON strings; use valid JSON escaping (`\"`).
    - **Match On-Page Text Exactly**: The question text in `FAQPage` must match the H3/H4 question in the Markdown article word-for-word.
    - **Keep Answers Concise**: Keep each `acceptedAnswer.text` under 80 words for optimal snippet display in Google SERP.
-

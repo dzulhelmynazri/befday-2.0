@@ -3,7 +3,7 @@ import { defineTool } from "eve/tools";
 
 export default defineTool({
   description:
-    "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook) via NeuLink.",
+    "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook, Threads, TikTok, Pinterest, Google Business) via NeuLink.",
   async execute(input) {
     const response = await fetch("https://api.neulink.com/v1/posts", {
       body: JSON.stringify({
