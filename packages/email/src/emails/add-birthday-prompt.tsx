@@ -128,66 +128,69 @@ export const AddBirthdayPromptEmail = ({
       <Preview>one quick step — add your birthday on befday</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Heading style={heading}>don&apos;t miss your birthday treats.</Heading>
+          <Heading style={heading}>
+            don&apos;t miss your birthday treats.
+          </Heading>
 
           <Text style={paragraph}>{greeting}</Text>
 
-        <Text style={paragraph}>
-          many popular brands (like starbucks, boost juice, and sephora) require
-          you to register for their loyalty programs at least 30 days before
-          your birthday to qualify for complimentary drinks and gifts.
-        </Text>
-
-        <div style={reminderCard}>
-          <Text style={reminderTitle}>why add your birthday?</Text>
-          <Text style={reminderText}>
-            • we&apos;ll send your personalized perks guide on the 1st of your
-            birth month
-            <br />• get early notifications so you have time to sign up for
-            brand memberships
-            <br />• completely private and only used to send your birthday perks
+          <Text style={paragraph}>
+            many popular brands (like starbucks, boost juice, and sephora)
+            require you to register for their loyalty programs at least 30 days
+            before your birthday to qualify for complimentary drinks and gifts.
           </Text>
-        </div>
 
-        <Section style={buttonContainer}>
-          <table
-            align="left"
-            border={0}
-            cellPadding={0}
-            cellSpacing={0}
-            role="presentation"
-          >
-            <tbody>
-              <tr>
-                <td align="center" style={buttonTableCell}>
-                  <Link href={profileUrl} style={buttonLink}>
-                    add your birthday
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Section>
+          <div style={reminderCard}>
+            <Text style={reminderTitle}>why add your birthday?</Text>
+            <Text style={reminderText}>
+              • we&apos;ll send your personalized perks guide on the 1st of your
+              birth month
+              <br />• get early notifications so you have time to sign up for
+              brand memberships
+              <br />• completely private and only used to send your birthday
+              perks
+            </Text>
+          </div>
 
-        <Text style={paragraph}>
-          it takes less than 10 seconds to add your date of birth.
-        </Text>
+          <Section style={buttonContainer}>
+            <table
+              align="left"
+              border={0}
+              cellPadding={0}
+              cellSpacing={0}
+              role="presentation"
+            >
+              <tbody>
+                <tr>
+                  <td align="center" style={buttonTableCell}>
+                    <Link href={profileUrl} style={buttonLink}>
+                      add your birthday
+                    </Link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Section>
 
-        <Text style={signoff}>— the befday team</Text>
+          <Text style={paragraph}>
+            it takes less than 10 seconds to add your date of birth.
+          </Text>
 
-        <Hr style={hr} />
+          <Text style={signoff}>— the befday team</Text>
 
-        <Text style={footer}>
-          sent by befday. you received this email because you created an account
-          on{" "}
-          <Link href="https://www.befday.com" style={footerLink}>
-            befday.com
-          </Link>
-          . you can update your notification preferences at any time.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
+          <Hr style={hr} />
+
+          <Text style={footer}>
+            sent by befday. you received this email because you created an
+            account on{" "}
+            <Link href="https://www.befday.com" style={footerLink}>
+              befday.com
+            </Link>
+            . you can update your notification preferences at any time.
+          </Text>
+        </Container>
+      </Body>
+    </Html>
   );
 };
 

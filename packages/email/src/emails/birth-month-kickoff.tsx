@@ -134,70 +134,70 @@ export const BirthMonthKickoffEmail = ({
         <Container style={container}>
           <Heading style={heading}>{headingText}</Heading>
 
-        <Text style={paragraph}>
-          welcome to your birthday month! throughout {monthName}, dozens of
-          brands offer free drinks, complimentary desserts, dining discounts,
-          and exclusive rewards.
-        </Text>
+          <Text style={paragraph}>
+            welcome to your birthday month! throughout {monthName}, dozens of
+            brands offer free drinks, complimentary desserts, dining discounts,
+            and exclusive rewards.
+          </Text>
 
-        <Text style={paragraph}>
-          many popular perks are valid across your entire birth month, but some
-          require joining membership apps ahead of time. check your guide early
-          to make sure you don&apos;t miss out.
-        </Text>
+          <Text style={paragraph}>
+            many popular perks are valid across your entire birth month, but
+            some require joining membership apps ahead of time. check your guide
+            early to make sure you don&apos;t miss out.
+          </Text>
 
-        {featuredPerks && featuredPerks.length > 0 && (
-          <div style={perksCard}>
-            <Text style={perksHeader}>popular {monthName} perks:</Text>
-            {featuredPerks.map((perk, index) => (
-              <Text key={index} style={perkItem}>
-                • {perk}
-              </Text>
-            ))}
-          </div>
-        )}
+          {featuredPerks && featuredPerks.length > 0 && (
+            <div style={perksCard}>
+              <Text style={perksHeader}>popular {monthName} perks:</Text>
+              {featuredPerks.map((perk, index) => (
+                <Text key={index} style={perkItem}>
+                  • {perk}
+                </Text>
+              ))}
+            </div>
+          )}
 
-        <Section style={buttonContainer}>
-          <table
-            align="left"
-            border={0}
-            cellPadding={0}
-            cellSpacing={0}
-            role="presentation"
-          >
-            <tbody>
-              <tr>
-                <td align="center" style={buttonTableCell}>
-                  <Link href={perksUrl} style={buttonLink}>
-                    view {monthName} perks
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Section>
+          <Section style={buttonContainer}>
+            <table
+              align="left"
+              border={0}
+              cellPadding={0}
+              cellSpacing={0}
+              role="presentation"
+            >
+              <tbody>
+                <tr>
+                  <td align="center" style={buttonTableCell}>
+                    <Link href={perksUrl} style={buttonLink}>
+                      view {monthName} perks
+                    </Link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Section>
 
-        <Text style={paragraph}>
-          be sure to check each perk&apos;s validity dates and redemption terms
-          before heading in-store.
-        </Text>
+          <Text style={paragraph}>
+            be sure to check each perk&apos;s validity dates and redemption
+            terms before heading in-store.
+          </Text>
 
-        <Text style={signoff}>— the befday team</Text>
+          <Text style={signoff}>— the befday team</Text>
 
-        <Hr style={hr} />
+          <Hr style={hr} />
 
-        <Text style={footer}>
-          sent by befday. you received this reminder based on your birthday
-          settings on{" "}
-          <Link href="https://www.befday.com" style={footerLink}>
-            befday.com
-          </Link>
-          . you can update your notifications in your account settings at any
-          time.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
+          <Text style={footer}>
+            sent by befday. you received this reminder based on your birthday
+            settings on{" "}
+            <Link href="https://www.befday.com" style={footerLink}>
+              befday.com
+            </Link>
+            . you can update your notifications in your account settings at any
+            time.
+          </Text>
+        </Container>
+      </Body>
+    </Html>
   );
 };
 
