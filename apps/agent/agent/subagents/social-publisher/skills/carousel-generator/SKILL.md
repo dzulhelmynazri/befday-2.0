@@ -1,58 +1,66 @@
 ---
 name: carousel-generator
-description: Playbook for drafting high-save, slide-by-slide copy for multi-image swipeable carousels on Instagram and LinkedIn.
+description: Playbook for generating minimalist, high-save 1080x1350 Image Carousels ('Brand - Short Reward') for Instagram Carousels and TikTok Photo Mode using generate_carousel_slides.
 ---
 
-# Carousel Generator Skill
+# Carousel Generator Skill (Instagram & TikTok Photo Mode)
 
-Use this skill when tasked with creating multi-slide carousel posts (e.g., _"Top 7 Birthday Freebies in Malaysia"_, _"5 Free Birthday Desserts with Zero Spend"_, or monthly perk roundups).
-
----
-
-## 1. Why Carousels?
-
-Carousels generate **3x to 5x higher save and share rates** than single-image posts on Instagram and LinkedIn. They encourage swipe engagement and provide high reference value for users to bookmark for their birthday month.
+Use this skill when creating swipeable multi-slide image carousels for **Instagram Carousels** and **TikTok Photo Mode** (e.g., _"Top 7 Birthday Freebies in Malaysia"_, _"5 Free Birthday Desserts"*, or single-card Apple Notes cheat sheets).
 
 ---
 
-## 2. Standard 7–8 Slide Carousel Structure
+## 1. Golden Rule: Minimalist `Brand - Short Reward` Only
 
-Every carousel follows this slide-by-slide formula:
+- **Never put full claim instructions on carousel slides.**
+- Keep every item ultra-short: **`Brand - Short Reward`** (2–4 words for the reward):
+  - `Zus Coffee - Free cake`
+  - `FamilyMart - Free Sofuto`
+  - `Baskin Robbins - Free single scoop`
+  - `Boost Juice - Free drink`
+- Why: Minimalist slides swipe faster, look clean on mobile, and drive curiosity clicks to `befday.com` (link in bio) for the full redemption steps and app download links.
 
-### Slide 1: The Thumb-Stopping Hook (Cover)
+---
 
-- **Visual**: High-contrast, bold background with brand logos preview.
-- **Main Headline**: Large, readable text (under 10 words).
-  - _Example_: _"7 Free Birthday Treats in Malaysia You Probably Didn't Know About 🎁"_
-- **Sub-headline**: Specific qualifier (e.g., _“Swipe to see which ones require NO purchase 👉”_).
+## 2. Visual Templates & 3-Column Grid Themes (`generate_carousel_slides`)
 
-### Slides 2 to 6: Individual Brand Spotlights (1 Brand per Slide)
+Choose both `template` and `theme` in `generate_carousel_slides` to maintain a memorable 3-column profile grid on Instagram and TikTok (see `brand-guidelines` skill):
 
-Each brand slide must contain:
+### Templates (`template`)
 
-1. **Brand Name & Logo**: Prominent official branding.
-2. **Badge Tag**: Clear `FREE` (No purchase needed) or `VOUCHER` (Min spend required).
-3. **The Reward**: Exact item (e.g., _"Free Slice of Cake"_, _"Free 2D Movie Tickets"_).
-4. **How to Claim**: Concise 2-step instruction (e.g., _"1. Download MY FamilyMart App. 2. Show member QR in your birthday month."_).
-5. **Validity & Trap**: Cut-off rule (e.g., _"Must sign up at least 30 days before birth month"_).
+1. **`brand_carousel` (Multi-Slide Swipeable Deck)**:
+   - **Slide 1 (Cover Slide)**: Editorial card with `tag` pill (`BIRTHDAY PERKS`), bold `campaignTitle`, `subheadline`, and signature `befday.com` pill footer inside the 3-column thumbnail safe zone.
+   - **Slides 2 to N (Minimalist Brand Slides)**: Bold centered `Brand - Reward` text (e.g. `Zus Coffee - Free cake`) + `Full claim steps at befday.com` footer.
+2. **`notes_cheat_sheet` (Single-Card Cheat Sheet)**:
+   - Renders a single cheat-sheet card (e.g. `"November Birthday Treats"`) with a clean flat list of `Brand - Short Reward` lines and the signature `befday.com` footer.
 
-### Slide 7 (Optional): Comparison Matrix
+### 3-Column Grid Themes (`theme`)
 
-- Quick-summary checklist comparing all 5 featured brands at a glance.
+Rotate `theme` across posts so the 3-column Instagram/TikTok profile grid forms a cohesive branded pattern:
 
-### Final Slide: Call to Action (The Conversion Slide)
-
-- **Headline**: _"Save this post so you don't forget when your birthday comes! 📌"_
-- **Engagement Trigger**: _"Tag someone whose birthday is this month in the comments 👇"_
-- **Website CTA**: _"Link in bio to browse 100+ more verified birthday perks on befday.com."_
+- **`paper`** (`#faf9f5` warm editorial cream + `#181614` ink + `#c96442` terracotta pill): Best for category & niche roundups (Column 1).
+- **`terracotta`** (`#c96442` signature brand orange cover + `#faf9f5` warm paper interior slides): Best for monthly hero drops (Column 2).
+- **`charcoal`** (`#262624` warm dark card + `#d97757` terracotta pill): Best for `notes_cheat_sheet` lists & secret perks (Column 3).
 
 ---
 
 ## 3. Accompanying Caption Formula
 
-When scheduling the carousel post via NeuLink, provide a complementary caption:
+### For Instagram:
 
-1. **Opening Hook**: 1 punchy sentence matching Slide 1.
-2. **Quick List Overview**: Emoji list summarizing the brands featured.
-3. **Important Reminder**: Mention the #1 common trap (e.g., _"Reminder: 90% of brands require registering your loyalty app 30 days in advance!"_).
-4. **CTA & Hashtags**: Call to tag friends + 5–8 targeted hashtags (`#malaysiadeals #birthdayfreebies #klfoodie #freebies #befday`).
+1. **Opening Hook**: 1 punchy sentence matching Slide 1 (e.g., _"Save this before your birthday month arrives! 🎂"_).
+2. **Quick Summary**: Short 1-liner list (`Brand - Short Reward`).
+3. **CTA & Hashtags**: _"Tag a birthday celebrant below! Full claim steps & app links at befday.com (link in bio)."* + 5–8 hashtags (`#birthdayfreebies #malaysiadeals #klfoodie #freebies #befday`).
+
+### For TikTok (Photo Mode):
+
+1. **Short Punchy Hook** (< 150 characters): _"Swipe for birthday treats in Malaysia 👉 Save siap-siap! Full claim steps at befday.com 🎂"_
+2. **Trending Tags**: `#birthdayfreebies #malaysiahacks #fooddeals #klfoodie #befday`
+
+---
+
+## 4. Execution Workflow
+
+1. Call `get_brand_perks` (`status: "PUBLISHED"`) to retrieve verified brands, badges (`FREE` vs `VOUCHER`), and perks.
+2. Condense each reward into a 2–4 word phrase (e.g. `"Free cake"`, `"Free Sofuto"`, `"RM10 drink voucher"`).
+3. Call `generate_carousel_slides` to render PNG slides to Cloudflare R2 and receive `mediaUrls`.
+4. Call `schedule_social_post` passing `mediaUrls` and targeting `["instagram", "tiktok"]`.
