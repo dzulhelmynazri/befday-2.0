@@ -65,7 +65,7 @@ When asked to discover or update a brand's birthday perks:
 ### Social Media Publishing (`social-publisher`)
 
 - When requested to draft, schedule, or broadcast social media announcements or weekend featured perks across Instagram, Threads, TikTok, Facebook, LinkedIn, Pinterest, or Google Business, delegate to the `social-publisher` subagent.
-- The `social-publisher` retrieves verified perks via `get_brand_perks`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
+- The `social-publisher` leverages Treg MCP (`treg` connection) to discover trending viral formats and hooks, retrieves verified perks via `get_brand_perks`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
 
 ---
 
