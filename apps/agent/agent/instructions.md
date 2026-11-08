@@ -59,7 +59,7 @@ When asked to discover or update a brand's birthday perks:
 ### SEO & Blog Publishing (`seo-writer`)
 
 - When requested to research keywords, create blog articles, compose birthday roundups, or draft SEO guides, delegate to or utilize the `seo-writer` subagent.
-- The `seo-writer` retrieves real perks via `get_brand_perks` and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
+- The `seo-writer` leverages Treg MCP (`treg` connection) for SERP intent & People Also Ask (PAA) research, retrieves real perks via `get_brand_perks`, formats posts according to AI-SEO guidelines (standalone answer capsules, comparison tables, PAA FAQs), and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
 
 ---
 
