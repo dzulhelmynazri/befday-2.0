@@ -47,22 +47,6 @@ const ANGLE_CONFIG = {
   }
 >;
 
-interface EmailDraft {
-  body: string;
-  subject: string;
-  to: string;
-}
-
-const toEmailDraft = (input: SendPartnerOutreachInput): EmailDraft | null => {
-  const { contactEmail, emailBody, emailSubject, emailVerified } = input;
-
-  if (!(emailVerified && contactEmail && emailSubject && emailBody)) {
-    return null;
-  }
-
-  return { body: emailBody, subject: emailSubject, to: contactEmail };
-};
-
 const getBlockReason = (
   existing: PartnerOutreach | null,
   brandName: string
@@ -89,20 +73,25 @@ const getBlockReason = (
   return null;
 };
 
-const sendEmail = async (draft: EmailDraft, linkUrl: string) => {
-  const { html, text } = await renderPartnerOutreachEmail({
-    body: draft.body,
-    linkUrl,
-    senderName: SENDER_NAME,
-  });
-
+const sendEmail = async (
+  to: string,
+  subject: string,
+  body: string,
+  linkUrl: string
+) => {
   try {
+    const { html, text } = await renderPartnerOutreachEmail({
+      body,
+      linkUrl,
+      senderName: SENDER_NAME,
+    });
+
     await email.send({
       from: SENDER_ADDRESS,
       html,
-      subject: draft.subject,
+      subject,
       text,
-      to: draft.to,
+      to,
     });
 
     return true;
@@ -116,35 +105,27 @@ const notifyTelegram = async (
   step: number,
   emailSent: boolean
 ) => {
-  const contactPhoneLine = input.contactPhone ? ` +${input.contactPhone}` : "";
-
   const emailLine = emailSent
     ? `Email sent to ${input.contactEmail}`
     : "Email not sent";
 
+  const contactParts = [
+    input.contactName,
+    input.contactPhone ? `+${input.contactPhone}` : undefined,
+  ].filter(Boolean);
+
+  const contactLine =
+    contactParts.length > 0 ? `Contact. ${contactParts.join(" ")}` : "";
+
   const text = [
     `Partner outreach. ${input.brandName} (step ${step} of ${MAX_STEP})`,
     `Angle. ${ANGLE_CONFIG[input.angle].label}`,
-    `Contact. ${input.contactName ?? "Unknown"}${contactPhoneLine}`,
+    contactLine,
     emailLine,
-    "",
-    "WhatsApp draft",
-    input.whatsappDraft,
-  ].join("\n");
-
-  const whatsappButton = input.contactPhone
-    ? [
-        {
-          text: "Send WhatsApp",
-          url: `https://wa.me/${input.contactPhone}?text=${encodeURIComponent(input.whatsappDraft)}`,
-        },
-      ]
-    : [];
-
-  const buttons = [
-    ...whatsappButton,
-    { text: "Website", url: input.websiteUrl },
-  ];
+    ...(input.whatsappDraft ? ["", "WhatsApp draft", input.whatsappDraft] : []),
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   const response = await fetch(
     `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
@@ -152,7 +133,21 @@ const notifyTelegram = async (
       body: JSON.stringify({
         chat_id: process.env.TELEGRAM_CHAT_ID,
         disable_web_page_preview: true,
-        reply_markup: { inline_keyboard: buttons.map((b) => [b]) },
+        reply_markup: {
+          inline_keyboard: [
+            ...(input.contactPhone && input.whatsappDraft
+              ? [
+                  [
+                    {
+                      text: "Send WhatsApp",
+                      url: `https://wa.me/${input.contactPhone}?text=${encodeURIComponent(input.whatsappDraft)}`,
+                    },
+                  ],
+                ]
+              : []),
+            [{ text: "Website", url: input.websiteUrl }],
+          ],
+        },
         text,
       }),
       headers: { "Content-Type": "application/json" },
@@ -168,15 +163,6 @@ export default defineTool({
     "Sends one partner outreach touch for a brand. Emails the contact through Cloudflare Email when the address is verified, records the outreach state, and posts a Telegram card with a 1-tap WhatsApp button. Refuses brands that replied, converted, opted out, were contacted in the last 7 days, or already had 3 touches.",
   async execute(input) {
     const config = ANGLE_CONFIG[input.angle];
-    const emailDraft = toEmailDraft(input);
-
-    if (!(emailDraft || input.contactPhone)) {
-      return {
-        error:
-          "No deliverable channel. Provide a verified email with subject and body, or a WhatsApp number.",
-        sent: false,
-      };
-    }
 
     const existing = await db.partnerOutreach.findUnique({
       where: { brandSlug: input.brandSlug },
@@ -202,13 +188,21 @@ export default defineTool({
       }
     }
 
-    const emailSent = emailDraft
-      ? await sendEmail(emailDraft, config.linkUrl(input.brandSlug))
-      : false;
+    const { contactEmail, emailBody, emailSubject, emailVerified } = input;
 
-    if (!(emailSent || input.contactPhone)) {
+    const emailSent =
+      emailVerified && contactEmail && emailSubject && emailBody
+        ? await sendEmail(
+            contactEmail,
+            emailSubject,
+            emailBody,
+            config.linkUrl(input.brandSlug)
+          )
+        : false;
+
+    if (!emailSent && !(input.contactPhone && input.whatsappDraft)) {
       return {
-        error: "Email delivery failed and no WhatsApp number was provided.",
+        error: "Email delivery failed and no WhatsApp channel was provided.",
         sent: false,
       };
     }

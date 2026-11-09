@@ -11,8 +11,8 @@ import {
 } from "@react-email/components";
 
 export interface PartnerSubmissionReceivedEmailProps {
-  contactName?: string;
-  brandName?: string;
+  brandName: string;
+  contactName: string;
 }
 
 const main = {
@@ -96,8 +96,8 @@ const footerLink = {
 };
 
 export const PartnerSubmissionReceivedEmail = ({
-  contactName = "there",
-  brandName = "your brand",
+  brandName,
+  contactName,
 }: PartnerSubmissionReceivedEmailProps) => (
   <Html lang="en">
     <Head />
@@ -107,14 +107,13 @@ export const PartnerSubmissionReceivedEmail = ({
         <Heading style={heading}>we received your submission.</Heading>
 
         <Text style={paragraph}>
-          hi {contactName}, thank you for submitting a birthday perk for{" "}
+          hi {contactName}, thanks for submitting a birthday perk for{" "}
           {brandName} on befday.
         </Text>
 
         <Text style={paragraph}>
-          our editorial team verifies every submission against official brand
-          announcements, membership requirements, and terms to ensure all
-          listings on befday are 100% accurate for our community.
+          we check each perk against official brand terms and app requirements
+          before publishing it so listings stay accurate.
         </Text>
 
         <div style={statusCard}>
@@ -123,35 +122,28 @@ export const PartnerSubmissionReceivedEmail = ({
           <Text style={{ ...statusLabel, marginTop: "12px" }}>
             current status
           </Text>
-          <Text style={statusValue}>under review (24–48 hours)</Text>
+          <Text style={statusValue}>under review (usually 24–48 hours)</Text>
         </div>
 
         <Text style={paragraph}>
-          we typically review submissions within 24 to 48 hours. as soon as your
-          listing is approved and published live in our directory, we will send
-          you a confirmation email with your listing link.
+          we will email you your listing link as soon as it is approved and live.
         </Text>
 
         <Text style={paragraph}>
-          if you have any questions or need to make immediate changes to your
-          submission, simply reply to this email or write to{" "}
+          if you need to update anything in the meantime, reply directly to this
+          email or write to{" "}
           <Link href="mailto:hello@befday.com" style={footerLink}>
             hello@befday.com
           </Link>
           .
         </Text>
 
-        <Text style={signoff}>— the befday team</Text>
+        <Text style={signoff}>- the befday team</Text>
 
         <Hr style={hr} />
 
         <Text style={footer}>
-          sent by befday. you received this automated update regarding your
-          partner submission on{" "}
-          <Link href="https://www.befday.com" style={footerLink}>
-            befday.com
-          </Link>
-          .
+          sent from befday.com in response to your partner submission.
         </Text>
       </Container>
     </Body>

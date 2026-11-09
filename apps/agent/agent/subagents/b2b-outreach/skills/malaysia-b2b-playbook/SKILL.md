@@ -64,7 +64,7 @@ i'll stop here so i don't clutter your inbox. the listing stays live and you can
 
 ## WhatsApp rules
 
-- Every touch includes `whatsappDraft`, even when email is sent. The operator decides whether to send it.
+- Provide `whatsappDraft` whenever a phone number is available. The operator decides whether to send it.
 - Under 60 words. No links except `befday.com` written as plain text.
 - Match the brand's own social voice. Use Bahasa Malaysia for local warung, kopitiam, and BM-first brands. Use English for chains and malls.
 - Introduce yourself in one clause, because WhatsApp has no subject line.

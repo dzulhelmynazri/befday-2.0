@@ -12,10 +12,10 @@ import {
 } from "@react-email/components";
 
 export interface PartnerPerkApprovedEmailProps {
-  contactName?: string;
-  brandName?: string;
-  perkHeadline?: string;
-  listingUrl?: string;
+  brandName: string;
+  contactName: string;
+  listingUrl: string;
+  perkHeadline: string;
 }
 
 const main = {
@@ -118,27 +118,26 @@ const footerLink = {
 };
 
 export const PartnerPerkApprovedEmail = ({
-  contactName = "there",
-  brandName = "your brand",
-  perkHeadline = "complimentary birthday treat",
-  listingUrl = "https://www.befday.com",
+  brandName,
+  contactName,
+  listingUrl,
+  perkHeadline,
 }: PartnerPerkApprovedEmailProps) => (
   <Html lang="en">
     <Head />
-    <Preview>your birthday perk for {brandName} is now live on befday!</Preview>
+    <Preview>your birthday perk for {brandName} is now live on befday</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={heading}>your perk is live on befday.</Heading>
 
         <Text style={paragraph}>
-          hi {contactName}, great news! your birthday perk for {brandName} has
-          been verified and published live in our directory.
+          hi {contactName}, your birthday perk for {brandName} is now live on
+          befday.
         </Text>
 
         <Text style={paragraph}>
-          thousands of users looking for verified birthday deals across malaysia
-          can now discover your brand, view redemption requirements, and visit
-          your locations.
+          people checking befday for birthday treats can now find your perk and
+          see how to redeem it.
         </Text>
 
         <div style={listingCard}>
@@ -175,25 +174,20 @@ export const PartnerPerkApprovedEmail = ({
         </Section>
 
         <Text style={paragraph}>
-          if you ever update terms, participating outlets, or redemption dates,
-          feel free to submit an update or email us at{" "}
+          if you ever update terms, outlets, or redemption dates, reply directly
+          or email us at{" "}
           <Link href="mailto:hello@befday.com" style={footerLink}>
             hello@befday.com
           </Link>
           .
         </Text>
 
-        <Text style={signoff}>— the befday team</Text>
+        <Text style={signoff}>- the befday team</Text>
 
         <Hr style={hr} />
 
         <Text style={footer}>
-          sent by befday. you received this notification because you submitted a
-          partner listing on{" "}
-          <Link href="https://www.befday.com" style={footerLink}>
-            befday.com
-          </Link>
-          .
+          sent from befday.com in response to your partner submission.
         </Text>
       </Container>
     </Body>

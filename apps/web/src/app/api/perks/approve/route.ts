@@ -1,54 +1,91 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+
 import { renderPartnerPerkApprovedEmail } from "@befday-2.0/email";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
+import { env } from "@/env.server";
 import { email, getDb } from "@/services";
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
+  const token = searchParams.get("token");
 
-  if (!id) {
-    return NextResponse.json({ error: "Missing perk id" }, { status: 400 });
+  if (!(id && token)) {
+    return NextResponse.json(
+      { error: "Missing perk id or token" },
+      { status: 400 }
+    );
+  }
+
+  const expectedToken = createHmac("sha256", env.CRON_SECRET)
+    .update(id)
+    .digest("hex");
+
+  const tokenBuffer = Buffer.from(token);
+  const expectedBuffer = Buffer.from(expectedToken);
+
+  if (
+    tokenBuffer.length !== expectedBuffer.length ||
+    !timingSafeEqual(tokenBuffer, expectedBuffer)
+  ) {
+    return NextResponse.json(
+      { error: "Invalid or unauthorized token" },
+      { status: 401 }
+    );
   }
 
   const db = getDb();
 
   try {
-    const perk = await db.birthdayPerk.update({
-      data: {
-        status: "PUBLISHED",
-        verifiedAt: new Date(),
-      },
+    const existingPerk = await db.birthdayPerk.findUnique({
       include: { brand: true },
       where: { id },
     });
 
-    revalidateTag("perks", "max");
+    if (!existingPerk) {
+      return NextResponse.json({ error: "Perk not found" }, { status: 404 });
+    }
 
-    if (perk.contactEmail && perk.contactName) {
-      const { html: emailHtml, text: emailText } =
-        await renderPartnerPerkApprovedEmail({
-          brandName: perk.brand.name.toLowerCase(),
-          contactName: perk.contactName.toLowerCase(),
-          listingUrl: `https://www.befday.com/perks/${perk.brand.slug}`,
-          perkHeadline: perk.headline.toLowerCase(),
-        });
+    let perk = existingPerk;
 
-      await email.send({
-        from: "befday <hello@befday.com>",
-        html: emailHtml,
-        subject: `your birthday perk for ${perk.brand.name.toLowerCase()} is now live on befday!`,
-        text: emailText,
-        to: perk.contactEmail,
+    if (existingPerk.status !== "PUBLISHED") {
+      perk = await db.birthdayPerk.update({
+        data: {
+          status: "PUBLISHED",
+          verifiedAt: new Date(),
+        },
+        include: { brand: true },
+        where: { id },
       });
+
+      revalidateTag("perks", "max");
+
+      if (perk.contactEmail && perk.contactName) {
+        const { html: emailHtml, text: emailText } =
+          await renderPartnerPerkApprovedEmail({
+            brandName: perk.brand.name.toLowerCase(),
+            contactName: perk.contactName.toLowerCase(),
+            listingUrl: `https://www.befday.com/perks/${perk.brand.slug}`,
+            perkHeadline: perk.headline.toLowerCase(),
+          });
+
+        await email.send({
+          from: "befday <hello@befday.com>",
+          html: emailHtml,
+          subject: `your birthday perk for ${perk.brand.name.toLowerCase()} is now live on befday`,
+          text: emailText,
+          to: perk.contactEmail,
+        });
+      }
     }
 
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Perk Approved — Happy befday!</title>
+  <title>Perk Approved - Happy befday!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {

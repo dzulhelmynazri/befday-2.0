@@ -29,7 +29,7 @@ Stop researching a brand after 5 Treg calls. If nothing usable turns up, skip it
 
 ### 3. Send
 
-Call `send_partner_outreach` once per brand with the angle, contacts, `emailVerified`, `emailSubject`, `emailBody`, `whatsappDraft`, and `sourceUrls`. Use the exact `brandSlug` from `get_outreach_candidates` for listed brands.
+Call `send_partner_outreach` once per brand with the angle, contacts, and delivery channels (email fields with `emailVerified: true` if deliverable email found, and `whatsappDraft` if phone found). Use the exact `brandSlug` from `get_outreach_candidates` for listed brands.
 
 If the tool refuses (cooldown, finished sequence, terminal status, missing listing), accept it and move on. Never retry with a different slug to get around a refusal.
 

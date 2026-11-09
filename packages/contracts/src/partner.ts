@@ -49,63 +49,84 @@ export const outreachAngleSchema = z.enum([
 
 export type OutreachAngle = z.infer<typeof outreachAngleSchema>;
 
-export const sendPartnerOutreachSchema = z.object({
-  angle: outreachAngleSchema.describe(
-    "CLAIM_LISTING for brands already listed on befday, INVITE_NEW_BRAND for unlisted brands, FEATURED_SPONSORSHIP for paid placement pitches"
-  ),
-  brandName: z.string().min(2).max(80).describe("Official brand name"),
-  brandSlug: z
-    .string()
-    .min(2)
-    .max(80)
-    .describe(
-      "Brand slug. Must match the existing Brand.slug for CLAIM_LISTING and FEATURED_SPONSORSHIP"
+export const sendPartnerOutreachSchema = z
+  .object({
+    angle: outreachAngleSchema.describe(
+      "CLAIM_LISTING for brands already listed on befday, INVITE_NEW_BRAND for unlisted brands, FEATURED_SPONSORSHIP for paid placement pitches"
     ),
-  contactEmail: z
-    .email()
-    .optional()
-    .describe("Business contact email found during research"),
-  contactName: z
-    .string()
-    .min(2)
-    .max(80)
-    .optional()
-    .describe("Named contact person, if found"),
-  contactPhone: z
-    .string()
-    .regex(/^\d{9,15}$/u, "digits only with country code, e.g. 60123456789")
-    .optional()
-    .describe("WhatsApp Business number as digits with country code"),
-  emailBody: z
-    .string()
-    .min(20)
-    .max(800)
-    .optional()
-    .describe(
-      "Plain-text email body under 80 words. Separate paragraphs with a blank line. No greeting fluff, no links, no sign-off"
-    ),
-  emailSubject: z
-    .string()
-    .min(3)
-    .max(60)
-    .optional()
-    .describe("2 to 4 word lowercase subject line"),
-  emailVerified: z
-    .boolean()
-    .describe(
-      "True only when the email was verified as deliverable. Unverified emails are never sent"
-    ),
-  sourceUrls: z
-    .array(z.url())
-    .min(1)
-    .describe("Public URLs where the contact details were found"),
-  websiteUrl: z.url().describe("Official brand website"),
-  whatsappDraft: z
-    .string()
-    .min(20)
-    .max(600)
-    .describe("Ready-to-send WhatsApp message in English or Bahasa Malaysia"),
-});
+    brandName: z.string().min(2).max(80).describe("Official brand name"),
+    brandSlug: z
+      .string()
+      .min(2)
+      .max(80)
+      .describe(
+        "Brand slug. Must match the existing Brand.slug for CLAIM_LISTING and FEATURED_SPONSORSHIP"
+      ),
+    contactEmail: z
+      .email()
+      .optional()
+      .describe("Business contact email found during research"),
+    contactName: z
+      .string()
+      .min(2)
+      .max(80)
+      .optional()
+      .describe("Named contact person, if found"),
+    contactPhone: z
+      .string()
+      .regex(/^\d{9,15}$/u, "digits only with country code, e.g. 60123456789")
+      .optional()
+      .describe("WhatsApp Business number as digits with country code"),
+    emailBody: z
+      .string()
+      .min(20)
+      .max(800)
+      .optional()
+      .describe(
+        "Plain-text email body under 80 words. Separate paragraphs with a blank line. No greeting fluff, no links, no sign-off"
+      ),
+    emailSubject: z
+      .string()
+      .min(3)
+      .max(60)
+      .optional()
+      .describe("2 to 4 word lowercase subject line"),
+    emailVerified: z
+      .boolean()
+      .default(false)
+      .describe(
+        "True only when the email was verified as deliverable. Unverified emails are never sent"
+      ),
+    sourceUrls: z
+      .array(z.url())
+      .min(1)
+      .describe("Public URLs where the contact details were found"),
+    websiteUrl: z.url().describe("Official brand website"),
+    whatsappDraft: z
+      .string()
+      .min(20)
+      .max(600)
+      .optional()
+      .describe("Ready-to-send WhatsApp message in English or Bahasa Malaysia"),
+  })
+  .refine(
+    (data) => {
+      const hasEmail = Boolean(
+        data.emailVerified &&
+        data.contactEmail &&
+        data.emailSubject &&
+        data.emailBody
+      );
+
+      const hasWhatsApp = Boolean(data.contactPhone && data.whatsappDraft);
+
+      return hasEmail || hasWhatsApp;
+    },
+    {
+      message:
+        "Provide at least one complete channel: either a verified email with subject and body, or a contact phone with a WhatsApp draft.",
+    }
+  );
 
 export type SendPartnerOutreachInput = z.infer<
   typeof sendPartnerOutreachSchema

@@ -1,3 +1,5 @@
+import { createHmac } from "node:crypto";
+
 import { submitPartnerPerkSchema } from "@befday-2.0/contracts";
 import { renderPartnerSubmissionReceivedEmail } from "@befday-2.0/email";
 import slugify from "slugify";
@@ -20,21 +22,21 @@ export const partnerRouter = router({
 
       const brand = await ctx.db.brand.upsert({
         create: {
-          appStoreUrl: input.appStoreUrl ?? "",
+          appStoreUrl: input.appStoreUrl || null,
           description: input.headline,
           googleMapUrl: input.googleMapUrl ?? "",
           logoUrl: defaultLogo,
           name: input.brandName,
-          playStoreUrl: input.playStoreUrl ?? "",
+          playStoreUrl: input.playStoreUrl || null,
           slug: brandSlug,
           websiteUrl: input.websiteUrl ?? "",
         },
         update: {
-          appStoreUrl: input.appStoreUrl ?? undefined,
-          googleMapUrl: input.googleMapUrl ?? undefined,
+          appStoreUrl: input.appStoreUrl || undefined,
+          googleMapUrl: input.googleMapUrl || undefined,
           name: input.brandName,
-          playStoreUrl: input.playStoreUrl ?? undefined,
-          websiteUrl: input.websiteUrl ?? undefined,
+          playStoreUrl: input.playStoreUrl || undefined,
+          websiteUrl: input.websiteUrl || undefined,
         },
         where: { slug: brandSlug },
       });
@@ -53,7 +55,7 @@ export const partnerRouter = router({
           contactPhone: input.contactPhone,
           headline: input.headline,
           howToRedeem: [input.howToRedeem],
-          perksList: perksList.length > 0 ? perksList : [input.headline],
+          perksList: perksList.length > 0 ? perksList : [input.perksList.trim()],
           status: "DRAFT",
           termsConditions: null,
           validity: input.validity,
@@ -69,23 +71,28 @@ export const partnerRouter = router({
 
       // Dispatch Telegram notification
       const { env } = ctx;
-      const approveUrl = `${env.NEXT_PUBLIC_SITE_URL}/api/perks/approve?id=${perk.id}`;
+
+      const signature = createHmac("sha256", env.CRON_SECRET)
+        .update(perk.id)
+        .digest("hex");
+
+      const approveUrl = `${env.NEXT_PUBLIC_SITE_URL}/api/perks/approve?id=${perk.id}&token=${signature}`;
 
       const lines = [
-        `🎉 *New Merchant Perk Submission!*`,
+        `*New merchant perk submission*`,
         ``,
-        `🏢 *Brand*: ${input.brandName}`,
-        `🎁 *Perk*: ${input.headline}`,
-        `🏷️ *Badge*: ${input.badge}`,
-        `📅 *Validity*: ${input.validity}`,
-        `📱 *Redeem*: ${input.howToRedeem}`,
-        `👤 *Contact*: ${input.contactName} (${input.contactEmail} | ${input.contactPhone})`,
-        input.websiteUrl ? `🔗 *Website*: ${input.websiteUrl}` : "",
-        input.googleMapUrl ? `📍 *Location*: ${input.googleMapUrl}` : "",
-        input.appStoreUrl ? `🍎 *App Store*: ${input.appStoreUrl}` : "",
-        input.playStoreUrl ? `🤖 *Play Store*: ${input.playStoreUrl}` : "",
+        `Brand. ${input.brandName}`,
+        `Perk. ${input.headline}`,
+        `Badge. ${input.badge}`,
+        `Validity. ${input.validity}`,
+        `Redeem. ${input.howToRedeem}`,
+        `Contact. ${input.contactName} (${input.contactEmail} | ${input.contactPhone})`,
+        input.websiteUrl ? `Website. ${input.websiteUrl}` : "",
+        input.googleMapUrl ? `Location. ${input.googleMapUrl}` : "",
+        input.appStoreUrl ? `App Store. ${input.appStoreUrl}` : "",
+        input.playStoreUrl ? `Play Store. ${input.playStoreUrl}` : "",
         ``,
-        `*Status*: Saved as DRAFT (id: \`${perk.id}\`)`,
+        `Status. Saved as DRAFT (id: \`${perk.id}\`)`,
       ].filter(Boolean);
 
       await fetch(
@@ -93,6 +100,7 @@ export const partnerRouter = router({
         {
           body: JSON.stringify({
             chat_id: env.TELEGRAM_CHAT_ID,
+            disable_web_page_preview: true,
             parse_mode: "Markdown",
             reply_markup: {
               inline_keyboard: [
