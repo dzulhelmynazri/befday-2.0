@@ -107,11 +107,16 @@ Threads users strongly favor **zero-fluff, screenshot-able lists** over marketin
   3. **The Business Takeaway (for founders & marketers)**: 1 short paragraph explaining why brands trade a RM5–RM10 COGS item once a year for app installs, 365 days of push notifications, and first-party data.
   4. **Discussion Prompt**: End with a genuine question (e.g., _"Which Malaysian brand has the smartest loyalty program right now?"_).
 
-### F. Pinterest
+### F. Pinterest (Visual Search Engine & Bookmark Pin)
 
-- **Style**: Search-optimized description packed with commercial discovery keywords.
+- **Media**: Attach **1 single `notes_cheat_sheet` image** (or `brand_carousel` cover slide) rendered at `1080x1350` via `generate_carousel_slides`.
+- **Algorithm Rules**:
+  - Unlike Facebook and LinkedIn, **Pinterest is a visual search engine that rewards direct outbound links** (`https://befday.com` or `https://befday.com/deals/[slug]`).
+  - Optimize for **Evergreen Search Keywords** (`"free birthday treats Malaysia"`, `"birthday freebies KL"`, `"free birthday cake Malaysia"`) and **Board Saves**.
 - **Formula**:
-  - Target high-intent queries: _“Best Birthday Freebies”_, _“Birthday Month Perks”_, _“Free Food on Your Birthday”_. Include a link back to the brand card.
+  1. **SEO Pin Title (First Line, < 100 chars)**: Exact-match commercial search query (e.g., _"10 Free Birthday Treats in Malaysia (2026 Checklist)"_).
+  2. **Keyword-Rich Description (2–3 sentences)**: Mention the featured brands (`Zus Coffee, FamilyMart, Baskin Robbins, Boost Juice, Coffee Bean`) and reward types (`free cake, ice cream, birthday drinks`).
+  3. **Direct Link + 3–5 Hashtags**: Include the direct `https://befday.com` URL and discovery tags (`#birthdayfreebies #malaysiadeals #klfoodie`).
 
 ### G. Google Business
 
