@@ -84,11 +84,16 @@ Threads users strongly favor **zero-fluff, screenshot-able lists** over marketin
 2. **Format 2: Apple Notes Cheat-Sheet Card**:
    - Attach a `notes_cheat_sheet` PNG generated via `generate_carousel_slides` with a clean flat list of `Brand - Short Reward` items.
 
-### D. Facebook Page
+### D. Facebook Page (Community Cheat-Sheet & Tag Prompt)
 
-- **Style**: Community-friendly deal announcement paired with carousel images.
+- **Media**: Attach **1 single `notes_cheat_sheet` image** (`1080x1350` PNG via `generate_carousel_slides` with `template: "notes_cheat_sheet"`) so Facebook renders a full-width portrait card instead of a multi-photo album grid.
+- **Algorithm Rules (`social` skill)**:
+  - **No outbound `https://` links in the post body** (external links kill Facebook reach; write `befday.com` as plain text and rely on the `befday.com` button inside the card).
+  - Optimize for **Shares to WhatsApp/Messenger** and **Friend Tags in Comments**.
 - **Formula**:
-  - 1–2 friendly paragraphs explaining the offer, participating outlets, validity period, and a clickable link to the brand details page.
+  1. **Community Hook**: Casual English or Manglish/BM birth-month callout (e.g., _"Geng lahir bulan [Month], dah ready nak claim birthday treats korang?"_).
+  2. **The Saveable List**: 6–10 numbered `Brand - Short Reward` lines (`1. Zus Coffee - Free cake`).
+  3. **Comment Tag CTA**: Prompt readers to tag friends or family born that month (e.g., _"Full cara tebus ada dekat befday.com. Tag member atau family korang yang lahir bulan [Month] kat komen!"_).
 
 ### E. LinkedIn (Hybrid "Loyalty Insight + Saveable Cheat Sheet")
 
