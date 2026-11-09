@@ -6,17 +6,33 @@ import { z } from "zod";
 
 import { db } from "./db";
 
-const getNextTheme = (lastTheme: string | null): SocialTheme => {
-  if (lastTheme === "paper") {
-    return "terracotta";
-  }
+const DEFAULT_LIMIT = 20 as const;
+const MAX_LIMIT = 100 as const;
 
-  if (lastTheme === "terracotta") {
-    return "charcoal";
+const NEXT_THEME_MAP = {
+  charcoal: "paper",
+  paper: "terracotta",
+  terracotta: "charcoal",
+} as const satisfies Record<SocialTheme, SocialTheme>;
+
+const isSocialTheme = (theme: string): theme is SocialTheme =>
+  theme in NEXT_THEME_MAP;
+
+const getNextTheme = (lastTheme: string | null): SocialTheme => {
+  if (lastTheme && isSocialTheme(lastTheme)) {
+    return NEXT_THEME_MAP[lastTheme];
   }
 
   return "paper";
 };
+
+const SORT_BY_OPTIONS = [
+  "newest",
+  "unposted_first",
+  "oldest_verified",
+] as const;
+
+type SortBy = (typeof SORT_BY_OPTIONS)[number];
 
 const ORDER_BY = {
   newest: [{ createdAt: "desc" }],
@@ -25,10 +41,7 @@ const ORDER_BY = {
     { lastPostedAt: { nulls: "first", sort: "asc" } },
     { createdAt: "desc" },
   ],
-} satisfies Record<
-  "newest" | "unposted_first" | "oldest_verified",
-  Prisma.BirthdayPerkOrderByWithRelationInput[]
->;
+} satisfies Record<SortBy, Prisma.BirthdayPerkOrderByWithRelationInput[]>;
 
 const inputSchema = z.object({
   badge: perkBadgeSchema
@@ -38,15 +51,15 @@ const inputSchema = z.object({
     .number()
     .int()
     .positive()
-    .max(100)
-    .default(20)
+    .max(MAX_LIMIT)
+    .default(DEFAULT_LIMIT)
     .describe("Maximum number of perks to retrieve (up to 100)"),
   search: z
     .string()
     .optional()
     .describe("Keyword search matching brand name or headline"),
   sortBy: z
-    .enum(["newest", "unposted_first", "oldest_verified"])
+    .enum(SORT_BY_OPTIONS)
     .default("newest")
     .describe(
       "Sort order: 'newest' (default createdAt desc), 'unposted_first' (never/least-recently featured on social media first), or 'oldest_verified' (stalest verifiedAt first for weekly verification)"
@@ -56,10 +69,42 @@ const inputSchema = z.object({
     .describe("Status of perks to retrieve"),
 });
 
+export interface BrandPerkSummary {
+  readonly appStoreUrl: string | null;
+  readonly badge: string;
+  readonly brandName: string;
+  readonly brandSlug: string;
+  readonly googleMapUrl: string | null;
+  readonly headline: string;
+  readonly howToRedeem: readonly string[];
+  readonly lastPostedAt: Date | null;
+  readonly lastTheme: string | null;
+  readonly logoUrl: string | null;
+  readonly perksList: readonly string[];
+  readonly playStoreUrl: string | null;
+  readonly termsConditions: string | null;
+  readonly validity: string;
+  readonly verifiedAt: Date | null;
+  readonly websiteUrl: string | null;
+}
+
+export interface GetBrandPerksResult {
+  readonly count: number;
+  readonly lastTheme: string | null;
+  readonly nextTheme: SocialTheme;
+  readonly perks: readonly BrandPerkSummary[];
+}
+
 export const createGetBrandPerksTool = (description: string) =>
   defineTool({
     description,
-    execute: async ({ badge, limit, search, sortBy, status }) => {
+    execute: async ({
+      badge,
+      limit,
+      search,
+      sortBy,
+      status,
+    }): Promise<GetBrandPerksResult> => {
       const where: Prisma.BirthdayPerkWhereInput = {
         status,
       };
@@ -68,10 +113,12 @@ export const createGetBrandPerksTool = (description: string) =>
         where.badge = badge;
       }
 
-      if (search) {
+      const trimmedSearch = search?.trim();
+
+      if (trimmedSearch) {
         where.OR = [
-          { brand: { name: { contains: search, mode: "insensitive" } } },
-          { headline: { contains: search, mode: "insensitive" } },
+          { brand: { name: { contains: trimmedSearch, mode: "insensitive" } } },
+          { headline: { contains: trimmedSearch, mode: "insensitive" } },
         ];
       }
 
@@ -100,23 +147,23 @@ export const createGetBrandPerksTool = (description: string) =>
         count: perks.length,
         lastTheme,
         nextTheme: getNextTheme(lastTheme),
-        perks: perks.map((p) => ({
-          appStoreUrl: p.brand.appStoreUrl,
-          badge: p.badge,
-          brandName: p.brand.name,
-          brandSlug: p.brand.slug,
-          googleMapUrl: p.brand.googleMapUrl,
-          headline: p.headline,
-          howToRedeem: p.howToRedeem,
-          lastPostedAt: p.lastPostedAt,
-          lastTheme: p.lastTheme,
-          logoUrl: p.brand.logoUrl,
-          perksList: p.perksList,
-          playStoreUrl: p.brand.playStoreUrl,
-          termsConditions: p.termsConditions,
-          validity: p.validity,
-          verifiedAt: p.verifiedAt,
-          websiteUrl: p.brand.websiteUrl,
+        perks: perks.map((perk) => ({
+          appStoreUrl: perk.brand.appStoreUrl,
+          badge: perk.badge,
+          brandName: perk.brand.name,
+          brandSlug: perk.brand.slug,
+          googleMapUrl: perk.brand.googleMapUrl,
+          headline: perk.headline,
+          howToRedeem: perk.howToRedeem,
+          lastPostedAt: perk.lastPostedAt,
+          lastTheme: perk.lastTheme,
+          logoUrl: perk.brand.logoUrl,
+          perksList: perk.perksList,
+          playStoreUrl: perk.brand.playStoreUrl,
+          termsConditions: perk.termsConditions,
+          validity: perk.validity,
+          verifiedAt: perk.verifiedAt,
+          websiteUrl: perk.brand.websiteUrl,
         })),
       };
     },

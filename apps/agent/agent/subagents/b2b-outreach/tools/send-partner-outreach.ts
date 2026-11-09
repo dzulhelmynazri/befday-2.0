@@ -6,17 +6,18 @@ import type {
 import type { OutreachStatus, PartnerOutreach } from "@befday-2.0/db";
 import { renderPartnerOutreachEmail } from "@befday-2.0/email";
 import { defineTool } from "eve/tools";
+import { auto } from "eve/tools/approval";
 
 import { db } from "@/lib/db";
 import { email } from "@/lib/email";
 
-const SITE_URL = "https://www.befday.com";
-const SENDER_NAME = "dzulhelmy, befday";
-const SENDER_ADDRESS = "dzulhelmy from befday <hello@befday.com>";
+const SITE_URL = "https://www.befday.com" as const;
+const SENDER_NAME = "dzulhelmy, befday" as const;
+const SENDER_ADDRESS = "dzulhelmy from befday <hello@befday.com>" as const;
 const FOLLOW_UP_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_STEP = 3;
 
-const TERMINAL_STATUSES = new Set<OutreachStatus>([
+const TERMINAL_STATUSES: ReadonlySet<OutreachStatus> = new Set([
   "REPLIED",
   "CONVERTED",
   "OPTED_OUT",
@@ -46,6 +47,17 @@ const ANGLE_CONFIG = {
     requiresListing: boolean;
   }
 >;
+
+type SendPartnerOutreachResult =
+  | { readonly error: string; readonly sent: false }
+  | {
+      readonly brandSlug: string;
+      readonly emailSent: boolean;
+      readonly sent: true;
+      readonly status: OutreachStatus;
+      readonly step: number;
+      readonly telegramNotified: boolean;
+    };
 
 const getBlockReason = (
   existing: PartnerOutreach | null,
@@ -78,7 +90,7 @@ const sendEmail = async (
   subject: string,
   body: string,
   linkUrl: string
-) => {
+): Promise<boolean> => {
   try {
     const { html, text } = await renderPartnerOutreachEmail({
       body,
@@ -104,64 +116,91 @@ const notifyTelegram = async (
   input: SendPartnerOutreachInput,
   step: number,
   emailSent: boolean
-) => {
+): Promise<boolean> => {
+  const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+  const telegramChatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!telegramBotToken || !telegramChatId) {
+    return false;
+  }
+
   const emailLine = emailSent
     ? `Email sent to ${input.contactEmail}`
     : "Email not sent";
 
-  const contactParts = [
-    input.contactName,
-    input.contactPhone ? `+${input.contactPhone}` : undefined,
-  ].filter(Boolean);
+  const contactParts: string[] = [];
+
+  if (input.contactName) {
+    contactParts.push(input.contactName);
+  }
+
+  if (input.contactPhone) {
+    contactParts.push(`+${input.contactPhone}`);
+  }
 
   const contactLine =
     contactParts.length > 0 ? `Contact. ${contactParts.join(" ")}` : "";
 
-  const text = [
+  const lines: string[] = [
     `Partner outreach. ${input.brandName} (step ${step} of ${MAX_STEP})`,
     `Angle. ${ANGLE_CONFIG[input.angle].label}`,
-    contactLine,
-    emailLine,
-    ...(input.whatsappDraft ? ["", "WhatsApp draft", input.whatsappDraft] : []),
-  ]
-    .filter(Boolean)
-    .join("\n");
+  ];
 
-  const response = await fetch(
-    `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-    {
-      body: JSON.stringify({
-        chat_id: process.env.TELEGRAM_CHAT_ID,
-        disable_web_page_preview: true,
-        reply_markup: {
-          inline_keyboard: [
-            ...(input.contactPhone && input.whatsappDraft
-              ? [
-                  [
-                    {
-                      text: "Send WhatsApp",
-                      url: `https://wa.me/${input.contactPhone}?text=${encodeURIComponent(input.whatsappDraft)}`,
-                    },
-                  ],
-                ]
-              : []),
-            [{ text: "Website", url: input.websiteUrl }],
-          ],
-        },
-        text,
-      }),
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    }
-  );
+  if (contactLine) {
+    lines.push(contactLine);
+  }
 
-  return response.ok;
+  lines.push(emailLine);
+
+  if (input.whatsappDraft) {
+    lines.push("", "WhatsApp draft", input.whatsappDraft);
+  }
+
+  const text = lines.join("\n");
+
+  try {
+    const response = await fetch(
+      `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
+      {
+        body: JSON.stringify({
+          chat_id: telegramChatId,
+          disable_web_page_preview: true,
+          reply_markup: {
+            inline_keyboard: [
+              ...(input.contactPhone && input.whatsappDraft
+                ? [
+                    [
+                      {
+                        text: "Send WhatsApp",
+                        url: `https://wa.me/${input.contactPhone}?text=${encodeURIComponent(input.whatsappDraft)}`,
+                      },
+                    ],
+                  ]
+                : []),
+              [{ text: "Website", url: input.websiteUrl }],
+            ],
+          },
+          text,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      }
+    );
+
+    return response.ok;
+  } catch {
+    return false;
+  }
 };
 
 export default defineTool({
+  approval: auto({
+    instructions:
+      "Check that this is a routine brand partnership message. Return clear for standard outreach. Return caution if it contains spam, misleading claims, or abusive language.",
+  }),
   description:
     "Sends one partner outreach touch for a brand. Emails the contact through Cloudflare Email when the address is verified, records the outreach state, and posts a Telegram card with a 1-tap WhatsApp button. Refuses brands that replied, converted, opted out, were contacted in the last 7 days, or already had 3 touches.",
-  async execute(input) {
+  execute: async (input): Promise<SendPartnerOutreachResult> => {
     const config = ANGLE_CONFIG[input.angle];
 
     const existing = await db.partnerOutreach.findUnique({
@@ -213,9 +252,9 @@ export default defineTool({
     const outreachData = {
       angle: input.angle,
       brandName: input.brandName,
-      contactEmail: input.contactEmail,
-      contactName: input.contactName,
-      contactPhone: input.contactPhone,
+      contactEmail: input.contactEmail ?? null,
+      contactName: input.contactName ?? null,
+      contactPhone: input.contactPhone ?? null,
       lastContactedAt: new Date(),
       sourceUrls: input.sourceUrls,
       status,

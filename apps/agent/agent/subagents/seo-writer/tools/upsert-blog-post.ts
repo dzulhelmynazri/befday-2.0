@@ -1,10 +1,15 @@
 import { upsertBlogPostSchema } from "@befday-2.0/contracts";
 import { defineTool } from "eve/tools";
+import { auto } from "eve/tools/approval";
 import slugify from "slugify";
 
 import { db } from "@/lib/db";
 
 export default defineTool({
+  approval: auto({
+    instructions:
+      "Check that this blog post provides accurate perk guides and follows clean markdown formatting. Return clear for legitimate articles. Return caution if it contains unverified discounts, broken links, or spam.",
+  }),
   description:
     "Save or update an SEO blog post or birthday guide in the database",
   execute: async (input) => {

@@ -319,10 +319,19 @@ const renderNotesSlide = (input: {
   </svg>`;
 };
 
+export interface GenerateCarouselSlidesResult {
+  readonly aspectRatio: SlideAspectRatio;
+  readonly dimensions: string;
+  readonly mediaUrls: readonly string[];
+  readonly slideCount: number;
+  readonly template: "brand_carousel" | "notes_cheat_sheet";
+  readonly theme: SocialTheme;
+}
+
 export default defineTool({
   description:
     "Generates branded PNG carousel slides using befday.com's editorial palette ('paper', 'terracotta', 'charcoal') and platform-native aspect ratios ('4:5' 1080x1350 for Instagram/Threads/Facebook/LinkedIn, '9:16' 1080x1920 for TikTok/Pinterest, '4:3' 1200x900 for Google Business).",
-  execute: async (input) => {
+  execute: async (input): Promise<GenerateCarouselSlidesResult> => {
     const campaignSlug = slugify(input.campaignTitle, {
       lower: true,
       strict: true,

@@ -34,14 +34,15 @@ When asked to discover or update a brand's birthday perks:
   - Query `get_brand_perks` when checking or verifying existing perks in the database.
   - Google Search via Treg: `"<Brand> birthday perks rewards voucher promo"`
   - Google Search via Treg: `"<Brand> loyalty membership birthday freebie"`
+  - Use `filter_search_leads` to pre-screen raw search results and discard unrelated pages before scraping.
   - Call `lookup_app_stores` to resolve official Apple App Store and Google Play Store links and app artwork.
   - Call `lookup_google_maps` to resolve official Google Maps store locator links.
 - Scrape the official brand rewards/FAQ page or trusted deal verification articles.
 
 ### 2. AI Extraction & Enhancement
 
-- Extract and enhance the wording:
-  - Classify **badge** strictly as `FREE` or `VOUCHER`.
+- Extract and format the wording:
+  - Classify **badge** strictly as `FREE` or `VOUCHER` using `classify_brand_perk` (evaluating purchase requirements and redemption windows).
   - Ensure **perksList** contains concise benefit items.
   - Ensure **validity** is standardized.
   - Ensure **howToRedeem** contains actionable, numbered or bulleted steps.
@@ -57,20 +58,22 @@ When asked to discover or update a brand's birthday perks:
 
 ## Subagents & Specialized Workflows
 
+The root agent routes specialist tasks through the `agent` router tool.
+
 ### SEO & Blog Publishing (`seo-writer`)
 
 - When requested to research keywords, create blog articles, compose birthday roundups, or draft SEO guides, delegate to or utilize the `seo-writer` subagent.
-- The `seo-writer` leverages Treg MCP (`treg` connection) for SERP intent & People Also Ask (PAA) research, retrieves real perks via `get_brand_perks`, formats posts according to AI-SEO guidelines (standalone answer capsules, comparison tables, PAA FAQs), and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
+- The `seo-writer` leverages Treg MCP (`treg` connection) for SERP intent & People Also Ask (PAA) research, retrieves real perks via `get_brand_perks`, formats posts according to AI-SEO guidelines (standalone answer capsules, comparison tables, PAA FAQs), verifies quality using `score_article_readiness`, and records full Comark-compatible Markdown posts via `upsert_blog_post` with non-optional `publishedAt`.
 
 ### Social Media Publishing (`social-publisher`)
 
 - When requested to draft, schedule, or broadcast social media announcements or weekend featured perks across Instagram, Threads, TikTok, Facebook, LinkedIn, Pinterest, or Google Business, delegate to the `social-publisher` subagent.
-- The `social-publisher` leverages Treg MCP (`treg` connection) to discover trending viral formats and hooks, retrieves verified perks via `get_brand_perks`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
+- The `social-publisher` leverages Treg MCP (`treg` connection) to discover trending viral formats and hooks, retrieves verified perks via `get_brand_perks`, evaluates hooks with `score_social_hook`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
 
 ### Partner Outreach (`b2b-outreach`)
 
 - When requested to contact brands, invite merchants to list a birthday perk, ask listed brands to verify their listing, or pitch featured placements, delegate to the `b2b-outreach` subagent.
-- The `b2b-outreach` subagent finds business contacts via Treg MCP, sends verified emails through Cloudflare Email with `send_partner_outreach`, and posts 1-tap WhatsApp drafts to Telegram. It enforces a 7-day cooldown, a 3-touch limit, and stops automatically when a brand replies, opts out, or submits on befday.com/partner.
+- The `b2b-outreach` subagent finds business contacts via Treg MCP, confirms role fit with `classify_contact_role`, sends verified emails through Cloudflare Email with `send_partner_outreach`, and posts 1-tap WhatsApp drafts to Telegram. It enforces a 7-day cooldown, a 3-touch limit, and classifies inbound replies with `classify_outreach_reply` to stop outreach automatically when a brand replies or opts out.
 
 ---
 

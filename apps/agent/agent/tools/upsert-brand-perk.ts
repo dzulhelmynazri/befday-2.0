@@ -1,13 +1,27 @@
 import { upsertBrandPerkSchema } from "@befday-2.0/contracts";
+import type { PerkStatus } from "@befday-2.0/db";
 import { defineTool } from "eve/tools";
+import { auto } from "eve/tools/approval";
 import slugify from "slugify";
 
 import { db } from "@/lib/db";
 
+export interface UpsertBrandPerkResult {
+  readonly brandId: string;
+  readonly brandSlug: string;
+  readonly perkId: string;
+  readonly status: PerkStatus;
+  readonly success: boolean;
+}
+
 export default defineTool({
+  approval: auto({
+    instructions:
+      "Check that this birthday perk describes credible rewards and authentic merchant links. Return clear for verified perks. Return caution if it claims implausible freebies without source URLs.",
+  }),
   description:
     "Saves or updates a brand and its birthday perk details in the database.",
-  async execute(input) {
+  async execute(input): Promise<UpsertBrandPerkResult> {
     const brandSlug = slugify(input.name, {
       lower: true,
       strict: true,

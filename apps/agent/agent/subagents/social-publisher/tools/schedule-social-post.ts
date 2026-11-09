@@ -1,12 +1,26 @@
 import { scheduleSocialPostSchema } from "@befday-2.0/contracts";
 import { defineTool } from "eve/tools";
+import { auto } from "eve/tools/approval";
 
 import { db } from "@/lib/db";
 
 export default defineTool({
+  approval: auto({
+    instructions:
+      "Check that this post describes verified birthday perks accurately. Return clear for routine perk announcements. Return caution if it makes false discount claims, uses offensive language, or looks spammy.",
+  }),
   description:
     "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook, Threads, TikTok, Pinterest, Google Business) via NeuLink, and records lastPostedAt and lastTheme on featured brands.",
   async execute(input) {
+    const apiKey = process.env.NEULINK_API_KEY;
+
+    if (!apiKey) {
+      return {
+        error: "Missing NEULINK_API_KEY environment variable",
+        success: false,
+      };
+    }
+
     const response = await fetch("https://api.neulink.com/v1/posts", {
       body: JSON.stringify({
         auto_add_music: input.autoAddMusic,
@@ -16,8 +30,7 @@ export default defineTool({
         text: input.text,
       }),
       headers: {
-        // oxlint-disable-next-line typescript/no-non-null-assertion
-        Authorization: `Bearer ${process.env.NEULINK_API_KEY!}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       method: "POST",

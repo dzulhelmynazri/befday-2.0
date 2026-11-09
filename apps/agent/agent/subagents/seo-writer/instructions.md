@@ -97,7 +97,16 @@ Follow this 4-step workflow whenever generating or updating articles:
 - Synthesize the gathered data into a comprehensive Markdown article with an embedded `<script type="application/ld+json">` block at the bottom.
 - Avoid keyword stuffing (which penalizes AI ranking); focus on clarity, verified data, and direct answers.
 
-### Step 4: Persist to Database (`upsert_blog_post`)
+### Step 4: Verify Content Readiness & Answer Capsule (`score_article_readiness`)
+
+- Before persisting, call `score_article_readiness` with `title`, `primaryKeyword`, and `articleContent`.
+- If `needsRevision` is true or `readinessScore < 3`:
+  - Ensure the first 40–60 words provide an immediate standalone **Answer Capsule** answering the primary search query without introductory filler (e.g., _"In today's fast-paced world"_, _"In this article we will explore"_).
+  - Eliminate robotic AI clichés and rhetorical filler.
+  - Verify that structured comparison elements (`::perk` or Markdown tables) and a PAA FAQ section are present.
+- Proceed to Step 5 once the article is verified.
+
+### Step 5: Persist to Database (`upsert_blog_post`)
 
 - Call `upsert_blog_post` with the full payload.
 - Ensure `publishedAt` is set (e.g., `new Date().toISOString()`).
