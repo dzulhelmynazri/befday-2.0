@@ -9,6 +9,11 @@ export default function manifest(): MetadataRoute.Manifest {
     icons: [
       {
         sizes: "any",
+        src: "/icon.svg",
+        type: "image/svg+xml",
+      },
+      {
+        sizes: "16x16 32x32",
         src: "/favicon.ico",
         type: "image/x-icon",
       },

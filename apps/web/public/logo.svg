@@ -1,23 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
   <!-- Candle flames -->
-  <path d="M256 64 C250 80 240 100 240 115 C240 126 247 135 256 135 C265 135 272 126 272 115 C272 100 262 80 256 64 Z" fill="currentColor" />
-  <path d="M192 84 C186 98 178 114 178 125 C178 133 184 140 192 140 C200 140 206 133 206 125 C206 114 198 98 192 84 Z" fill="currentColor" />
-  <path d="M320 84 C314 98 306 114 306 125 C306 133 312 140 320 140 C328 140 334 133 334 125 C334 114 326 98 320 84 Z" fill="currentColor" />
+  <path d="M256 44 C243 66 234 84 234 99 C234 112 244 122 256 122 C268 122 278 112 278 99 C278 84 269 66 256 44 Z" fill="currentColor" />
+  <path d="M180 62 C168 82 160 98 160 111 C160 123 169 132 180 132 C191 132 200 123 200 111 C200 98 192 82 180 62 Z" fill="currentColor" />
+  <path d="M332 62 C320 82 312 98 312 111 C312 123 321 132 332 132 C343 132 352 123 352 111 C352 98 344 82 332 62 Z" fill="currentColor" />
 
   <!-- Candle sticks -->
-  <rect x="250" y="145" width="12" height="35" rx="6" fill="currentColor" />
-  <rect x="186" y="150" width="12" height="30" rx="6" fill="currentColor" />
-  <rect x="314" y="150" width="12" height="30" rx="6" fill="currentColor" />
+  <rect x="244" y="134" width="24" height="56" rx="12" fill="currentColor" />
+  <rect x="168" y="144" width="24" height="46" rx="12" fill="currentColor" />
+  <rect x="320" y="144" width="24" height="46" rx="12" fill="currentColor" />
 
-  <!-- Cake Top Layer -->
-  <rect x="144" y="180" width="224" height="90" rx="20" fill="currentColor" />
+  <!-- Cake Top Tier with Scalloped Frosting -->
+  <path d="M128 232 A28 28 0 0 1 156 204 H356 A28 28 0 0 1 384 232 V262 A32 32 0 0 1 320 262 A32 32 0 0 1 256 262 A32 32 0 0 1 192 262 A32 32 0 0 1 128 262 Z" fill="currentColor" />
 
-  <!-- Cake Middle Decorative Icing drips -->
-  <path d="M144 240 Q160 270 176 240 Q192 270 208 240 Q224 270 240 240 Q256 270 272 240 Q288 270 304 240 Q320 270 336 240 Q352 270 368 240 L368 280 L144 280 Z" fill="currentColor" />
-
-  <!-- Cake Bottom Layer -->
-  <rect x="112" y="280" width="288" height="130" rx="24" fill="currentColor" />
+  <!-- Cake Bottom Tier -->
+  <rect x="96" y="314" width="320" height="96" rx="28" fill="currentColor" />
 
   <!-- Cake Plate -->
-  <rect x="80" y="420" width="352" height="24" rx="12" fill="currentColor" />
+  <rect x="64" y="428" width="384" height="34" rx="17" fill="currentColor" />
 </svg>
