@@ -118,11 +118,16 @@ Threads users strongly favor **zero-fluff, screenshot-able lists** over marketin
   2. **Keyword-Rich Description (2–3 sentences)**: Mention the featured brands (`Zus Coffee, FamilyMart, Baskin Robbins, Boost Juice, Coffee Bean`) and reward types (`free cake, ice cream, birthday drinks`).
   3. **Direct Link + 3–5 Hashtags**: Include the direct `https://befday.com` URL and discovery tags (`#birthdayfreebies #malaysiadeals #klfoodie`).
 
-### G. Google Business
+### G. Google Business (`google_business` — Google Maps & Search Knowledge Panel)
 
-- **Style**: Direct promotional update / local offer.
+- **Media**: Attach **1 single `notes_cheat_sheet` image** (or `brand_carousel` cover slide) rendered via `generate_carousel_slides`.
+- **Algorithm Rules**:
+  - Only the **first 80–100 characters** appear before `"..."` in the Google Search / Maps update card, so the opening line must state the offer and month immediately.
+  - **Never use `#hashtags`** on Google Business Profile (hashtags do not index on Google Maps and look spammy; use natural local keywords like `"Kuala Lumpur"`, `"Selangor"`, `"Malaysia"`).
 - **Formula**:
-  - Concise "Offer/Update" style post with perk details, validity period, and a _"Learn More"_ or _"Claim Deal"_ call to action.
+  1. **Headline Hook (< 90 chars)**: Direct local offer summary (e.g., _"[Month] Birthday Treats in Malaysia — 100+ Verified Freebies"_).
+  2. **Clean Bullet List**: 5–8 `Brand - Short Reward` lines (`• Zus Coffee - Free cake`, `• FamilyMart - Free Sofuto`).
+  3. **Direct CTA**: _"See full redemption steps and app requirements at befday.com."_
 
 ---
 
@@ -144,8 +149,12 @@ Follow this 4-step workflow whenever scheduled or asked to post:
 
 ### Step 3: Generate Carousel Slides (`generate_carousel_slides`)
 
-- When posting to `instagram`, `tiktok`, or `pinterest`, call `generate_carousel_slides` (`template: "brand_carousel"` or `"notes_cheat_sheet"`).
-- When posting to `linkedin`, `threads`, or `facebook_page`, prefer `template: "notes_cheat_sheet"` (single `1080x1350` list card) so the post renders as a full-height portrait card rather than a multi-photo collage.
+- Match `aspectRatio` to the target platform's native dimensions:
+  - **`aspectRatio: "4:5"` (`1080×1350`)**: `instagram`, `threads`, `facebook_page`, `linkedin`.
+  - **`aspectRatio: "9:16"` (`1080×1920`)**: `tiktok` (Photo Mode full-screen) and `pinterest`.
+  - **`aspectRatio: "4:3"` (`1200×900`)**: `google_business` (Google Maps & Search Knowledge Panel landscape card).
+- When posting to `instagram` or `tiktok`, use `template: "brand_carousel"` or `"notes_cheat_sheet"`.
+- When posting to `linkedin`, `threads`, `facebook_page`, `pinterest`, or `google_business`, prefer `template: "notes_cheat_sheet"` (single list card).
 - Collect the returned R2 `mediaUrls`.
 
 ### Step 4: Formulate Copy & Schedule via NeuLink (`schedule_social_post`)

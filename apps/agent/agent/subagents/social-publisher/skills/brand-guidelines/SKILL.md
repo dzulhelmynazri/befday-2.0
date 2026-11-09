@@ -34,7 +34,7 @@ Every generated slide (`1080x1350`) must include the signature `befday.com` visu
    - All badges, headlines, and the `befday.com` footer bar sit inside `y: 230..1142` so nothing is ever clipped on the 3-column profile grid.
 2. **Signature Footer Bar**:
    - Horizontal divider line across the card.
-   - Left prompt: `"Swipe for birthday perks ->"` (cover) or `"Full claim steps at befday.com"` (interior slides).
+   - Left prompt: `"Swipe for birthday perks"` (cover) or `"Full claim steps at befday.com"` (interior slides).
    - Right anchor: Bold rounded pill with **`befday.com`** in signature terracotta (`#c96442` / `#d97757`).
 
 ---
