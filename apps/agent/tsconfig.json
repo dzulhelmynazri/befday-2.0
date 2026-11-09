@@ -1,6 +1,7 @@
 {
   "extends": "@befday-2.0/config/tsconfig.base.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "noEmit": true,
     "paths": {
       "@/*": ["./agent/*"]

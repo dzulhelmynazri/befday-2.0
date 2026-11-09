@@ -60,6 +60,13 @@ export const partnerRouter = router({
         },
       });
 
+      await ctx.db.partnerOutreach.updateMany({
+        data: { status: "CONVERTED" },
+        where: {
+          OR: [{ brandSlug }, { contactEmail: input.contactEmail }],
+        },
+      });
+
       // Dispatch Telegram notification
       const { env } = ctx;
       const approveUrl = `${env.NEXT_PUBLIC_SITE_URL}/api/perks/approve?id=${perk.id}`;

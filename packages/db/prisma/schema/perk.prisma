@@ -64,3 +64,42 @@ model BirthdayPerk {
   @@map("birthday_perk")
 }
 
+enum OutreachAngle {
+  CLAIM_LISTING
+  INVITE_NEW_BRAND
+  FEATURED_SPONSORSHIP
+}
+
+enum OutreachStatus {
+  EMAIL_SENT
+  WHATSAPP_QUEUED
+  REPLIED
+  CONVERTED
+  OPTED_OUT
+}
+
+model PartnerOutreach {
+  id              String         @id @default(cuid())
+  brandName       String
+  brandSlug       String         @unique
+  websiteUrl      String
+
+  angle           OutreachAngle
+  status          OutreachStatus
+  step            Int            @default(1)
+
+  contactName     String?
+  contactEmail    String?
+  contactPhone    String?
+
+  sourceUrls      String[]
+  lastContactedAt DateTime       @default(now())
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([status, lastContactedAt])
+  @@index([contactEmail])
+  @@map("partner_outreach")
+}
+

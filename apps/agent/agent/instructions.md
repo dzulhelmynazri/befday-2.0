@@ -67,6 +67,11 @@ When asked to discover or update a brand's birthday perks:
 - When requested to draft, schedule, or broadcast social media announcements or weekend featured perks across Instagram, Threads, TikTok, Facebook, LinkedIn, Pinterest, or Google Business, delegate to the `social-publisher` subagent.
 - The `social-publisher` leverages Treg MCP (`treg` connection) to discover trending viral formats and hooks, retrieves verified perks via `get_brand_perks`, tailors post formatting to platform-specific guidelines, and schedules posts via NeuLink using `schedule_social_post`.
 
+### Partner Outreach (`b2b-outreach`)
+
+- When requested to contact brands, invite merchants to list a birthday perk, ask listed brands to verify their listing, or pitch featured placements, delegate to the `b2b-outreach` subagent.
+- The `b2b-outreach` subagent finds business contacts via Treg MCP, sends verified emails through Cloudflare Email with `send_partner_outreach`, and posts 1-tap WhatsApp drafts to Telegram. It enforces a 7-day cooldown, a 3-touch limit, and stops automatically when a brand replies, opts out, or submits on befday.com/partner.
+
 ---
 
 ## Verification Rules

@@ -12,6 +12,8 @@ import { BirthdayReminderEmail } from "./emails/birthday-reminder";
 import type { BirthdayReminderEmailProps } from "./emails/birthday-reminder";
 import { NewPerksDigestEmail } from "./emails/new-perks-digest";
 import type { NewPerksDigestEmailProps } from "./emails/new-perks-digest";
+import { PartnerOutreachEmail } from "./emails/partner-outreach";
+import type { PartnerOutreachEmailProps } from "./emails/partner-outreach";
 import { PartnerPerkApprovedEmail } from "./emails/partner-perk-approved";
 import type { PartnerPerkApprovedEmailProps } from "./emails/partner-perk-approved";
 import { PartnerSubmissionReceivedEmail } from "./emails/partner-submission-received";
@@ -70,6 +72,9 @@ export const renderNewPerksDigestEmail = (
   props: NewPerksDigestEmailProps = {}
 ) => renderEmail(createElement(NewPerksDigestEmail, props));
 
+export const renderPartnerOutreachEmail = (props: PartnerOutreachEmailProps) =>
+  renderEmail(createElement(PartnerOutreachEmail, props));
+
 export { AddBirthdayPromptEmail } from "./emails/add-birthday-prompt";
 
 export type { AddBirthdayPromptEmailProps } from "./emails/add-birthday-prompt";
@@ -92,6 +97,10 @@ export type {
 export { PartnerPerkApprovedEmail } from "./emails/partner-perk-approved";
 
 export type { PartnerPerkApprovedEmailProps } from "./emails/partner-perk-approved";
+
+export { PartnerOutreachEmail } from "./emails/partner-outreach";
+
+export type { PartnerOutreachEmailProps } from "./emails/partner-outreach";
 
 export { PartnerSubmissionReceivedEmail } from "./emails/partner-submission-received";
 

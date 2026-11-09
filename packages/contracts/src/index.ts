@@ -14,9 +14,17 @@ export type {
   UpsertBlogPostInput,
 } from "./blog";
 
-export { submitPartnerPerkSchema } from "./partner";
+export {
+  outreachAngleSchema,
+  sendPartnerOutreachSchema,
+  submitPartnerPerkSchema,
+} from "./partner";
 
-export type { SubmitPartnerPerkInput } from "./partner";
+export type {
+  OutreachAngle,
+  SendPartnerOutreachInput,
+  SubmitPartnerPerkInput,
+} from "./partner";
 
 export {
   featuredPerksQuerySchema,
