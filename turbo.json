@@ -55,6 +55,9 @@
     "db:studio": {
       "cache": false,
       "persistent": true
+    },
+    "eval": {
+      "cache": false
     }
   },
   "globalDependencies": [".env*", "apps/*/.env*", "packages/*/.env*"]
