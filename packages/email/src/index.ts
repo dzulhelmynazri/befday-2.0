@@ -61,11 +61,11 @@ export const renderAddBirthdayPromptEmail = (
 ) => renderEmail(createElement(AddBirthdayPromptEmail, props));
 
 export const renderPartnerSubmissionReceivedEmail = (
-  props: PartnerSubmissionReceivedEmailProps = {}
+  props: PartnerSubmissionReceivedEmailProps
 ) => renderEmail(createElement(PartnerSubmissionReceivedEmail, props));
 
 export const renderPartnerPerkApprovedEmail = (
-  props: PartnerPerkApprovedEmailProps = {}
+  props: PartnerPerkApprovedEmailProps
 ) => renderEmail(createElement(PartnerPerkApprovedEmail, props));
 
 export const renderNewPerksDigestEmail = (

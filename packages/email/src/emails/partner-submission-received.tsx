@@ -126,7 +126,8 @@ export const PartnerSubmissionReceivedEmail = ({
         </div>
 
         <Text style={paragraph}>
-          we will email you your listing link as soon as it is approved and live.
+          we will email you your listing link as soon as it is approved and
+          live.
         </Text>
 
         <Text style={paragraph}>

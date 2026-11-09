@@ -1,5 +1,3 @@
-import { createHmac } from "node:crypto";
-
 import { submitPartnerPerkSchema } from "@befday-2.0/contracts";
 import { renderPartnerSubmissionReceivedEmail } from "@befday-2.0/email";
 import slugify from "slugify";
@@ -55,7 +53,8 @@ export const partnerRouter = router({
           contactPhone: input.contactPhone,
           headline: input.headline,
           howToRedeem: [input.howToRedeem],
-          perksList: perksList.length > 0 ? perksList : [input.perksList.trim()],
+          perksList:
+            perksList.length > 0 ? perksList : [input.perksList.trim()],
           status: "DRAFT",
           termsConditions: null,
           validity: input.validity,
@@ -71,12 +70,7 @@ export const partnerRouter = router({
 
       // Dispatch Telegram notification
       const { env } = ctx;
-
-      const signature = createHmac("sha256", env.CRON_SECRET)
-        .update(perk.id)
-        .digest("hex");
-
-      const approveUrl = `${env.NEXT_PUBLIC_SITE_URL}/api/perks/approve?id=${perk.id}&token=${signature}`;
+      const approveUrl = `${env.NEXT_PUBLIC_SITE_URL}/api/perks/approve?id=${perk.id}&secret=${env.CRON_SECRET}`;
 
       const lines = [
         `*New merchant perk submission*`,

@@ -119,6 +119,7 @@
         "better-auth": "catalog:",
         "comark": "^0.8.1",
         "date-fns": "^4.4.0",
+        "dedent": "^1.7.2",
         "evlog": "^2.28.1",
         "lucide-react": "catalog:",
         "next": "^16.3.4",
