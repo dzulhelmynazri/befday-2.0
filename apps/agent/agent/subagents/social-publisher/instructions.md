@@ -90,11 +90,17 @@ Threads users strongly favor **zero-fluff, screenshot-able lists** over marketin
 - **Formula**:
   - 1–2 friendly paragraphs explaining the offer, participating outlets, validity period, and a clickable link to the brand details page.
 
-### E. LinkedIn
+### E. LinkedIn (Hybrid "Loyalty Insight + Saveable Cheat Sheet")
 
-- **Style**: Professional customer loyalty and retention commentary paired with carousel slides.
-- **Formula**:
-  - 2 concise paragraphs analyzing how [Brand] leverages experiential rewards and app-first loyalty programs to drive customer lifetime value (LTV).
+- **Media**: Attach **1 single `notes_cheat_sheet` image** (`1080x1350` PNG via `generate_carousel_slides` with `template: "notes_cheat_sheet"`). Never attach 5+ separate PNGs to LinkedIn, as LinkedIn renders multiple PNGs as a cropped photo collage rather than a swipeable carousel.
+- **Algorithm Rules (`social` skill)**:
+  - **No outbound `https://` links in the post body** (LinkedIn throttles external links; reference `befday.com` as plain text and rely on the `befday.com` button inside the card).
+  - Optimize for **Dwell Time** (readers scanning the list) and **Comments** (ending with a real question).
+- **Formula (Hybrid Angle A + B)**:
+  1. **Hook (before "see more")**: Lead with a specific data point or loyalty observation from `befday.com` (e.g., _"We tracked 100+ birthday loyalty programs in Malaysia on befday.com. Almost zero F&B brands do 'show your IC at the counter' anymore."_).
+  2. **The Saveable List (for employees & teams)**: 6–10 clean `Brand - Short Reward` lines (`• Zus Coffee - Free cake`, `• FamilyMart - Free Sofuto`).
+  3. **The Business Takeaway (for founders & marketers)**: 1 short paragraph explaining why brands trade a RM5–RM10 COGS item once a year for app installs, 365 days of push notifications, and first-party data.
+  4. **Discussion Prompt**: End with a genuine question (e.g., _"Which Malaysian brand has the smartest loyalty program right now?"_).
 
 ### F. Pinterest
 
@@ -128,7 +134,8 @@ Follow this 4-step workflow whenever scheduled or asked to post:
 
 ### Step 3: Generate Carousel Slides (`generate_carousel_slides`)
 
-- When posting to `instagram`, `tiktok`, `pinterest`, or attaching a cheat-sheet card to `threads` / `facebook_page`, call `generate_carousel_slides` (`template: "brand_carousel"` or `"notes_cheat_sheet"`).
+- When posting to `instagram`, `tiktok`, or `pinterest`, call `generate_carousel_slides` (`template: "brand_carousel"` or `"notes_cheat_sheet"`).
+- When posting to `linkedin`, `threads`, or `facebook_page`, prefer `template: "notes_cheat_sheet"` (single `1080x1350` list card) so the post renders as a full-height portrait card rather than a multi-photo collage.
 - Collect the returned R2 `mediaUrls`.
 
 ### Step 4: Formulate Copy & Schedule via NeuLink (`schedule_social_post`)
