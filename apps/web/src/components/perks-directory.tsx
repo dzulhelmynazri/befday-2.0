@@ -121,15 +121,15 @@ export const PerksDirectory = ({ perks }: PerksDirectoryProps) => {
           }}
           value={filter}
         >
-          <TabsList className="h-8">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="free">Free</TabsTrigger>
-            <TabsTrigger value="voucher">Voucher</TabsTrigger>
+          <TabsList>
+            <TabsTrigger value="all">all</TabsTrigger>
+            <TabsTrigger value="free">free</TabsTrigger>
+            <TabsTrigger value="voucher">voucher</TabsTrigger>
           </TabsList>
         </Tabs>
 
         <div className="w-full sm:w-72">
-          <InputGroup className="h-8">
+          <InputGroup>
             <InputGroupAddon>
               <Search />
             </InputGroupAddon>
