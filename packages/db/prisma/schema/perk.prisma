@@ -51,12 +51,16 @@ model BirthdayPerk {
   status          PerkStatus @default(DRAFT)
   sourceUrls      String[]
   verifiedAt      DateTime   @default(now())
+  lastPostedAt    DateTime?
+  lastTheme       String?
 
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
   @@index([brandId])
   @@index([status])
+  @@index([verifiedAt])
+  @@index([lastPostedAt])
   @@map("birthday_perk")
 }
 

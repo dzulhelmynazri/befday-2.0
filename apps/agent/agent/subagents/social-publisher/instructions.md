@@ -144,7 +144,8 @@ Follow this 4-step workflow whenever scheduled or asked to post:
 
 ### Step 2: Fetch Verified Brand & Perk Data (`get_brand_perks`)
 
-- Call `get_brand_perks` to fetch verified brand names, badges (`FREE` vs `VOUCHER`), perk lists, validity windows, redemption steps, and logo URLs.
+- Call `get_brand_perks` with `status: "PUBLISHED"` and `sortBy: "unposted_first"` to prioritize brands that have never been featured on social media (`lastPostedAt: null`) or were featured least recently.
+- Use the returned `nextTheme` (`"paper"` -> `"terracotta"` -> `"charcoal"`) to keep the 3-column Instagram/TikTok profile grid rotation aligned across runs.
 - Ensure only `status: "PUBLISHED"` perks are featured. Never fabricate a perk.
 
 ### Step 3: Generate Carousel Slides (`generate_carousel_slides`)
@@ -153,6 +154,7 @@ Follow this 4-step workflow whenever scheduled or asked to post:
   - **`aspectRatio: "4:5"` (`1080×1350`)**: `instagram`, `threads`, `facebook_page`, `linkedin`.
   - **`aspectRatio: "9:16"` (`1080×1920`)**: `tiktok` (Photo Mode full-screen) and `pinterest`.
   - **`aspectRatio: "4:3"` (`1200×900`)**: `google_business` (Google Maps & Search Knowledge Panel landscape card).
+- Pass `theme: nextTheme` from Step 2 (unless a specific theme was explicitly requested).
 - When posting to `instagram` or `tiktok`, use `template: "brand_carousel"` or `"notes_cheat_sheet"`.
 - When posting to `linkedin`, `threads`, `facebook_page`, `pinterest`, or `google_business`, prefer `template: "notes_cheat_sheet"` (single list card).
 - Collect the returned R2 `mediaUrls`.
@@ -164,4 +166,6 @@ Follow this 4-step workflow whenever scheduled or asked to post:
   - `channels`: Array of targeted platforms.
   - `text`: Final crafted copy.
   - `mediaUrls`: Array of generated slide URLs from Step 3.
+  - `brandSlugs`: Array of featured `brandSlug` values from Step 2 so `lastPostedAt` is recorded in the database.
+  - `theme`: The 3-column grid `theme` used in Step 3 (`"paper"`, `"terracotta"`, or `"charcoal"`) so the next run rotates to the next column theme.
   - `scheduledAt`: Optional ISO timestamp for future scheduling (omit to queue immediately).

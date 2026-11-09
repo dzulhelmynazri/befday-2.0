@@ -1,11 +1,11 @@
+import { socialThemeSchema } from "@befday-2.0/contracts";
+import type { SocialTheme } from "@befday-2.0/contracts";
 import { Resvg } from "@resvg/resvg-js";
 import { defineTool } from "eve/tools";
 import slugify from "slugify";
 import { z } from "zod";
 
 import { uploadSocialSlide } from "@/lib/storage";
-
-type BrandThemeName = "paper" | "terracotta" | "charcoal";
 
 type SlideAspectRatio = "4:5" | "9:16" | "4:3";
 
@@ -40,7 +40,7 @@ interface SlideLayout {
   width: number;
 }
 
-const LAYOUTS: Record<SlideAspectRatio, SlideLayout> = {
+const LAYOUTS = {
   // Google Business Profile native landscape (1200x900)
   "4:3": {
     brandStartY: 420,
@@ -95,10 +95,10 @@ const LAYOUTS: Record<SlideAspectRatio, SlideLayout> = {
     topBadgeY: 300,
     width: 1080,
   },
-};
+} as const satisfies Record<SlideAspectRatio, SlideLayout>;
 
 // Exact tokens from packages/ui/src/styles/globals.css & packages/ui/src/components/button.tsx
-const PALETTES: Record<BrandThemeName, BrandPalette> = {
+const PALETTES = {
   charcoal: {
     badgeBg: "#30302e",
     badgeBorder: "#454540",
@@ -135,7 +135,7 @@ const PALETTES: Record<BrandThemeName, BrandPalette> = {
     foreground: "#ffffff",
     muted: "#f7dcd2",
   },
-};
+} as const satisfies Record<SocialTheme, BrandPalette>;
 
 const escapeXml = (text: string): string =>
   text
@@ -171,7 +171,7 @@ const wrapText = (text: string, maxCharsPerLine: number): string[] => {
   return lines;
 };
 
-const renderSvgToPng = (svg: string, width: number): Uint8Array => {
+const svgToPng = (svg: string, width: number): Uint8Array => {
   const resvg = new Resvg(svg, {
     fitTo: {
       mode: "width",
@@ -182,7 +182,7 @@ const renderSvgToPng = (svg: string, width: number): Uint8Array => {
   return resvg.render().asPng();
 };
 
-const buildBrandFooterSvg = (
+const renderFooter = (
   palette: BrandPalette,
   layout: SlideLayout,
   leftLabel: string
@@ -200,7 +200,7 @@ const buildBrandFooterSvg = (
     <text x="${rightX - 110}" y="${textY}" text-anchor="middle" fill="${palette.buttonText}" font-family="system-ui, -apple-system, sans-serif" font-size="25" font-weight="700" letter-spacing="-0.3">befday.com</text>`;
 };
 
-const buildCoverSlideSvg = (input: {
+const renderCoverSlide = (input: {
   headline: string;
   layout: SlideLayout;
   palette: BrandPalette;
@@ -249,7 +249,7 @@ const buildCoverSlideSvg = (input: {
     <text x="${rightX}" y="${layout.topBadgeY + 35}" text-anchor="end" fill="${palette.muted}" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600">1 / ${input.totalSlides}</text>
     ${headlineSvg}
     ${subSvg}
-    ${buildBrandFooterSvg(palette, layout, "Swipe for birthday perks")}
+    ${renderFooter(palette, layout, "Swipe for birthday perks")}
   </svg>`;
 };
 
@@ -258,7 +258,7 @@ interface BrandSlideItem {
   reward: string;
 }
 
-const buildBrandSlideSvg = (
+const renderBrandSlide = (
   item: BrandSlideItem,
   slideNumber: number,
   totalSlides: number,
@@ -284,11 +284,11 @@ const buildBrandSlideSvg = (
     <rect x="${layout.cardX}" y="${layout.cardY}" width="${layout.cardWidth}" height="${layout.cardHeight}" rx="40" fill="${palette.cardBg}" stroke="${palette.border}" stroke-width="2" />
     <text x="${rightX}" y="${layout.topBadgeY + 35}" text-anchor="end" fill="${palette.muted}" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="600">${slideNumber} / ${totalSlides}</text>
     ${textSvg}
-    ${buildBrandFooterSvg(palette, layout, "Full claim steps at befday.com")}
+    ${renderFooter(palette, layout, "Full claim steps at befday.com")}
   </svg>`;
 };
 
-const buildNotesCheatSheetSvg = (input: {
+const renderNotesSlide = (input: {
   items: BrandSlideItem[];
   layout: SlideLayout;
   palette: BrandPalette;
@@ -315,7 +315,7 @@ const buildNotesCheatSheetSvg = (input: {
       input.title
     )}</text>
     ${rows}
-    ${buildBrandFooterSvg(palette, layout, "Birthday perks & free treats")}
+    ${renderFooter(palette, layout, "Birthday perks & free treats")}
   </svg>`;
 };
 
@@ -340,7 +340,7 @@ export default defineTool({
 
     if (input.template === "notes_cheat_sheet") {
       slideSvgs.push(
-        buildNotesCheatSheetSvg({
+        renderNotesSlide({
           items: input.items,
           layout,
           palette: coverPalette,
@@ -350,7 +350,7 @@ export default defineTool({
     } else {
       const totalSlides = input.items.length + 1;
       slideSvgs.push(
-        buildCoverSlideSvg({
+        renderCoverSlide({
           headline: input.campaignTitle,
           layout,
           palette: coverPalette,
@@ -362,7 +362,7 @@ export default defineTool({
 
       for (const [index, item] of input.items.entries()) {
         slideSvgs.push(
-          buildBrandSlideSvg(
+          renderBrandSlide(
             item,
             index + 2,
             totalSlides,
@@ -375,7 +375,7 @@ export default defineTool({
 
     const mediaUrls = await Promise.all(
       slideSvgs.map((svg, index) => {
-        const pngBuffer = renderSvgToPng(svg, layout.width);
+        const pngBuffer = svgToPng(svg, layout.width);
         const key = `social/carousels/${campaignSlug}-${input.aspectRatio.replace(":", "x")}-${timestamp}/slide-${index + 1}.png`;
 
         return uploadSocialSlide(key, pngBuffer);
@@ -438,8 +438,7 @@ export default defineTool({
       .describe(
         "Visual style: 'brand_carousel' (multi-slide cover + minimalist 'Brand - Reward' slides) or 'notes_cheat_sheet' (single-card cheat-sheet list)"
       ),
-    theme: z
-      .enum(["paper", "terracotta", "charcoal"])
+    theme: socialThemeSchema
       .default("paper")
       .describe(
         "befday.com 3-column grid color theme: 'paper' (#faf9f5 warm cream), 'terracotta' (#c96442 brand orange cover), or 'charcoal' (#262624 warm dark)"

@@ -1,9 +1,11 @@
 import { scheduleSocialPostSchema } from "@befday-2.0/contracts";
 import { defineTool } from "eve/tools";
 
+import { db } from "@/lib/db";
+
 export default defineTool({
   description:
-    "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook, Threads, TikTok, Pinterest, Google Business) via NeuLink.",
+    "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook, Threads, TikTok, Pinterest, Google Business) via NeuLink, and records lastPostedAt and lastTheme on featured brands.",
   async execute(input) {
     const response = await fetch("https://api.neulink.com/v1/posts", {
       body: JSON.stringify({
@@ -31,6 +33,20 @@ export default defineTool({
     }
 
     const data: unknown = await response.json();
+
+    if (input.brandSlugs.length > 0) {
+      await db.birthdayPerk.updateMany({
+        data: {
+          lastPostedAt: new Date(),
+          lastTheme: input.theme,
+        },
+        where: {
+          brand: {
+            slug: { in: input.brandSlugs },
+          },
+        },
+      });
+    }
 
     return {
       data,
