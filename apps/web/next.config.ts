@@ -1,5 +1,6 @@
 import { varlockNextConfigPlugin } from "@varlock/nextjs-integration/plugin";
 import type { NextConfig } from "next";
+import { withWorkflow } from "workflow/next";
 
 const withVarlock = varlockNextConfigPlugin();
 
@@ -31,4 +32,8 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 };
 
-export default withVarlock(nextConfig);
+const withVarlockConfig = withVarlock(nextConfig);
+
+export default withWorkflow((phase, ctx) =>
+  Promise.resolve(withVarlockConfig(phase, ctx))
+);

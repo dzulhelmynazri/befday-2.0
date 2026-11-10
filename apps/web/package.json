@@ -7,7 +7,8 @@
     "build": "next build",
     "check-types": "tsc --noEmit",
     "start": "next start",
-    "env:generate": "varlock codegen"
+    "env:generate": "varlock codegen",
+    "test:workflows": "vitest run -c vitest.integration.config.mts"
   },
   "dependencies": {
     "@befday-2.0/api": "workspace:*",
@@ -41,6 +42,7 @@
     "react-dom": "catalog:",
     "sonner": "catalog:",
     "varlock": "catalog:",
+    "workflow": "^5.4.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -50,7 +52,9 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@workflow/vitest": "^5.0.8",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^4.1.12"
   }
 }

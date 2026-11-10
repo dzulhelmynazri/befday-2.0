@@ -16,7 +16,6 @@
     "@befday-2.0/auth": "workspace:*",
     "@befday-2.0/contracts": "workspace:*",
     "@befday-2.0/db": "workspace:*",
-    "@befday-2.0/email": "workspace:*",
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
     "slugify": "^1.6.9",

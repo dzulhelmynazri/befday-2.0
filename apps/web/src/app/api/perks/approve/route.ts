@@ -1,10 +1,12 @@
-import { renderPartnerPerkApprovedEmail } from "@befday-2.0/email";
 import dedent from "dedent";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { start } from "workflow/api";
 
 import { env } from "@/env.server";
-import { email, getDb } from "@/services";
+import { log } from "@/lib/evlog";
+import { getDb } from "@/services";
+import { partnerApprovedWorkflow } from "@/workflows/partner-perks";
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
@@ -49,21 +51,15 @@ export const GET = async (request: Request) => {
       revalidateTag("perks", "max");
 
       if (perk.contactEmail && perk.contactName) {
-        const { html: emailHtml, text: emailText } =
-          await renderPartnerPerkApprovedEmail({
-            brandName: perk.brand.name.toLowerCase(),
-            contactName: perk.contactName.toLowerCase(),
-            listingUrl: `https://www.befday.com/perks/${perk.brand.slug}`,
-            perkHeadline: perk.headline.toLowerCase(),
+        try {
+          await start(partnerApprovedWorkflow, [perk.id]);
+        } catch (error) {
+          log.error({
+            error,
+            event: "partner.approval_workflow_start_failed",
+            perkId: perk.id,
           });
-
-        await email.send({
-          from: "befday <hello@befday.com>",
-          html: emailHtml,
-          subject: `your birthday perk for ${perk.brand.name.toLowerCase()} is now live on befday`,
-          text: emailText,
-          to: perk.contactEmail,
-        });
+        }
       }
     }
 

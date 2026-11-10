@@ -7,6 +7,7 @@
     "CI",
     "CLOUDFLARE_ACCOUNT_ID",
     "CLOUDFLARE_API_TOKEN",
+    "CRON_SECRET",
     "DATABASE_URL",
     "EXPO_PUBLIC_SERVER_URL",
     "GOOGLE_CLIENT_ID",
@@ -19,16 +20,23 @@
     "SKIP_ENV_VALIDATION",
     "TREG_API_KEY",
     "VERCEL",
+    "VERCEL_DEPLOYMENT_ID",
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_URL",
+    "WORKFLOW_TARGET_WORLD",
     "_VARLOCK_ENV_KEY"
   ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "src/app/.well-known/workflow/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

@@ -2,9 +2,8 @@ import { appRouter } from "@befday-2.0/api/routers/index";
 import { headers } from "next/headers";
 import { cache } from "react";
 
-import { createContext } from "@/context";
-import { env } from "@/env.server";
-import { auth, email, getDb } from "@/services";
+import { createContext, startPartnerSubmissionWorkflow } from "@/context";
+import { auth, getDb } from "@/services";
 
 /**
  * Public in-memory tRPC caller for cached scopes ("use cache") and static generation.
@@ -14,9 +13,8 @@ export const getPublicApi = () =>
   appRouter.createCaller({
     auth,
     db: getDb(),
-    email,
-    env,
     session: null,
+    startPartnerSubmissionWorkflow,
   });
 
 /**

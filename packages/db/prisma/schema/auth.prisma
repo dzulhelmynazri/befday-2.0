@@ -1,20 +1,40 @@
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  dateOfBirth   DateTime? @db.Date
-  birthMonth    Int?
-  birthDay      Int?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  id                 String             @id
+  name               String
+  email              String
+  emailVerified      Boolean            @default(false)
+  image              String?
+  dateOfBirth        DateTime?          @db.Date
+  birthMonth         Int?
+  birthDay           Int?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  sessions           Session[]
+  accounts           Account[]
+  reminderDeliveries ReminderDelivery[]
 
   @@unique([email])
   @@index([birthMonth, birthDay])
   @@map("user")
+}
+
+enum ReminderKind {
+  BIRTHDAY_TODAY
+  BIRTHDAY_UPCOMING_7D
+  BIRTH_MONTH_KICKOFF
+  ADD_BIRTHDAY_PROMPT
+}
+
+model ReminderDelivery {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      ReminderKind
+  periodKey String
+  sentAt    DateTime     @default(now())
+
+  @@unique([userId, kind, periodKey])
+  @@map("reminder_delivery")
 }
 
 model Session {
