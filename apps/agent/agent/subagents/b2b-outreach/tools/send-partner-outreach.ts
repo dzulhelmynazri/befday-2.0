@@ -117,13 +117,6 @@ const notifyTelegram = async (
   step: number,
   emailSent: boolean
 ): Promise<boolean> => {
-  const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
-  const telegramChatId = process.env.TELEGRAM_CHAT_ID;
-
-  if (!telegramBotToken || !telegramChatId) {
-    return false;
-  }
-
   const emailLine = emailSent
     ? `Email sent to ${input.contactEmail}`
     : "Email not sent";
@@ -160,10 +153,10 @@ const notifyTelegram = async (
 
   try {
     const response = await fetch(
-      `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
+      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
       {
         body: JSON.stringify({
-          chat_id: telegramChatId,
+          chat_id: process.env.TELEGRAM_CHAT_ID,
           disable_web_page_preview: true,
           reply_markup: {
             inline_keyboard: [
