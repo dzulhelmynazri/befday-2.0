@@ -24,6 +24,7 @@
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_URL",
+    "WORKFLOW_LOCAL_BASE_URL",
     "WORKFLOW_TARGET_WORLD",
     "_VARLOCK_ENV_KEY"
   ],
@@ -66,6 +67,10 @@
     },
     "eval": {
       "cache": false
+    },
+    "workflow:web": {
+      "cache": false,
+      "persistent": true
     }
   },
   "globalDependencies": [".env*", "apps/*/.env*", "packages/*/.env*"]

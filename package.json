@@ -42,6 +42,7 @@
     "dev:web": "turbo run dev -F web --",
     "dev:agent": "turbo run dev -F agent --",
     "eval:agent": "turbo run eval -F agent --",
+    "workflow:web": "turbo run workflow:web -F web --",
     "db:push": "turbo run db:push -F @befday-2.0/db --",
     "db:studio": "turbo run db:studio -F @befday-2.0/db --",
     "db:generate": "turbo run db:generate -F @befday-2.0/db --",

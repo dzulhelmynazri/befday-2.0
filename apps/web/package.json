@@ -8,7 +8,8 @@
     "check-types": "tsc --noEmit",
     "start": "next start",
     "env:generate": "varlock codegen",
-    "test:workflows": "vitest run -c vitest.integration.config.mts"
+    "test:workflows": "vitest run -c vitest.integration.config.mts",
+    "workflow:web": "WORKFLOW_LOCAL_BASE_URL=http://localhost:3001 workflow web"
   },
   "dependencies": {
     "@befday-2.0/api": "workspace:*",
