@@ -12,15 +12,6 @@ export default defineTool({
   description:
     "Schedules or publishes social media posts across channels (Twitter/X, Instagram, LinkedIn, Facebook, Threads, TikTok, Pinterest, Google Business) via NeuLink, and records lastPostedAt and lastTheme on featured brands.",
   async execute(input) {
-    const apiKey = process.env.NEULINK_API_KEY;
-
-    if (!apiKey) {
-      return {
-        error: "Missing NEULINK_API_KEY environment variable",
-        success: false,
-      };
-    }
-
     const response = await fetch("https://api.neulink.com/v1/posts", {
       body: JSON.stringify({
         auto_add_music: input.autoAddMusic,
@@ -30,7 +21,8 @@ export default defineTool({
         text: input.text,
       }),
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        // oxlint-disable-next-line typescript/no-non-null-assertion
+        Authorization: `Bearer ${process.env.NEULINK_API_KEY!}`,
         "Content-Type": "application/json",
       },
       method: "POST",
