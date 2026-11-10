@@ -2,8 +2,9 @@ import { appRouter } from "@befday-2.0/api/routers/index";
 import { headers } from "next/headers";
 import { cache } from "react";
 
+import { auth } from "@/auth";
 import { createContext, startPartnerSubmissionWorkflow } from "@/context";
-import { auth, getDb } from "@/services";
+import { getDb } from "@/services";
 
 /**
  * Public in-memory tRPC caller for cached scopes ("use cache") and static generation.

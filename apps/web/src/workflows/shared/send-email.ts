@@ -1,5 +1,8 @@
 import { RetryableError, getStepMetadata } from "workflow";
 
+import { log } from "@/lib/evlog";
+import { email } from "@/services";
+
 export const FROM_ADDRESS = "befday <hello@befday.com>";
 
 export const getRetryAfterMs = (attempt: number): number =>
@@ -13,11 +16,6 @@ export const sendEmailWithRetry = async (input: {
   readonly text: string;
   readonly to: string;
 }): Promise<void> => {
-  const [{ email }, { log }] = await Promise.all([
-    import("@/services"),
-    import("@/lib/evlog"),
-  ]);
-
   const { attempt } = getStepMetadata();
 
   try {

@@ -1,7 +1,7 @@
 import { createAuthMiddleware } from "evlog/better-auth";
 
+import { auth } from "@/auth";
 import { useLogger as getLogger } from "@/lib/evlog";
-import { auth } from "@/services";
 
 const identifyUser = createAuthMiddleware(auth, {
   exclude: ["/api/auth/**"],

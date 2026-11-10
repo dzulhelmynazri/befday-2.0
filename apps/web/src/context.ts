@@ -1,8 +1,9 @@
 import type { Context } from "@befday-2.0/api/context";
 import { start } from "workflow/api";
 
+import { auth } from "@/auth";
 import { log } from "@/lib/evlog";
-import { auth, getDb } from "@/services";
+import { getDb } from "@/services";
 import { partnerSubmittedWorkflow } from "@/workflows/partner-perks";
 
 export const startPartnerSubmissionWorkflow = async (
