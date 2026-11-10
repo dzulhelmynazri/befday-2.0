@@ -156,6 +156,7 @@ const sendPartnerApprovedEmail = async (perkId: string): Promise<void> => {
 
 sendPartnerApprovedEmail.maxRetries = 5;
 
+/** Started from partnerRouter.submit via context.ts. */
 export const partnerSubmittedWorkflow = async (
   perkId: string
 ): Promise<void> => {
@@ -167,6 +168,7 @@ export const partnerSubmittedWorkflow = async (
   ]);
 };
 
+/** Started from /api/perks/approve when publishing a perk with contact details. */
 export const partnerApprovedWorkflow = async (
   perkId: string
 ): Promise<void> => {

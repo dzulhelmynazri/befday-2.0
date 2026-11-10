@@ -75,6 +75,7 @@ const sendBirthdayPromptIfMissing = async (
 
 sendBirthdayPromptIfMissing.maxRetries = 5;
 
+/** Started from the Better Auth user creation hook in services.ts. */
 export const userOnboardingWorkflow = async (
   user: OnboardingUserInput
 ): Promise<OnboardingResult> => {

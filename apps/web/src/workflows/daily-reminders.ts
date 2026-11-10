@@ -284,6 +284,7 @@ const runCampaign = async (
   return runCampaign(kind, window, batch.nextCursor, totalSent);
 };
 
+/** Started daily from /api/cron/reminders. */
 export const dailyRemindersWorkflow = async (
   referenceIso: string
 ): Promise<{
